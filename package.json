@@ -1,0 +1,27 @@
+{
+  "name": "pwa-podcatcher",
+  "version": "0.0.1",
+  "description": "Progressive web app podcatcher",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zacnomore/pwa-podcatcher.git"
+  },
+  "keywords": [
+    "podcatcher"
+  ],
+  "author": "Zachary Svoboda",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/zacnomore/pwa-podcatcher/issues"
+  },
+  "homepage": "https://github.com/zacnomore/pwa-podcatcher#readme",
+  "dependencies": {
+    "rss-parser": "^3.7.3",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.9"
+  }
+}
