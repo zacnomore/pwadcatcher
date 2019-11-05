@@ -1,0 +1,10 @@
+<mat-button-toggle (change)="menu.toggle()">Toggle</mat-button-toggle>
+<mat-sidenav-container>
+  <mat-sidenav #menu>
+    Menu goes here
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <ng-content></ng-content>
+  </mat-sidenav-content>
+</mat-sidenav-container>
