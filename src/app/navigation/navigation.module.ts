@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
 import { NavigationComponent } from './navigation.component';
-import {MatSidenavModule} from '@angular/material/sidenav';
+import { MatSidenavModule } from '@angular/material/sidenav';
 import { SharedModule } from '../shared/shared.module';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -9,7 +10,8 @@ import { SharedModule } from '../shared/shared.module';
   ],
   imports: [
     MatSidenavModule,
-    SharedModule
+    SharedModule,
+    RouterModule
   ],
   exports: [
     NavigationComponent

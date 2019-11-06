@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatButtonModule } from '@angular/material/button';
+import { MatListModule } from '@angular/material/list';
 
 
 @NgModule({
@@ -11,7 +12,8 @@ import { MatButtonModule } from '@angular/material/button';
   ],
   exports: [
     MatButtonToggleModule,
-    MatButtonModule
+    MatButtonModule,
+    MatListModule
   ]
 })
 export class SharedModule { }
