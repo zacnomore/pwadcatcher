@@ -10,6 +10,7 @@ import { NavigationModule } from '../navigation/navigation.module';
 import { PlaylistComponent } from '../playlist/playlist.component';
 import { SubscriptionsComponent } from '../subscriptions/subscriptions.component';
 import { PlayerModule } from '../player/player.module';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { PlayerModule } from '../player/player.module';
     AppRoutingModule,
     BrowserModule,
     BrowserAnimationsModule,
+    HttpClientModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     NavigationModule,
     PlayerModule

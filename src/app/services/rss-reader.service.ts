@@ -1,13 +1,16 @@
 import { Injectable } from '@angular/core';
-import * as Parser from 'rss-parser';
-
+import { map, switchMap } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
+import { parseStringPromise } from 'xml2js';
 @Injectable({
   providedIn: 'root'
 })
 export class RssReaderService {
-  private parser = new Parser();
+  constructor(private http: HttpClient) {}
 
-  async readFeed(url: string) {
-    await this.parser.parseURL(url);
+  public readFeed(url: string) {
+    return this.http.get(url, { responseType: 'text' }).pipe(
+      switchMap(resp => parseStringPromise(resp))
+    );
   }
 }

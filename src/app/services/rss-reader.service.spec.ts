@@ -1,9 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 
 import { RssReaderService } from './rss-reader.service';
+import { HttpClientModule } from '@angular/common/http';
 
 describe('RssReaderService', () => {
-  beforeEach(() => TestBed.configureTestingModule({}));
+  beforeEach(() => TestBed.configureTestingModule({
+    imports: [HttpClientModule]
+  }));
 
   it('should be created', () => {
     const service: RssReaderService = TestBed.get(RssReaderService);
@@ -12,6 +15,6 @@ describe('RssReaderService', () => {
 
   it('should read a feed into JSON', async () => {
     const service: RssReaderService = TestBed.get(RssReaderService);
-    return expectAsync(service.readFeed('https://feeds.megaphone.fm/replyall')).toBeResolved();
+    service.readFeed('https://feeds.megaphone.fm/replyall').subscribe();
   });
 });
