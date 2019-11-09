@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { map, switchMap } from 'rxjs/operators';
+import { map, switchMap, catchError } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
-// import { parseStringPromise } from 'xml2js';
+import { xml2js } from 'xml-js';
+import { of } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
@@ -10,7 +11,8 @@ export class RssReaderService {
 
   public readFeed(url: string) {
     return this.http.get(url, { responseType: 'text' }).pipe(
-      // switchMap(resp => parseStringPromise(resp))
+      map(resp => xml2js(resp)),
+      catchError(err => of({}))
     );
   }
 }

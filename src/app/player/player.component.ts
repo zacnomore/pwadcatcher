@@ -8,9 +8,7 @@ import { AudioPlayerService } from './services/audio-player.service';
   styleUrls: ['./player.component.scss']
 })
 export class PlayerComponent {
-  feed$ = this.reader.readFeed('https://feeds.megaphone.fm/replyall');
-  constructor(private reader: RssReaderService, private audio: AudioPlayerService) {
-    this.audio.streamAudio('https://traffic.megaphone.fm/GLT1841079025.mp3');
+  constructor(private audio: AudioPlayerService) {
 
   }
 }
