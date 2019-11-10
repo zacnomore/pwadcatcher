@@ -12,9 +12,4 @@ describe('RssReaderService', () => {
     const service: RssReaderService = TestBed.get(RssReaderService);
     expect(service).toBeTruthy();
   });
-
-  it('should read a feed into JSON', async () => {
-    const service: RssReaderService = TestBed.get(RssReaderService);
-    service.readFeed('https://feeds.megaphone.fm/replyall').subscribe();
-  });
 });

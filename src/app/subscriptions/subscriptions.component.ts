@@ -8,8 +8,8 @@ import { map } from 'rxjs/operators';
   styleUrls: ['./subscriptions.component.scss']
 })
 export class SubscriptionsComponent implements OnInit {
-  feed$ = this.reader.readFeed('https://feeds.megaphone.fm/replyall').pipe(map(val => JSON.stringify(val)));
-  constructor(private reader: RssReaderService) { }
+  // feed$ = this.reader.readFeed('https://feeds.megaphone.fm/replyall').pipe(map(val => JSON.stringify(val)));
+  // constructor(private reader: RssReaderService) { }
 
   ngOnInit() {
   }
