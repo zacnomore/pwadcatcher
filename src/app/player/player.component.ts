@@ -1,14 +1,23 @@
 import { Component, OnInit } from '@angular/core';
-import { RssReaderService } from '../services/rss-reader.service';
-import { AudioPlayerService } from './services/audio-player.service';
+import { AudioPlayerService, IAudioState, PlayerAction } from './services/audio-player.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-player',
   templateUrl: './player.component.html',
   styleUrls: ['./player.component.scss']
 })
-export class PlayerComponent {
-  constructor(private audio: AudioPlayerService) {
+export class PlayerComponent implements OnInit {
+  constructor(private audio: AudioPlayerService) { }
+  audioState$: Observable<IAudioState> = this.audio.audioState$;
 
+  ngOnInit() {
+    this.audio.updateSource('https://traffic.megaphone.fm/GLT1332195978.mp3?updated=1572639400');
   }
+
+  public togglePlay = (playing: boolean) => this.audio.doAction(playing ? PlayerAction.Pause : PlayerAction.Play);
+  public forward = () => this.audio.updateSource('https://traffic.megaphone.fm/GLT1332195978.mp3?updated=1572639400');
+  public rewind = () => this.audio.doAction(PlayerAction.FastForward);
 }
+
+
