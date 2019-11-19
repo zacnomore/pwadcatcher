@@ -10,7 +10,8 @@ export default (req: NowRequest, res: NowResponse) => {
     let rawData = '';
     searchResp.on('data', (chunk) => { rawData += chunk; });
     searchResp.on('end', () => {
-      res.send(JSON.parse(rawData));
+      res.setHeader('Access-Control-Allow-Origin', '*');
+      res.json(JSON.parse(rawData));
     });
 
   });

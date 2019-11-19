@@ -8,15 +8,15 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../../environments/environment';
 import { NavigationModule } from '../navigation/navigation.module';
 import { PlaylistComponent } from '../playlist/playlist.component';
-import { SubscriptionsComponent } from '../subscriptions/subscriptions.component';
 import { PlayerModule } from '../player/player.module';
 import { HttpClientModule } from '@angular/common/http';
+import { SubscriptionsModule } from '../subscriptions/subscriptions.module';
 
 @NgModule({
   declarations: [
     AppComponent,
     PlaylistComponent,
-    SubscriptionsComponent
+
   ],
   imports: [
     AppRoutingModule,
@@ -25,7 +25,8 @@ import { HttpClientModule } from '@angular/common/http';
     HttpClientModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     NavigationModule,
-    PlayerModule
+    PlayerModule,
+    SubscriptionsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

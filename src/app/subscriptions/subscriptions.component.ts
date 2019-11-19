@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { RssReaderService } from '../services/rss-reader.service';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
+import { SearchService, IPodcastResult } from './services/search.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-subscriptions',
@@ -8,9 +10,9 @@ import { map } from 'rxjs/operators';
   styleUrls: ['./subscriptions.component.scss']
 })
 export class SubscriptionsComponent implements OnInit {
-  // feed$ = this.reader.readFeed('https://feeds.megaphone.fm/replyall').pipe(map(val => JSON.stringify(val)));
-  // constructor(private reader: RssReaderService) { }
+  public feed$: Observable<IPodcastResult[]> = this.search.appleSearch('brother');
 
+  constructor(private search: SearchService) { }
   ngOnInit() {
   }
 
