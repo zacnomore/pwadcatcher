@@ -63,6 +63,3 @@ import 'zone.js/dist/zone';  // Included with Angular CLI.
  * APPLICATION IMPORTS
  */
 
-// For angry node libs
-// tslint:disable-next-line: no-any
-(window as any).global = window;
