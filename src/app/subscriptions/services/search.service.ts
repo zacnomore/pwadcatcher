@@ -3,6 +3,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { IAppleSearch } from './apple.model';
 import { map, catchError } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
+import { IImageSet } from 'src/app/shared/models/image.model';
 
 @Injectable({
   providedIn: 'root'
@@ -13,28 +14,30 @@ export class SearchService {
 
   public appleSearch(term: string): Observable<IPodcastResult[]> {
     return this.http.get<IAppleSearch>(`/api/search?term=${term}`).pipe(
-      map(results => {
-        return results.results.map(result => ({
-          name: result.collectionName,
-          feedUrl: result.collectionViewUrl,
-          thumbnail: {
-            large: {
-              src: result.artworkUrl600
-            },
-            medium: {
-              src: result.artworkUrl100
-            },
-            small: {
-              src: result.artworkUrl30
-            }
-          }
-        }));
-      }),
+      map(this.appleToNormalized),
       catchError((e: HttpErrorResponse) => {
         console.log(e.status);
         return of([]);
       })
     );
+  }
+
+  private appleToNormalized(results: IAppleSearch): IPodcastResult[] {
+    return results.results.map(result => ({
+      name: result.collectionName,
+      feedUrl: result.collectionViewUrl,
+      thumbnail: {
+        large: {
+          src: result.artworkUrl600
+        },
+        medium: {
+          src: result.artworkUrl100
+        },
+        small: {
+          src: result.artworkUrl30
+        }
+      }
+    }));
   }
 }
 

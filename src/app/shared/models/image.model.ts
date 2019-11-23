@@ -1,11 +1,11 @@
 
-interface IImageSet {
+export interface IImageSet {
   small: IImage;
   medium?: IImage;
   large?: IImage;
 }
 
-interface IImage {
+export interface IImage {
   src: string;
   alt?: string;
 }
