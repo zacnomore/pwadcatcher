@@ -6,8 +6,7 @@ import { SubscriptionsComponent } from '../subscriptions/subscriptions.component
 
 const routes: Routes = [
   { path: '', component: SubscriptionsComponent},
-  { path: 'player', component: PlayerComponent },
-  { path: 'playlist', component: PlayerComponent },
+  { path: 'player', component: PlayerComponent }
 ];
 
 @NgModule({
