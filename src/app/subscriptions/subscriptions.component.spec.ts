@@ -1,8 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SubscriptionsComponent } from './subscriptions.component';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { MatListModule } from '@angular/material/list';
 
 describe('SubscriptionsComponent', () => {
   let component: SubscriptionsComponent;
@@ -11,10 +9,7 @@ describe('SubscriptionsComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [SubscriptionsComponent],
-      imports: [
-        HttpClientTestingModule,
-        MatListModule
-      ]
+      imports: []
     })
     .compileComponents();
   }));

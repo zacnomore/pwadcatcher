@@ -10,7 +10,6 @@ describe('AppComponent', () => {
     TestBed.configureTestingModule({
       imports: [
         RouterTestingModule,
-        SharedModule,
         NavigationModule,
         BrowserAnimationsModule
       ],

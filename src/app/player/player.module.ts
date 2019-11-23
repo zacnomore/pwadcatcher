@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { PlayerComponent } from './player.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { SharedModule } from '../shared/shared.module';
@@ -10,7 +9,6 @@ import { SharedModule } from '../shared/shared.module';
     PlayerComponent
   ],
   imports: [
-    CommonModule,
     SharedModule,
     MatProgressBarModule
   ]

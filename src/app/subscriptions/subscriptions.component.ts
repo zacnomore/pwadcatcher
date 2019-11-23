@@ -1,6 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { SearchService, IPodcastResult } from './services/search.service';
-import { Observable } from 'rxjs';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-subscriptions',
@@ -8,8 +6,5 @@ import { Observable } from 'rxjs';
   styleUrls: ['./subscriptions.component.scss']
 })
 export class SubscriptionsComponent {
-  public searchResults$: Observable<IPodcastResult[]> = this.search.appleSearch('brother');
-
-  constructor(private search: SearchService) { }
 
 }

@@ -17,7 +17,7 @@ export class SearchService {
     return this.http.get<IAppleSearch>(`${this.env.env.appleSearchUrl}?term=${term}`).pipe(
       map(this.appleToNormalized),
       catchError((e: HttpErrorResponse) => {
-        console.log(e.status);
+        console.error(e.status);
         return of([]);
       })
     );

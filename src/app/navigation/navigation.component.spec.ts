@@ -5,6 +5,8 @@ import { SharedModule } from '../shared/shared.module';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { RouterTestingModule } from '@angular/router/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatListModule } from '@angular/material/list';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
 describe('NavigationComponent', () => {
   let component: NavigationComponent;
@@ -13,7 +15,7 @@ describe('NavigationComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [NavigationComponent],
-      imports: [SharedModule, MatSidenavModule, RouterTestingModule, BrowserAnimationsModule]
+      imports: [SharedModule, MatSidenavModule, MatListModule, MatButtonToggleModule, RouterTestingModule, BrowserAnimationsModule]
     })
     .compileComponents();
   }));

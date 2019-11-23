@@ -25,8 +25,7 @@ export class AudioPlayerService {
 
   private currentAudio: BehaviorSubject<Observable<IAudioState>> = new BehaviorSubject(of(this.defaultState));
   public audioState$ = this.currentAudio.pipe(
-    mergeMap(val => val),
-    tap(console.log)
+    mergeMap(val => val)
   );
 
   public doAction(key: PlayerAction): void {
@@ -60,8 +59,7 @@ export class AudioPlayerService {
     return handlerStream$.pipe(
       scan<(s: IAudioState) => IAudioState, IAudioState>((acc, handler) => {
         return handler(acc);
-      }, this.defaultState),
-      tap(console.log)
+      }, this.defaultState)
     );
   }
 
