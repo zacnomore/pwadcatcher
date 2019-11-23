@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { PodcastListComponent } from './podcast-list.component';
-import { SharedModule } from '../shared.module';
+import { SharedModule } from '../../shared.module';
 
 
 

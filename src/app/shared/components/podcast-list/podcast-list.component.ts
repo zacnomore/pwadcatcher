@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { IImage } from '../models/image.model';
+import { IImage } from '../../models/image.model';
 
 @Component({
   selector: 'app-podcast-list',
