@@ -3,7 +3,6 @@ import { AudioPlayerService, IAudioState, PlayerAction } from './services/audio-
 import { Observable } from 'rxjs';
 
 @Component({
-  selector: 'app-player',
   templateUrl: './player.component.html',
   styleUrls: ['./player.component.scss']
 })
