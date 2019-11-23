@@ -11,12 +11,10 @@ import { EnvironmentService } from 'src/app/environments/environment.service';
 })
 export class SearchService {
 
-  constructor(private http: HttpClient, env: EnvironmentService) {
-    console.log(env.env.production);
-   }
+  constructor(private http: HttpClient, private env: EnvironmentService) {}
 
   public appleSearch(term: string): Observable<IPodcastResult[]> {
-    return this.http.get<IAppleSearch>(`/api/search?term=${term}`).pipe(
+    return this.http.get<IAppleSearch>(`${this.env.env.appleSearchUrl}?term=${term}`).pipe(
       map(this.appleToNormalized),
       catchError((e: HttpErrorResponse) => {
         console.log(e.status);
