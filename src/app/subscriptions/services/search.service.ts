@@ -4,13 +4,16 @@ import { IAppleSearch } from './apple.model';
 import { map, catchError } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
 import { IImageSet } from 'src/app/shared/models/image.model';
+import { EnvironmentService } from 'src/app/environments/environment.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SearchService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, env: EnvironmentService) {
+    console.log(env.env.production);
+   }
 
   public appleSearch(term: string): Observable<IPodcastResult[]> {
     return this.http.get<IAppleSearch>(`/api/search?term=${term}`).pipe(
