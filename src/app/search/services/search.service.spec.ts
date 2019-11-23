@@ -5,10 +5,7 @@ import { PodcastListModule } from 'src/app/shared/components/podcast-list/podcas
 
 describe('SearchService', () => {
   beforeEach(() => TestBed.configureTestingModule({
-    imports: [
-      HttpClientTestingModule,
-      PodcastListModule
-    ]
+    imports: [HttpClientTestingModule]
   }));
 
   it('should be created', () => {
