@@ -3,6 +3,7 @@
   <mat-sidenav #menu>
     <mat-nav-list>
       <a mat-list-item (click)="menu.close()" [routerLink]="['/']">Podcasts</a>
+      <a mat-list-item (click)="menu.close()" [routerLink]="['/search']" >Search</a>
       <a mat-list-item (click)="menu.close()" [routerLink]="['/player']" >Player</a>
     </mat-nav-list>
   </mat-sidenav>

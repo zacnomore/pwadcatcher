@@ -10,6 +10,7 @@ import { NavigationModule } from '../navigation/navigation.module';
 import { PlayerModule } from '../player/player.module';
 import { HttpClientModule } from '@angular/common/http';
 import { SubscriptionsModule } from '../subscriptions/subscriptions.module';
+import { SearchModule } from '../search/search.module';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { SubscriptionsModule } from '../subscriptions/subscriptions.module';
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     NavigationModule,
     PlayerModule,
-    SubscriptionsModule
+    SubscriptionsModule,
+    SearchModule
   ],
   providers: [],
   bootstrap: [AppComponent]
