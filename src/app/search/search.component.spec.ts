@@ -3,6 +3,9 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SearchComponent } from './search.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { PodcastListModule } from '../shared/components/podcast-list/podcast-list.module';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('SearchComponent', () => {
   let component: SearchComponent;
@@ -13,7 +16,10 @@ describe('SearchComponent', () => {
       declarations: [SearchComponent],
       imports: [
         HttpClientTestingModule,
-        PodcastListModule
+        PodcastListModule,
+        ReactiveFormsModule,
+        MatInputModule,
+        NoopAnimationsModule
       ]
     })
     .compileComponents();

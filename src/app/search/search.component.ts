@@ -1,17 +1,29 @@
 import { Component, OnInit } from '@angular/core';
 import { IPodcastResult, SearchService } from './services/search.service';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
+import { FormBuilder } from '@angular/forms';
 
 @Component({
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.scss']
 })
-export class SearchComponent implements OnInit {
+export class SearchComponent {
+  private searchTerm = new Subject<string>();
+  public searchResults$: Observable<IPodcastResult[]> = this.searchTerm.pipe(
+    switchMap(searchTerm => this.searchService.appleSearch(searchTerm))
+  );
 
-  public searchResults$: Observable<IPodcastResult[]> = this.search.appleSearch('brother');
+  public searchForm = this.fb.group({
+    term: ['']
+  });
 
-  constructor(private search: SearchService) { }
-  ngOnInit() {
+  constructor(private searchService: SearchService, private fb: FormBuilder) { }
+
+  search() {
+    const term = this.searchForm.get('term');
+    if (term && term.value) {
+      this.searchTerm.next(term.value);
+    }
   }
-
 }

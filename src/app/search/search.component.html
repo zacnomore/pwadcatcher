@@ -1,1 +1,8 @@
+<form [formGroup]="searchForm" (ngSubmit)="search()">
+    <mat-form-field>
+      <input matInput formControlName="term" placeholder="Search" />
+    </mat-form-field>
+    <button mat-button>Search</button>
+  </form>
+  
 <app-podcast-list [list]="(searchResults$ | async)"></app-podcast-list>

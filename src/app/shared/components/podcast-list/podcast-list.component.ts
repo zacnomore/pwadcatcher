@@ -6,11 +6,8 @@ import { IImage } from '../../models/image.model';
   templateUrl: './podcast-list.component.html',
   styleUrls: ['./podcast-list.component.scss']
 })
-export class PodcastListComponent implements OnInit {
+export class PodcastListComponent {
   @Input() list?: IListItem[];
-
-  ngOnInit() {
-  }
 
 }
 
