@@ -1,9 +1,6 @@
-<ng-container *ngIf="(feed$ | async) as feed">
-  <mat-grid-list cols="4">
-    <mat-grid-tile *ngFor="let tile of feed">
-      <mat-card>
-        <img [src]="tile?.thumbnail?.medium?.src">
-      </mat-card>
-    </mat-grid-tile>
-  </mat-grid-list>
-</ng-container>
+<mat-list *ngIf="(searchResults$ | async) as results">
+  <mat-list-item *ngFor="let result of results">
+    <img [src]="result.thumbnail?.medium?.src" />
+    <h3>{{result.name}}</h3>
+  </mat-list-item>
+</mat-list>
