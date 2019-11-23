@@ -1,8 +1,9 @@
 <ng-container *ngIf="(feed$ | async) as feed">
   <mat-grid-list cols="4">
-    <mat-grid-tile
-        *ngFor="let tile of feed">
-      <img [src]="tile?.thumbnail?.medium?.src">
+    <mat-grid-tile *ngFor="let tile of feed">
+      <mat-card>
+        <img [src]="tile?.thumbnail?.medium?.src">
+      </mat-card>
     </mat-grid-tile>
   </mat-grid-list>
 </ng-container>
