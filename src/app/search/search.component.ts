@@ -4,6 +4,7 @@ import { Observable, Subject } from 'rxjs';
 import { switchMap, map, distinctUntilChanged } from 'rxjs/operators';
 import { FormBuilder } from '@angular/forms';
 import { IListItem } from '../shared/components/podcast-list/podcast-list.component';
+import { Router } from '@angular/router';
 
 @Component({
   templateUrl: './search.component.html',
@@ -27,7 +28,7 @@ export class SearchComponent {
     term: ['']
   });
 
-  constructor(private searchService: SearchService, private fb: FormBuilder) { }
+  constructor(private searchService: SearchService, private fb: FormBuilder, private router: Router) { }
 
   public search() {
     const term = this.searchForm.get('term');
@@ -37,6 +38,6 @@ export class SearchComponent {
   }
 
   public viewPodcast(index: number) {
-
+    this.router.navigate(['/podcast']);
   }
 }

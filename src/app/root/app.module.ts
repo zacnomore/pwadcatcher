@@ -11,6 +11,7 @@ import { PlayerModule } from '../player/player.module';
 import { HttpClientModule } from '@angular/common/http';
 import { SubscriptionsModule } from '../subscriptions/subscriptions.module';
 import { SearchModule } from '../search/search.module';
+import { PodcastModule } from '../podcast/podcast.module';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { SearchModule } from '../search/search.module';
     NavigationModule,
     PlayerModule,
     SubscriptionsModule,
-    SearchModule
+    SearchModule,
+    PodcastModule
   ],
   providers: [],
   bootstrap: [AppComponent]
