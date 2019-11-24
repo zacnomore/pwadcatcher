@@ -6,6 +6,7 @@ import { PodcastListModule } from '../shared/components/podcast-list/podcast-lis
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { RouterModule } from '@angular/router';
 
 describe('SearchComponent', () => {
   let component: SearchComponent;
@@ -19,7 +20,8 @@ describe('SearchComponent', () => {
         PodcastListModule,
         ReactiveFormsModule,
         MatInputModule,
-        NoopAnimationsModule
+        NoopAnimationsModule,
+        RouterModule.forRoot([])
       ]
     })
     .compileComponents();
