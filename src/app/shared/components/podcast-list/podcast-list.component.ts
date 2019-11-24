@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { IImage } from '../../models/image.model';
 
 @Component({
@@ -8,10 +8,14 @@ import { IImage } from '../../models/image.model';
 })
 export class PodcastListComponent {
   @Input() list?: IListItem[];
+  @Output() clickItem = new EventEmitter<number>();
 
+  public onClickItem(index: number) {
+    this.clickItem.emit(index);
+  }
 }
 
 export interface IListItem {
-  image?: IImage;
   title: string;
+  image?: IImage;
 }

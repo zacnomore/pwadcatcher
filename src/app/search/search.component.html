@@ -5,4 +5,4 @@
     <button mat-button>Search</button>
   </form>
   
-<app-podcast-list [list]="(searchResults$ | async)"></app-podcast-list>
+<app-podcast-list [list]="(searchResults$ | async)" (clickItem)="viewPodcast($event)"></app-podcast-list>
