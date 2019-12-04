@@ -14,7 +14,7 @@ export class OverviewComponent {
   currentPodcast$: Observable<IPodcast | undefined> = this.activateRoute.paramMap.pipe(
     map(params => params.get('id')),
     map(id => id ? this.store.getPodcast(id) : undefined)
-    );
+  );
 
   constructor(private activateRoute: ActivatedRoute, private store: StoreService) { }
 

@@ -40,7 +40,8 @@ export class SearchComponent {
   }
 
   public viewPodcast(index: number) {
-    const key = this.store.addPodcast(this.currentResults[index]);
-    this.router.navigate(['/podcast', key]);
+    this.store.addPodcast(this.currentResults[index]).then(
+      key => this.router.navigate(['/podcast', key])
+    );
   }
 }

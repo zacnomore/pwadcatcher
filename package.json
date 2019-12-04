@@ -24,6 +24,7 @@
     "@angular/router": "~8.2.14",
     "@angular/service-worker": "~8.2.14",
     "hammerjs": "^2.0.8",
+    "idb-keyval": "^3.2.0",
     "rxjs": "~6.5.3",
     "xml-js": "^1.6.11",
     "zone.js": "~0.9.1"
@@ -36,7 +37,7 @@
     "@now/node": "^1.2.0",
     "@types/jasmine": "~3.5.0",
     "@types/jasminewd2": "~2.0.8",
-    "@types/node": "~12.12.12",
+    "@types/node": "^12.12.14",
     "codelyzer": "^5.2.0",
     "jasmine-core": "~3.5.0",
     "jasmine-spec-reporter": "~4.2.1",
