@@ -10,6 +10,7 @@ export interface IPodcast {
 
 export interface IInitializedPodcast extends IPodcast {
   feed: IPodcastFeed;
+  description?: string;
 }
 
 export interface IPodcastFeed {

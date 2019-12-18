@@ -1,9 +1,9 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { map, filter } from 'rxjs/operators';
+import { map, filter, switchMap, share, tap, mergeMap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-import { IPodcast } from 'src/app/shared/models/podcast.model';
-import { StoreService } from 'src/app/store/store.service';
+import { IPodcast, IPodcastFeed } from 'src/app/shared/models/podcast.model';
+import { PodcastService } from 'src/app/shared/services/podcast.service';
 
 @Component({
   selector: 'app-overview',
@@ -11,11 +11,20 @@ import { StoreService } from 'src/app/store/store.service';
   styleUrls: ['./overview.component.scss']
 })
 export class OverviewComponent {
-  currentPodcast$: Observable<IPodcast | undefined> = this.activateRoute.paramMap.pipe(
+  constructor(private activateRoute: ActivatedRoute, private podcastService: PodcastService) { }
+
+  podcastKey$: Observable<string> = this.activateRoute.paramMap.pipe(
     map(params => params.get('id')),
-    map(id => id ? this.store.getPodcast(id) : undefined)
+    filter((id): id is string => id !== null),
+    share(),
   );
 
-  constructor(private activateRoute: ActivatedRoute, private store: StoreService) { }
+  overview$: Observable<IPodcast> = this.podcastKey$.pipe(
+    map(id => this.podcastService.getPodcast(id)),
+    filter((podcast): podcast is IPodcast => podcast !== undefined));
 
+  details$: Observable<IPodcastFeed> = this.podcastKey$.pipe(
+    mergeMap(key => this.podcastService.getFeed(key)),
+    tap(console.log)
+  );
 }

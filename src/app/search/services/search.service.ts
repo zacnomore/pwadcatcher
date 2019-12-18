@@ -26,7 +26,7 @@ export class SearchService {
   private appleToNormalized(results: IAppleSearch): IPodcastResult[] {
     return results.results.map(result => ({
       name: result.collectionName,
-      feedUrl: result.collectionViewUrl,
+      feedUrl: result.feedUrl,
       thumbnail: {
         large: {
           src: result.artworkUrl600

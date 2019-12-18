@@ -1,6 +1,6 @@
 import { Injectable, OnDestroy, HostListener } from '@angular/core';
 import { IPodcast } from '../shared/models/podcast.model';
-import { get, set } from 'idb-keyval';
+import { get as getIDB, set as setIDB, Store} from 'idb-keyval';
 
 @Injectable({
   providedIn: 'root'
@@ -35,17 +35,26 @@ export class StoreService {
   }
 }
 
+interface ISerializableKeyValuePair<K, V> {
+  key: K;
+  value: V;
+}
+
+interface ISerializedMap<K, V> {
+  entries: Array<ISerializableKeyValuePair<K, V>>;
+}
 class PwaStore<K, V> {
   private innerStore = new Map<K, V>();
 
   constructor(private idbKey: string) {
-    get(idbKey).then(store => {
-      if (store instanceof Map.prototype.constructor) {
-        const values = (store as Map<unknown, unknown>).entries().next();
-
+    getIDB(idbKey).then(store => {
+      console.log(store);
+      if (store && this.isStore(store)) {
         // TODO: Figure out if we can string together some kind of type checking here
-        if (values) {
-          this.innerStore = (store as Map<K, V>);
+        const deserialized = this.deserialize(store as ISerializedMap<K, V>);
+
+        if (deserialized) {
+          this.innerStore = (deserialized as Map<K, V>);
         }
        }
     }).catch(e => {
@@ -58,8 +67,28 @@ class PwaStore<K, V> {
   }
 
   public set(key: K, value: V): Promise<void> {
+    console.log(key);
     this.innerStore.set(key, value);
-    console.log(this.idbKey);
-    return set(this.idbKey, this.innerStore).catch(e => console.log(e));
+    console.log(this.innerStore);
+    return setIDB(this.idbKey, this.serialize(this.innerStore), new Store('store')).catch(e => console.log(e));
+  }
+
+  private isStore(s: unknown): s is ISerializedMap<unknown, unknown> {
+    return Boolean((s as ISerializedMap<unknown, unknown>).entries);
+  }
+
+  private serialize(m: Map<K, V>): ISerializedMap<K, V> {
+    return Array.from(m.entries()).reduce((acc: ISerializedMap<K, V>, [key, value]: [K, V]) =>
+      ({ entries: [...acc.entries, { key, value }] }), {
+      entries: [] as Array<ISerializableKeyValuePair<K, V>>
+    });
+  }
+
+  private deserialize(serialized: ISerializedMap<K, V>): Map<K, V> {
+    const map = new Map<K, V>();
+    serialized.entries.forEach(({key, value}) => {
+      map.set(key, value);
+    });
+    return map;
   }
 }

@@ -1,2 +1,9 @@
-<p>overview works!</p>
-{{currentPodcast$ | async | json}}
+<ng-container *ngIf="(overview$ | async) as overview">
+  <img [src]="overview.thumbnail?.large?.src || overview.thumbnail?.medium?.src || overview.thumbnail?.small.src" alt="">
+  <h1>{{overview.name}}</h1>
+  <h2>{{overview.author}}</h2>
+  {{overview.feedUrl}}
+</ng-container>
+    <ng-container *ngIf="(details$ | async) as details">
+      {{details}}
+    </ng-container>
