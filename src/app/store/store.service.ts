@@ -44,11 +44,11 @@ interface ISerializedMap<K, V> {
   entries: Array<ISerializableKeyValuePair<K, V>>;
 }
 class PwaStore<K, V> {
+  private configuredStore = new Store('pwa-podcatcher', this.idbKey);
   private innerStore = new Map<K, V>();
 
   constructor(private idbKey: string) {
-    getIDB(idbKey).then(store => {
-      console.log(store);
+    getIDB(idbKey, this.configuredStore).then(store => {
       if (store && this.isStore(store)) {
         // TODO: Figure out if we can string together some kind of type checking here
         const deserialized = this.deserialize(store as ISerializedMap<K, V>);
@@ -67,10 +67,9 @@ class PwaStore<K, V> {
   }
 
   public set(key: K, value: V): Promise<void> {
-    console.log(key);
     this.innerStore.set(key, value);
-    console.log(this.innerStore);
-    return setIDB(this.idbKey, this.serialize(this.innerStore), new Store('store')).catch(e => console.log(e));
+    // TODO: Optimize to incrementally add values
+    return setIDB(this.idbKey, this.serialize(this.innerStore), this.configuredStore).catch(e => console.log(e));
   }
 
   private isStore(s: unknown): s is ISerializedMap<unknown, unknown> {
