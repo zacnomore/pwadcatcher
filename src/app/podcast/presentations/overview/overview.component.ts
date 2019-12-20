@@ -20,7 +20,7 @@ export class OverviewComponent {
   );
 
   overview$: Observable<IPodcast> = this.podcastKey$.pipe(
-    map(id => this.podcastService.getPodcast(id)),
+    switchMap(id => this.podcastService.getPodcast(id)),
     filter((podcast): podcast is IPodcast => podcast !== undefined));
 
   details$: Observable<IPodcastFeed> = this.podcastKey$.pipe(

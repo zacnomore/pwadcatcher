@@ -10,13 +10,16 @@ export class StoreService {
 
   public async addPodcast(podcast: IPodcast): Promise<string> {
     const key = this.toKey(podcast.feedUrl);
-    const oldValues = this.podcasts.get(key) || [];
-    this.podcasts.set(key, [...oldValues, podcast]);
+    const oldValues = await this.podcasts.get(key) || [];
+    // Exclude duplicates
+    if (!oldValues.find(pod => pod.feedUrl === podcast.feedUrl)) {
+      this.podcasts.set(key, [...oldValues, podcast]);
+    }
     return key;
   }
 
-  public getPodcast(key: string): IPodcast | undefined {
-    const values = this.podcasts.get(key);
+  public async getPodcast(key: string): Promise<IPodcast | undefined> {
+    const values = await this.podcasts.get(key);
     // TODO: Handle collisions
     return values && values[0];
   }
@@ -44,10 +47,13 @@ interface ISerializedMap<K, V> {
   entries: Array<ISerializableKeyValuePair<K, V>>;
 }
 class PwaStore<K, V> {
-  private configuredStore = new Store('pwa-podcatcher', this.idbKey);
+  private configuredStore = new Store('pwa-podcatcher');
   private innerStore = new Map<K, V>();
+  private storeInitialized: Promise<void>;
 
   constructor(private idbKey: string) {
+    this.storeInitialized = new Promise(res => { this.initialize = res; });
+
     getIDB(idbKey, this.configuredStore).then(store => {
       if (store && this.isStore(store)) {
         // TODO: Figure out if we can string together some kind of type checking here
@@ -56,13 +62,17 @@ class PwaStore<K, V> {
         if (deserialized) {
           this.innerStore = (deserialized as Map<K, V>);
         }
-       }
+
+        this.initialize();
+      }
     }).catch(e => {
       console.log('Store does not exist');
     });
   }
+  private initialize: () => void = () => console.error('ooo execution');
 
-  public get(key: K): V | undefined {
+  public async get(key: K): Promise<V | undefined> {
+    await this.storeInitialized;
     return this.innerStore.get(key);
   }
 

@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { IPodcast, IInitializedPodcast, IPodcastFeed } from '../models/podcast.model';
 import { StoreService } from 'src/app/store/store.service';
-import { of, Observable } from 'rxjs';
+import { of, Observable, from, iif } from 'rxjs';
 import { RssReaderService } from './rss-reader.service';
+import { filter, mergeMap, tap, map, catchError, switchMap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -11,20 +12,23 @@ export class PodcastService {
 
   constructor(private store: StoreService, private rss: RssReaderService) {}
 
-  getPodcast(key: string): IPodcast | undefined {
+  public async getPodcast(key: string): Promise<IPodcast | undefined> {
     return this.store.getPodcast(key);
   }
 
-  getFeed(key: string): Observable<IPodcastFeed | undefined> {
-    const local = this.store.getPodcast(key);
-    console.log(local);
-    if (local) {
-      if (local.feed !== undefined) {
-        return of((local as IInitializedPodcast).feed);
-      } else {
-        return this.rss.readFeed(local.feedUrl);
-      }
-    }
-    return of(undefined);
+  public getFeed(key: string): Observable<IPodcastFeed | undefined> {
+    return from(this.store.getPodcast(key)).pipe(
+      map(pod => {
+        if (pod === undefined) { throw pod; } else { return pod; }
+      }),
+      switchMap((pod) => {
+        if (pod.feed !== undefined) {
+          return of((pod as IInitializedPodcast).feed);
+        } else {
+          return this.rss.readFeed(pod.feedUrl);
+        }
+      }),
+      catchError(err => of(undefined))
+    );
   }
 }
