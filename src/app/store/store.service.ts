@@ -1,4 +1,4 @@
-import { Injectable, OnDestroy, HostListener } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { IPodcast } from '../shared/models/podcast.model';
 import { get as getIDB, set as setIDB, Store} from 'idb-keyval';
 
