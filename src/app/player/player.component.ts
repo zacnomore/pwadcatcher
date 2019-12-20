@@ -15,8 +15,8 @@ export class PlayerComponent implements OnInit {
   }
 
   public togglePlay = (playing: boolean) => this.audio.doAction(playing ? PlayerAction.Pause : PlayerAction.Play);
-  public forward = () => this.audio.updateSource('https://traffic.megaphone.fm/GLT1332195978.mp3?updated=1572639400');
-  public rewind = () => this.audio.doAction(PlayerAction.FastForward);
+  public forward = () => this.audio.doAction(PlayerAction.FastForward);
+  public rewind = () => this.audio.doAction(PlayerAction.FastRewind);
 }
 
 
