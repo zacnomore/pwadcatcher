@@ -1,6 +1,7 @@
 import { IImageSet } from './image.model';
+import { IStorable } from 'src/app/store/store.service';
 
-export interface IPodcast {
+export interface IPodcast extends IStorable {
   name: string;
   feedUrl: string;
   thumbnail?: IImageSet;
@@ -17,8 +18,9 @@ export interface IPodcastFeed {
   episodes: IPodcastEpisode[];
 }
 
-export interface IPodcastEpisode {
+export interface IPodcastEpisode extends IStorable {
   title: string;
+  audioUrl: string;
   publishDate?: Date;
   image?: IImageSet;
 }

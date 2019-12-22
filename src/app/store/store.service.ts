@@ -1,21 +1,36 @@
 import { Injectable } from '@angular/core';
-import { IPodcast } from '../shared/models/podcast.model';
+import { IPodcast, IPodcastEpisode } from '../shared/models/podcast.model';
 import { get as getIDB, set as setIDB, Store} from 'idb-keyval';
+
+// tslint:disable-next-line: ban-types
+export interface IStorable { [key: string]: Object | undefined; }
 
 @Injectable({
   providedIn: 'root'
 })
 export class StoreService {
   private podcasts = new PwaStore<IPodcast>('podcasts');
+  private episodes = new PwaStore<IPodcastEpisode>('episodes');
 
-  public async addPodcast(podcast: IPodcast): Promise<string> {
-    return this.podcasts.set(podcast.feedUrl, podcast);
+  public addEpisode = this.createSetter<IPodcastEpisode>(this.episodes, 'audioUrl');
+  public getEpisode = this.createGetter<IPodcastEpisode>(this.episodes);
+
+  public addPodcast = this.createSetter<IPodcast>(this.podcasts, 'feedUrl');
+  public getPodcast = this.createGetter<IPodcast>(this.podcasts);
+
+  private createSetter<T extends IStorable>(store: PwaStore<T>, keyableProperty: keyof T): (v: T) => Promise<string | undefined> {
+    return (value: T) => {
+      const keyableValue = value[keyableProperty];
+      if (keyableValue) {
+        return store.set(keyableValue.toString(), value);
+      }
+      return Promise.resolve(undefined);
+    };
   }
 
-  public async getPodcast(key: string): Promise<IPodcast | undefined> {
-    return this.podcasts.get(key);
+  private createGetter<T>(store: PwaStore<T>): (K: string) => Promise<T | undefined> {
+    return (key: string) => store.get(key);
   }
-
 }
 
 interface ISerializableKeyValuePair<V> {

@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { AudioPlayerService, IAudioState, PlayerAction } from './services/audio-player.service';
 import { Observable, Subscription, from } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
-import { map, filter, switchMap } from 'rxjs/operators';
+import { map, filter, switchMap, tap } from 'rxjs/operators';
 import { StoreService } from '../store/store.service';
+import { IPodcastEpisode } from '../shared/models/podcast.model';
 
 @Component({
   templateUrl: './player.component.html',
@@ -27,7 +28,8 @@ export class PlayerComponent implements OnInit {
         filter((key: string | null): key is string => Boolean(key)),
         map(key => this.store.getEpisode(key)),
         switchMap(promise => from(promise)),
-        switchMap(episode => this.audio.updateSource(episode.url))
+        filter((key: IPodcastEpisode | undefined): key is IPodcastEpisode => Boolean(key)),
+        tap(episode => this.audio.updateSource(episode.audioUrl))
       ).subscribe()
     );
 
