@@ -6,49 +6,29 @@ import { get as getIDB, set as setIDB, Store} from 'idb-keyval';
   providedIn: 'root'
 })
 export class StoreService {
-  private podcasts = new PwaStore<string, IPodcast[]>('podcasts');
+  private podcasts = new PwaStore<IPodcast>('podcasts');
 
   public async addPodcast(podcast: IPodcast): Promise<string> {
-    const key = this.toKey(podcast.feedUrl);
-    const oldValues = await this.podcasts.get(key) || [];
-    // Exclude duplicates
-    if (!oldValues.find(pod => pod.feedUrl === podcast.feedUrl)) {
-      this.podcasts.set(key, [...oldValues, podcast]);
-    }
-    return key;
+    return this.podcasts.set(podcast.feedUrl, podcast);
   }
 
   public async getPodcast(key: string): Promise<IPodcast | undefined> {
-    const values = await this.podcasts.get(key);
-    // TODO: Handle collisions
-    return values && values[0];
+    return this.podcasts.get(key);
   }
 
-
-  // Java hashcode
-  private toKey(keyableValue: string): string {
-    return Math.abs(
-      keyableValue.split('').reduce((acc, cur) => {
-        // tslint:disable-next-line: no-bitwise
-        const hash = (acc << 5) - acc + cur.charCodeAt(0);
-        // tslint:disable-next-line: no-bitwise
-        return hash & hash;
-      }, 0)
-    ).toString();
-  }
 }
 
-interface ISerializableKeyValuePair<K, V> {
-  key: K;
+interface ISerializableKeyValuePair<V> {
+  key: string;
   value: V;
 }
 
-interface ISerializedMap<K, V> {
-  entries: Array<ISerializableKeyValuePair<K, V>>;
+interface ISerializedMap<V> {
+  entries: Array<ISerializableKeyValuePair<V>>;
 }
-class PwaStore<K, V> {
+class PwaStore<V> {
   private configuredStore = new Store('pwa-podcatcher');
-  private innerStore = new Map<K, V>();
+  private innerStore = new Map<string, V>();
   private storeInitialized: Promise<void>;
 
   constructor(private idbKey: string) {
@@ -57,10 +37,10 @@ class PwaStore<K, V> {
     getIDB(idbKey, this.configuredStore).then(store => {
       if (store && this.isStore(store)) {
         // TODO: Figure out if we can string together some kind of type checking here
-        const deserialized = this.deserialize(store as ISerializedMap<K, V>);
+        const deserialized = this.deserialize(store as ISerializedMap<V>);
 
         if (deserialized) {
-          this.innerStore = (deserialized as Map<K, V>);
+          this.innerStore = (deserialized as Map<string, V>);
         }
 
         this.initialize();
@@ -71,30 +51,46 @@ class PwaStore<K, V> {
   }
   private initialize: () => void = () => console.error('ooo execution');
 
-  public async get(key: K): Promise<V | undefined> {
+  public async get(key: string): Promise<V | undefined> {
     await this.storeInitialized;
     return this.innerStore.get(key);
   }
 
-  public set(key: K, value: V): Promise<void> {
+  public async set(keyableProperty: string, value: V): Promise<string> {
+    const key = this.toKey(keyableProperty);
+
+    // TODO: Handle collisions
     this.innerStore.set(key, value);
+
     // TODO: Optimize to incrementally add values
-    return setIDB(this.idbKey, this.serialize(this.innerStore), this.configuredStore).catch(e => console.log(e));
+    return setIDB(this.idbKey, this.serialize(this.innerStore), this.configuredStore)
+      .then(v => key);
   }
 
-  private isStore(s: unknown): s is ISerializedMap<unknown, unknown> {
-    return Boolean((s as ISerializedMap<unknown, unknown>).entries);
+  private toKey(keyableValue: string): string {
+    return Math.abs(
+      keyableValue.split('').reduce((acc, cur) => {
+        // tslint:disable-next-line: no-bitwise
+        const hash = (acc << 5) - acc + cur.charCodeAt(0);
+        // tslint:disable-next-line: no-bitwise
+        return hash & hash;
+      }, 0)
+    ).toString();
   }
 
-  private serialize(m: Map<K, V>): ISerializedMap<K, V> {
-    return Array.from(m.entries()).reduce((acc: ISerializedMap<K, V>, [key, value]: [K, V]) =>
+  private isStore(s: unknown): s is ISerializedMap<unknown> {
+    return Boolean((s as ISerializedMap<unknown>).entries);
+  }
+
+  private serialize(m: Map<string, V>): ISerializedMap<V> {
+    return Array.from(m.entries()).reduce((acc: ISerializedMap<V>, [key, value]: [string, V]) =>
       ({ entries: [...acc.entries, { key, value }] }), {
-      entries: [] as Array<ISerializableKeyValuePair<K, V>>
+      entries: [] as Array<ISerializableKeyValuePair<V>>
     });
   }
 
-  private deserialize(serialized: ISerializedMap<K, V>): Map<K, V> {
-    const map = new Map<K, V>();
+  private deserialize(serialized: ISerializedMap<V>): Map<string, V> {
+    const map = new Map<string, V>();
     serialized.entries.forEach(({key, value}) => {
       map.set(key, value);
     });
