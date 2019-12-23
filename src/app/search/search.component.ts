@@ -42,7 +42,7 @@ export class SearchComponent {
 
   public viewPodcast(index: number) {
     this.store.addPodcast(this.currentResults[index]).then(
-      key => this.router.navigate(['/podcast', key])
+      key => this.router.navigate(['podcast', 'overview', key])
     );
   }
 }

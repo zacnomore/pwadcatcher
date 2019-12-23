@@ -3,7 +3,8 @@
   <h1>{{overview.name}}</h1>
   <h2>{{overview.author}}</h2>
   {{overview.feedUrl}}
+  <button (click)="viewFeed()">View Feed</button>
 </ng-container>
-    <ng-container *ngIf="(details$ | async) as details">
-      {{details}}
-    </ng-container>
+<ng-container *ngIf="(details$ | async) as details">
+  {{details}}
+</ng-container>
