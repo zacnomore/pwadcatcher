@@ -4,6 +4,7 @@ import { IStorable } from 'src/app/store/store.service';
 export interface IPodcast extends IStorable {
   name: string;
   feedUrl: string;
+  collectionId: number;
   thumbnail?: IImageSet;
   author?: string;
   feed?: IPodcastFeed;

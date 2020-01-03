@@ -30,7 +30,7 @@ export class PodcastService {
         if (pod.feed !== undefined) {
           return of((pod as IInitializedPodcast).feed);
         } else {
-          return this.rss.readFeed(pod.feedUrl);
+          return this.rss.readFeed(pod.collectionId);
         }
       }),
       catchError(err => of(undefined))

@@ -27,6 +27,7 @@ export class SearchService {
     return results.results.map(result => ({
       name: result.collectionName,
       feedUrl: result.feedUrl,
+      collectionId: result.collectionId,
       thumbnail: {
         large: {
           src: result.artworkUrl600
