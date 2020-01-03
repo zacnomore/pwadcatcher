@@ -11,4 +11,5 @@ export class EnvironmentService {
 export interface IEnvironment {
   production: boolean;
   appleSearchUrl: string;
+  feedReadUrl: string;
 }

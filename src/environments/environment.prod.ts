@@ -1,4 +1,5 @@
 export const environment = {
   production: true,
-  appleSearchUrl: '/api/search'
+  appleSearchUrl: '/api/search',
+  feedReadUrl: '/api/feed'
 };
