@@ -1,3 +1,4 @@
+import { IPodcast } from 'src/app/shared/models/podcast.model';
 
 export interface IAppleSearch {
   resultCount: number;
@@ -67,3 +68,20 @@ export enum Kind {
 export enum WrapperType {
   Track = 'track',
 }
+
+export const resultToPodcast: (result: IResult) => IPodcast  = (result: IResult) => ({
+  name: result.collectionName,
+  feedUrl: result.feedUrl,
+  collectionId: result.collectionId,
+  thumbnail: {
+    large: {
+      src: result.artworkUrl600
+    },
+    medium: {
+      src: result.artworkUrl100
+    },
+    small: {
+      src: result.artworkUrl30
+    }
+  }
+});
