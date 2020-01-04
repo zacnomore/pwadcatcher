@@ -10,9 +10,16 @@ export default (req: NowRequest, res: NowResponse) => {
     let rawData = '';
     searchResp.on('data', (chunk) => { rawData += chunk; });
     searchResp.on('end', () => {
-      res.setHeader('Access-Control-Allow-Origin', '*');
       const { results } = JSON.parse(rawData);
-      res.json(results[0]);
+      get(results[0].feedUrl, feedResp => {
+        let feedData = '';
+        feedResp.on('data', (c) => { feedData += c; });
+        feedResp.on('end', () => {
+          res.setHeader('Access-Control-Allow-Origin', '*');
+          res.send(feedData);
+        });
+      });
+
     });
 
   });
