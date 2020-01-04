@@ -12,15 +12,26 @@ export class RssReaderService {
   constructor(private http: HttpClient, private env: EnvironmentService) {}
 
   public readFeed(collectionId: number): Observable<IPodcastFeed | undefined> {
-    return this.http.get(`${this.env.env.feedReadUrl}?collectionId=${collectionId}`).pipe(
-      tap(console.log)
+    console.log(collectionId, 'read feed');
+    return this.http.get(`${this.env.env.feedReadUrl}?collectionId=${collectionId}`, { responseType: 'text'}).pipe(
+      map(resp => xml2js(resp)),
+      map(xml => ({
+        episodes: xml.elements[0].elements[0].elements.filter(
+          node => node.name === 'item'
+        ).map(
+          ep => ({
+            title: ep.elements.find(el => el.name === 'title').elements[0].cdata,
+            image: {small: ep.elements.find(el => el.name === 'itunes:image').attributes.href},
+            ...ep
+          })
+        )
+      } as IPodcastFeed)),
+      tap(console.log),
+      catchError(err => {
+        console.error(err);
+        return of(undefined);
+      })
     );
-    // this.http.get(url, { responseType: 'text' }).pipe(
-    //   map(resp => xml2js(resp)),
-    //   map(xml => ({
-    //     episodes: xml.elements
-    //   } as IPodcastFeed)),
-    //   catchError(err => of(undefined))
-    // );
   }
 }
+

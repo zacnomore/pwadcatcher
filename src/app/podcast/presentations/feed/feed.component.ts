@@ -26,7 +26,6 @@ export class FeedComponent {
 
   public feed$: Observable<IListItem[]> = this.podcastKey$.pipe(
     switchMap(key => this.podcastService.getFeed(key)),
-    tap(console.log),
     filter((feed): feed is IPodcastFeed => feed !== undefined),
     map(feed => feed.episodes.map(ep => ({
       title: ep.title,
