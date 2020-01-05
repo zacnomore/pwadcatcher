@@ -8,7 +8,7 @@ export default (req: NowRequest, res: NowResponse) => {
     query: { xmlUrl }
   } = req;
 
-  get(xmlUrl.toString(), rawFeed => {
+  get(xmlUrl.toString().replace('https://', 'http://'), rawFeed => {
     let rawData = '';
     rawFeed.on('data', (chunk) => { rawData += chunk; });
     rawFeed.on('end', () => {
