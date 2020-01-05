@@ -1,1 +1,3 @@
-<app-podcast-list [list]="(feed$ | async)" (clickItem)="viewEpisode($event)"></app-podcast-list>
+<ng-container *ngIf="(listItems$ | async) as list">
+  <app-podcast-list [list]="list" (clickItem)="viewEpisode(list, $event)"></app-podcast-list>
+</ng-container>
