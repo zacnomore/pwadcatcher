@@ -1,6 +1,6 @@
 import { NowRequest, NowResponse } from '@now/node';
 import { get } from 'http';
-import { xml2js } from 'xml-js';
+import { xml2js, Element as XMLElement } from 'xml-js';
 import { IPodcastFeed } from '../src/app/shared/models/podcast.model';
 
 export default (req: NowRequest, res: NowResponse) => {
@@ -8,12 +8,13 @@ export default (req: NowRequest, res: NowResponse) => {
     query: { xmlUrl }
   } = req;
 
-  get(xmlUrl.toString(), feed => {
+  get(xmlUrl.toString(), rawFeed => {
     let rawData = '';
-    feed.on('data', (chunk) => { rawData += chunk; });
-    feed.on('end', () => {
-      const feedJson = xml2js(rawData);
-      res.json(feedJson);
+    rawFeed.on('data', (chunk) => { rawData += chunk; });
+    rawFeed.on('end', () => {
+      const xmlJson = xml2js(rawData) as XMLElement;
+      // const mappedFeed = xmlJson.elements.;
+      res.json(xmlJson);
     });
   });
 };

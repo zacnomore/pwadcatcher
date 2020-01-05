@@ -72,7 +72,6 @@ export enum WrapperType {
 export const resultToPodcast: (result: IResult) => IPodcast  = (result: IResult) => ({
   name: result.collectionName,
   feedUrl: result.feedUrl,
-  collectionId: result.collectionId,
   thumbnail: {
     large: {
       src: result.artworkUrl600
