@@ -1,27 +1,20 @@
 import { NowRequest, NowResponse } from '@now/node';
 import { get } from 'http';
+import { xml2js } from 'xml-js';
+import { IPodcastFeed } from '../src/app/shared/models/podcast.model';
 
 export default (req: NowRequest, res: NowResponse) => {
   const {
-    query: { collectionId }
+    query: { xmlUrl }
   } = req;
 
-  get(`http://itunes.apple.com/search?media=podcast&term=${collectionId}`, searchResp => {
+  get(xmlUrl.toString(), feed => {
     let rawData = '';
-    searchResp.on('data', (chunk) => { rawData += chunk; });
-    searchResp.on('end', () => {
-      const { results } = JSON.parse(rawData);
-      get(results[0].feedUrl, feedResp => {
-        let feedData = '';
-        feedResp.on('data', (c) => { feedData += c; });
-        feedResp.on('end', () => {
-          res.setHeader('Access-Control-Allow-Origin', '*');
-          res.send(feedData);
-        });
-      });
-
+    feed.on('data', (chunk) => { rawData += chunk; });
+    feed.on('end', () => {
+      const feedJson = xml2js(rawData);
+      res.json(feedJson);
     });
-
   });
 };
 
