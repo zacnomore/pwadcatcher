@@ -11,7 +11,6 @@ export interface IPodcast extends IStorable {
 
 export interface IInitializedPodcast extends IPodcast {
   feed: IPodcastFeed;
-  description?: string;
 }
 
 export interface IPodcastFeed {
