@@ -1,6 +1,6 @@
 import { NowRequest, NowResponse } from '@now/node';
 import { get } from 'http';
-import { addCORS } from 'api-utils/cors';
+import { addCORS } from '../api-utils/cors';
 
 export default (req: NowRequest, res: NowResponse) => {
   const {
