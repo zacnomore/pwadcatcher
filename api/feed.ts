@@ -2,7 +2,7 @@ import { NowRequest, NowResponse } from '@now/node';
 import { get } from 'http';
 import { xml2js, Element as XMLElement } from 'xml-js';
 import { IPodcastFeed, IPodcastEpisode } from '../src/app/shared/models/podcast.model';
-import { IImageSet } from 'src/app/shared/models/image.model';
+import { addCORS } from 'api-utils/cors';
 
 export default (req: NowRequest, res: NowResponse) => {
   const {
@@ -45,6 +45,8 @@ export default (req: NowRequest, res: NowResponse) => {
         } : undefined,
         episodes
       };
+
+      addCORS(req, res);
       res.json(feed);
     });
   });

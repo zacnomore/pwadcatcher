@@ -1,5 +1,6 @@
 import { NowRequest, NowResponse } from '@now/node';
 import { get } from 'http';
+import { addCORS } from 'api-utils/cors';
 
 export default (req: NowRequest, res: NowResponse) => {
   const {
@@ -10,7 +11,7 @@ export default (req: NowRequest, res: NowResponse) => {
     let rawData = '';
     searchResp.on('data', (chunk) => { rawData += chunk; });
     searchResp.on('end', () => {
-      res.setHeader('Access-Control-Allow-Origin', '*');
+      addCORS(req, res);
       res.json(JSON.parse(rawData));
     });
 
