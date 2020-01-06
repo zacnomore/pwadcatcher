@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Observable, fromEvent, merge, BehaviorSubject, of, concat } from 'rxjs';
-import { map, startWith, switchMap, scan, tap, mergeMap } from 'rxjs/operators';
+import { Observable, fromEvent, merge, BehaviorSubject, of } from 'rxjs';
+import { map, scan, mergeMap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -10,8 +10,8 @@ export class AudioPlayerService {
   private audioActions = new Map<PlayerAction, (el: HTMLAudioElement) => void>([
     [PlayerAction.Play, el => el.play()],
     [PlayerAction.Pause, el => el.pause()],
-    [PlayerAction.SkipNext, el => {}],
-    [PlayerAction.SkipPrevious, el => {}],
+    [PlayerAction.SkipNext, () => {}],
+    [PlayerAction.SkipPrevious, () => {}],
     [PlayerAction.FastForward, el => el.currentTime += 10],
     [PlayerAction.FastRewind, el => el.currentTime -= 10],
 
