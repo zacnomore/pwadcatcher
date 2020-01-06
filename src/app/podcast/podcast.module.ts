@@ -5,6 +5,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { OverviewComponent } from './presentations/overview/overview.component';
 import { FeedComponent } from './presentations/feed/feed.component';
 import { FeedModule } from './presentations/feed/feed.module';
+import { EpisodeModule } from './presentations/episode/episode.module';
+import { EpisodeComponent } from './presentations/episode/episode.component';
 
 
 const routes: Routes = [
@@ -18,7 +20,7 @@ const routes: Routes = [
   },
   {
     path: 'episode/:episodeId',
-    component: OverviewComponent
+    component: EpisodeComponent
   }
 ];
 
@@ -29,6 +31,7 @@ const routes: Routes = [
     CommonModule,
     OverviewModule,
     FeedModule,
+    EpisodeModule,
     RouterModule.forChild(routes)
   ]
 })
