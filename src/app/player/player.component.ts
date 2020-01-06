@@ -1,9 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AudioPlayerService, IAudioState, PlayerAction } from './services/audio-player.service';
 import { Observable, Subscription, from } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { map, filter, switchMap, tap } from 'rxjs/operators';
-import { StoreService } from '../store/store.service';
 import { IPodcastEpisode } from '../shared/models/podcast.model';
 import { PodcastService } from '../shared/services/podcast.service';
 
@@ -11,7 +10,7 @@ import { PodcastService } from '../shared/services/podcast.service';
   templateUrl: './player.component.html',
   styleUrls: ['./player.component.scss']
 })
-export class PlayerComponent implements OnInit {
+export class PlayerComponent implements OnInit, OnDestroy {
   public audioState$: Observable<IAudioState> = this.audio.audioState$;
   private subscriptions: Subscription[] = [];
 
@@ -32,8 +31,10 @@ export class PlayerComponent implements OnInit {
         tap(episode => this.audio.updateSource(episode.audioUrl))
       ).subscribe()
     );
+  }
 
-    this.audio.updateSource('https://traffic.megaphone.fm/GLT1332195978.mp3?updated=1572639400');
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
   public togglePlay = (playing: boolean) => this.audio.doAction(playing ? PlayerAction.Pause : PlayerAction.Play);
