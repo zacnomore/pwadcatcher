@@ -26,6 +26,7 @@ export class EpisodeComponent {
 
   playEpisode(episodeKey: string) {
     this.podcastService.getEpisode(episodeKey).then(ep => {
+      console.log(ep);
       if (ep !== undefined) {
         this.audioService.updateSource(ep.audioUrl);
       }
