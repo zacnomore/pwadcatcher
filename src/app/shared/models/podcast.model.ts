@@ -14,6 +14,7 @@ export interface IInitializedPodcast extends IPodcast {
 }
 
 export interface IPodcastFeed {
+  defaultImage?: IImageSet;
   episodes: IPodcastEpisode[];
 }
 

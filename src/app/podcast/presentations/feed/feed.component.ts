@@ -36,7 +36,7 @@ export class FeedComponent {
     tap(x => console.log),
     map(feed => feed.episodes.map(ep => ({
       title: ep.title,
-      image: ep.image ? ep.image.small : undefined,
+      image: ep.image ? ep.image.small : feed.defaultImage ? feed.defaultImage.small : undefined,
       episodeKey: this.store.addEpisode(ep)
     })))
   );

@@ -13,7 +13,6 @@ export class RssReaderService {
   public readFeed(feedUrl: string): Observable<IPodcastFeed | undefined> {
     console.log(feedUrl, 'read feed');
     return this.http.get<IPodcastFeed>(`${this.env.env.feedReadUrl}?xmlUrl=${feedUrl}`).pipe(
-      tap(console.log),
       catchError(err => {
         console.error(err);
         return of(undefined);
