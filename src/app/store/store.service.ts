@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { IPodcast, IPodcastEpisode } from '../shared/models/podcast.model';
 import { get as getIDB, set as setIDB, Store} from 'idb-keyval';
-import { BehaviorSubject } from 'rxjs';
+import { debounce } from '../shared/utils';
 
 // tslint:disable-next-line: ban-types
 export interface IStorable { [key: string]: Object | undefined; }
@@ -43,9 +43,6 @@ interface ISerializedMap<V> {
   entries: Array<ISerializableKeyValuePair<V>>;
 }
 class PwaStore<V> {
-  private configuredStore = new Store('pwa-podcatcher');
-  private innerStore = new Map<string, V>();
-  private storeSynchronizedBS = new BehaviorSubject(false);
 
   constructor(private idbKey: string) {
 
@@ -56,13 +53,15 @@ class PwaStore<V> {
 
         if (deserialized) {
           this.innerStore = (deserialized as Map<string, V>);
-          this.storeSynchronizedBS.next(true);
         }
       }
     }).catch(e => {
       console.log('Store does not exist');
     });
   }
+  private configuredStore = new Store('pwa-podcatcher');
+  private innerStore = new Map<string, V>();
+  private triggerStorage = debounce(() => setIDB(this.idbKey, this.serialize(this.innerStore), this.configuredStore));
 
   public get(key: string): V | undefined {
     return this.innerStore.get(key);
@@ -72,10 +71,8 @@ class PwaStore<V> {
     const key = this.toKey(keyableProperty);
     // TODO: Handle collisions
     this.innerStore.set(key, value);
-    this.storeSynchronizedBS.next(false);
 
-    setIDB(this.idbKey, this.serialize(this.innerStore), this.configuredStore)
-      .then(v => this.storeSynchronizedBS.next(true));
+    this.triggerStorage();
 
     return key;
   }
@@ -104,7 +101,7 @@ class PwaStore<V> {
 
   private deserialize(serialized: ISerializedMap<V>): Map<string, V> {
     const map = new Map<string, V>();
-    serialized.entries.forEach(({key, value}) => {
+    serialized.entries.forEach(({ key, value }) => {
       map.set(key, value);
     });
     return map;
