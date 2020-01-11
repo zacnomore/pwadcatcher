@@ -22,18 +22,13 @@ export class PodcastService {
   }
 
   public getFeed(key: string): Observable<IPodcastFeed | undefined> {
-    return from(this.store.getPodcast(key)).pipe(
-      map(pod => {
-        if (pod === undefined) { throw pod; } else { return pod; }
-      }),
-      switchMap((pod) => {
-        if (pod.feed !== undefined) {
-          return of((pod as IInitializedPodcast).feed);
-        } else {
-          return this.rss.readFeed(pod.feedUrl);
-        }
-      }),
-      catchError(err => of(undefined))
-    );
+    const podcast = this.store.getPodcast(key);
+    if (podcast) {
+      if (podcast.feed) {
+        return of(podcast.feed);
+      }
+      return this.rss.readFeed(podcast.feedUrl);
+    }
+    return of(undefined);
   }
 }

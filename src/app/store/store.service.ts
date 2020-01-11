@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { IPodcast, IPodcastEpisode } from '../shared/models/podcast.model';
 import { get as getIDB, set as setIDB, Store} from 'idb-keyval';
+import { BehaviorSubject } from 'rxjs';
 
 // tslint:disable-next-line: ban-types
 export interface IStorable { [key: string]: Object | undefined; }
@@ -18,17 +19,17 @@ export class StoreService {
   public addPodcast = this.createSetter<IPodcast>(this.podcasts, 'feedUrl');
   public getPodcast = this.createGetter<IPodcast>(this.podcasts);
 
-  private createSetter<T extends IStorable>(store: PwaStore<T>, keyableProperty: keyof T): (v: T) => Promise<string | undefined> {
+  private createSetter<T extends IStorable>(store: PwaStore<T>, keyableProperty: keyof T): (v: T) => (string | undefined) {
     return (value: T) => {
       const keyableValue = value[keyableProperty];
       if (keyableValue) {
         return store.set(keyableValue.toString(), value);
       }
-      return Promise.resolve(undefined);
+      return undefined;
     };
   }
 
-  private createGetter<T>(store: PwaStore<T>): (K: string) => Promise<T | undefined> {
+  private createGetter<T>(store: PwaStore<T>): (K: string) => (T | undefined) {
     return (key: string) => store.get(key);
   }
 }
@@ -44,10 +45,9 @@ interface ISerializedMap<V> {
 class PwaStore<V> {
   private configuredStore = new Store('pwa-podcatcher');
   private innerStore = new Map<string, V>();
-  private storeInitialized: Promise<void>;
+  private storeSynchronizedBS = new BehaviorSubject(false);
 
   constructor(private idbKey: string) {
-    this.storeInitialized = new Promise(res => { this.initialize = res; });
 
     getIDB(idbKey, this.configuredStore).then(store => {
       if (store && this.isStore(store)) {
@@ -56,30 +56,28 @@ class PwaStore<V> {
 
         if (deserialized) {
           this.innerStore = (deserialized as Map<string, V>);
+          this.storeSynchronizedBS.next(true);
         }
-
-        this.initialize();
       }
     }).catch(e => {
       console.log('Store does not exist');
     });
   }
-  private initialize: () => void = () => console.error('ooo execution');
 
-  public async get(key: string): Promise<V | undefined> {
-    await this.storeInitialized;
+  public get(key: string): V | undefined {
     return this.innerStore.get(key);
   }
 
-  public async set(keyableProperty: string, value: V): Promise<string> {
+  public set(keyableProperty: string, value: V): string {
     const key = this.toKey(keyableProperty);
-
     // TODO: Handle collisions
     this.innerStore.set(key, value);
+    this.storeSynchronizedBS.next(false);
 
-    // TODO: Optimize to incrementally add values
-    return setIDB(this.idbKey, this.serialize(this.innerStore), this.configuredStore)
-      .then(v => key);
+    setIDB(this.idbKey, this.serialize(this.innerStore), this.configuredStore)
+      .then(v => this.storeSynchronizedBS.next(true));
+
+    return key;
   }
 
   private toKey(keyableValue: string): string {

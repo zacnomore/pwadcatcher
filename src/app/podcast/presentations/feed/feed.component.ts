@@ -33,7 +33,6 @@ export class FeedComponent {
   );
 
   public listItems$: Observable<IFeedItem[]> = this.feed$.pipe(
-    tap(x => console.log),
     map(feed => feed.episodes.map(ep => ({
       title: ep.title,
       image: ep.image ? ep.image.small : feed.defaultImage ? feed.defaultImage.small : undefined,
@@ -43,10 +42,10 @@ export class FeedComponent {
 
 
   viewEpisode(feed: IFeedItem[], index: number) {
-    feed[index].episodeKey.then(key => this.router.navigate(['podcast', 'episode', key]));
+    this.router.navigate(['podcast', 'episode', feed[index].episodeKey]);
   }
 }
 
 interface IFeedItem extends IListItem {
-  episodeKey: Promise<string | undefined>;
+  episodeKey: string | undefined;
 }
