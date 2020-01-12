@@ -2,7 +2,9 @@ import { Injectable } from '@angular/core';
 import { IPodcast, IPodcastEpisode } from '../shared/models/podcast.model';
 import { get as getIDB, set as setIDB, Store} from 'idb-keyval';
 import { debounce } from '../shared/utils';
+import { ISubcription } from '../subscriptions/subscriptions.service';
 
+// Doesn't need to be an `object` as it could be a string or number
 // tslint:disable-next-line: ban-types
 export interface IStorable { [key: string]: Object | undefined; }
 
@@ -12,12 +14,18 @@ export interface IStorable { [key: string]: Object | undefined; }
 export class StoreService {
   private podcasts = new PwaStore<IPodcast>('podcasts');
   private episodes = new PwaStore<IPodcastEpisode>('episodes');
+  private subscriptions = new PwaStore<ISubcription>('podcastKey');
 
-  public addEpisode = this.createSetter<IPodcastEpisode>(this.episodes, 'audioUrl');
-  public getEpisode = this.createGetter<IPodcastEpisode>(this.episodes);
+  public addEpisode = this.createSetter(this.episodes, 'audioUrl');
+  public getEpisode = this.createGetter(this.episodes);
 
-  public addPodcast = this.createSetter<IPodcast>(this.podcasts, 'feedUrl');
-  public getPodcast = this.createGetter<IPodcast>(this.podcasts);
+  public addPodcast = this.createSetter(this.podcasts, 'feedUrl');
+  public getPodcast = this.createGetter(this.podcasts);
+
+  public addSubscription = this.createSetter(this.subscriptions, 'podcastKey');
+  public removeSubscription = this.createDeleter(this.subscriptions, 'podcastKey');
+  public getSubscription = this.createGetter(this.subscriptions);
+  public getAllSubscriptions = this.createCollector(this.subscriptions);
 
   private createSetter<T extends IStorable>(store: PwaStore<T>, keyableProperty: keyof T): (v: T) => (string | undefined) {
     return (value: T) => {
@@ -31,6 +39,17 @@ export class StoreService {
 
   private createGetter<T>(store: PwaStore<T>): (K: string) => (T | undefined) {
     return (key: string) => store.get(key);
+  }
+
+  private createDeleter<T>(store: PwaStore<T>, keyableProperty: keyof T): (K: string) => void {
+    return (key: string) => {
+      store.set(key, undefined);
+    };
+  }
+
+
+  private createCollector<T>(store: PwaStore<T>): () => T[] {
+    return () => store.getAll();
   }
 }
 
@@ -67,10 +86,19 @@ class PwaStore<V> {
     return this.innerStore.get(key);
   }
 
-  public set(keyableProperty: string, value: V): string {
+  public getAll(): V[] {
+    console.log(Array.from(this.innerStore.values()));
+    return Array.from(this.innerStore.values());
+  }
+
+  public set(keyableProperty: string, value: V | undefined): string {
     const key = this.toKey(keyableProperty);
-    // TODO: Handle collisions
-    this.innerStore.set(key, value);
+    if (value !== undefined) {
+      // TODO: Handle collisions
+      this.innerStore.set(key, value);
+    } else {
+      this.innerStore.delete(key);
+    }
 
     this.triggerStorage();
 
