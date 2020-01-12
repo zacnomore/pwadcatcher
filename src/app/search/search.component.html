@@ -4,5 +4,15 @@
     </mat-form-field>
     <button mat-button>Search</button>
   </form>
-  
-<app-podcast-list [list]="(searchResults$ | async)" (clickItem)="viewPodcast($event)"></app-podcast-list>
+
+<ng-container *ngIf="(searchResults$ | async) as results">
+  <ng-container *ngIf="(loading$ | async) === false; else loading">
+    <app-podcast-list
+      [list]="(list$ | async)" 
+      (clickItem)="viewPodcast($event, results)">
+    </app-podcast-list>
+  </ng-container> 
+  <ng-template #loading>
+    <mat-spinner></mat-spinner>
+  </ng-template>
+</ng-container>

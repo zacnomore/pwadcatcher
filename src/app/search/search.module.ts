@@ -5,6 +5,7 @@ import { PodcastListModule } from '../shared/components/podcast-list/podcast-lis
 import { MatInputModule } from '@angular/material/input';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 
 const routes: Routes = [
@@ -21,6 +22,7 @@ const routes: Routes = [
     PodcastListModule,
     MatInputModule,
     ReactiveFormsModule,
+    MatProgressSpinnerModule,
     RouterModule.forChild(routes)
   ]
 })
