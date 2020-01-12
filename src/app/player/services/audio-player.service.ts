@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Observable, fromEvent, merge, BehaviorSubject, of } from 'rxjs';
-import { map, scan, switchMap, shareReplay } from 'rxjs/operators';
+import { Observable, fromEvent, merge } from 'rxjs';
+import { map, scan, tap, startWith, shareReplay } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -23,9 +23,10 @@ export class AudioPlayerService {
     isPlaying: false
   };
 
-  private currentAudio: BehaviorSubject<Observable<IAudioState>> = new BehaviorSubject(of(this.defaultState));
-  public audioState$ = this.currentAudio.pipe(
-    switchMap(val => val)
+  public audioState$: Observable<IAudioState> = this.listenToState(this.audio).pipe(
+    startWith(this.defaultState),
+    shareReplay(1),
+    tap(console.log)
   );
 
   public doAction(key: PlayerAction): void {
@@ -40,8 +41,6 @@ export class AudioPlayerService {
     this.audio.src = url;
     this.audio.load();
     this.audio.play();
-
-    this.currentAudio.next(this.listenToState(this.audio));
   }
 
   private listenToState(audio: HTMLAudioElement): Observable<IAudioState> {
@@ -54,29 +53,23 @@ export class AudioPlayerService {
       { name: 'durationchange', handler: this.buildHandler((a: HTMLAudioElement) => ({ duration: a.duration })) }
     ];
 
-    const handlerStream$ = this.constructHandlerStream(audio, eventPlans);
-
-    return handlerStream$.pipe(
-      scan<(s: IAudioState) => IAudioState, IAudioState>((acc, handler) =>  handler(acc), this.defaultState),
-      shareReplay(5)
+    return this.constructHandlerStream(audio, eventPlans).pipe(
+      scan<(s: IAudioState) => IAudioState, IAudioState>((acc, handler) => handler(acc), this.defaultState)
     );
   }
 
-  private buildHandler(select: (aud: HTMLAudioElement) => Partial<IAudioState>): AudioEventHandler {
+
+  private buildHandler(dynamicHandler: (aud: HTMLAudioElement) => Partial<IAudioState>): AudioEventHandler {
     return (pr: IAudioState, e?: Event, a?: HTMLAudioElement) => {
       if (a) {
-        return this.reduce(select(a))(pr);
+        return this.staticHandler(dynamicHandler(a))(pr);
       }
       throw new Error(`Audio element no longer defined. STATE: ${pr}, EVENT: ${e}`);
     };
   }
 
-  private staticHandler(change: Partial<IAudioState>) {
-    return this.reduce(change);
-  }
-
-  private reduce(newValues: Partial<IAudioState>): AudioEventHandler {
-    return (prev: IAudioState) => ({ ...prev, ...newValues }) as IAudioState;
+  private staticHandler(change: Partial<IAudioState>): AudioEventHandler {
+    return (prev: IAudioState) => ({ ...prev, ...change }) as IAudioState;
   }
 
   private constructHandlerStream(t: HTMLAudioElement, plans: IEventPlanning[]): Observable<(state: IAudioState) => IAudioState> {
