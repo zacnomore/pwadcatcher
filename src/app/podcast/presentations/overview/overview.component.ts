@@ -37,4 +37,8 @@ export class OverviewComponent {
   public viewFeed() {
     this.router.navigate(['podcast', 'feed', this.activeId]);
   }
+
+  public subscribe() {
+
+  }
 }
