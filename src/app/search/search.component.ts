@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { SearchService } from './services/search.service';
-import { Observable, Subject } from 'rxjs';
-import { switchMap, map, distinctUntilChanged, tap } from 'rxjs/operators';
+import { Observable, Subject, BehaviorSubject } from 'rxjs';
+import { switchMap, map, distinctUntilChanged, tap, startWith } from 'rxjs/operators';
 import { FormBuilder } from '@angular/forms';
 import { IListItem } from '../shared/components/podcast-list/podcast-list.component';
 import { Router } from '@angular/router';
@@ -14,18 +14,20 @@ import { IPodcast } from '../shared/models/podcast.model';
 })
 export class SearchComponent {
   private searchTerm = new Subject<string>();
-  private currentResults: IPodcast[] = [];
   public searchResults$: Observable<IListItem[]> = this.searchTerm.pipe(
     distinctUntilChanged(),
+    tap(v => this.loadingBS.next(true)),
     switchMap(searchTerm => this.searchService.appleSearch(searchTerm)),
-    tap(results => this.currentResults = results),
     map<IPodcast[], IListItem[]>(results => results.map(
      result => ({
         title: result.name,
         image: result.thumbnail ? result.thumbnail.medium : undefined
       })
-    ))
+    )),
+    tap(v => this.loadingBS.next(false))
   );
+  private loadingBS = new BehaviorSubject(false);
+  public loading$ = this.loadingBS.asObservable();
 
   public searchForm = this.fb.group({
     term: ['']
@@ -40,8 +42,8 @@ export class SearchComponent {
     }
   }
 
-  public viewPodcast(index: number) {
-    const key = this.store.addPodcast(this.currentResults[index]);
+  public viewPodcast(index: number, currentResults: IPodcast[]) {
+    const key = this.store.addPodcast(currentResults[index]);
     this.router.navigate(['podcast', 'overview', key]);
   }
 }
