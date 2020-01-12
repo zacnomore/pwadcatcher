@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { IPodcast, IInitializedPodcast, IPodcastFeed } from '../models/podcast.model';
 import { StoreService } from 'src/app/store/store.service';
-import { of, Observable, from } from 'rxjs';
+import { of, Observable, from, combineLatest } from 'rxjs';
 import { RssReaderService } from './rss-reader.service';
-import { map, catchError, switchMap } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -27,7 +27,9 @@ export class PodcastService {
       if (podcast.feed) {
         return of(podcast.feed);
       }
-      return this.rss.readFeed(podcast.feedUrl);
+      return this.rss.readFeed(podcast.feedUrl).pipe(
+        tap(feed => this.store.addPodcast({...podcast, feed}))
+      );
     }
     return of(undefined);
   }
