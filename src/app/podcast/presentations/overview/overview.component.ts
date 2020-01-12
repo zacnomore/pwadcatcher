@@ -4,6 +4,7 @@ import { map, filter, switchMap, share, tap, mergeMap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { IPodcast, IPodcastFeed } from 'src/app/shared/models/podcast.model';
 import { PodcastService } from 'src/app/shared/services/podcast.service';
+import { SubscriptionsService } from 'src/app/subscriptions/subscriptions.service';
 
 @Component({
   selector: 'app-overview',
@@ -14,7 +15,8 @@ export class OverviewComponent {
   constructor(
     private activateRoute: ActivatedRoute,
     private podcastService: PodcastService,
-    private router: Router
+    private router: Router,
+    private subscriptions: SubscriptionsService
   ) { }
 
   private activeId = '';
@@ -39,6 +41,6 @@ export class OverviewComponent {
   }
 
   public subscribe() {
-
+    this.subscriptions.subscribe(this.activeId);
   }
 }
