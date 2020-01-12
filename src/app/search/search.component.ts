@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { SearchService } from './services/search.service';
 import { Observable, Subject, BehaviorSubject } from 'rxjs';
-import { switchMap, map, distinctUntilChanged, tap, startWith } from 'rxjs/operators';
+import { switchMap, map, distinctUntilChanged, tap, shareReplay } from 'rxjs/operators';
 import { FormBuilder } from '@angular/forms';
 import { IListItem } from '../shared/components/podcast-list/podcast-list.component';
 import { Router } from '@angular/router';
@@ -14,17 +14,21 @@ import { IPodcast } from '../shared/models/podcast.model';
 })
 export class SearchComponent {
   private searchTerm = new Subject<string>();
-  public searchResults$: Observable<IListItem[]> = this.searchTerm.pipe(
+  public searchResults$: Observable<IPodcast[]> = this.searchTerm.pipe(
     distinctUntilChanged(),
     tap(v => this.loadingBS.next(true)),
     switchMap(searchTerm => this.searchService.appleSearch(searchTerm)),
+    tap(v => this.loadingBS.next(false)),
+    shareReplay()
+  );
+  public list$ = this.searchResults$.pipe(
     map<IPodcast[], IListItem[]>(results => results.map(
-     result => ({
+      result => ({
         title: result.name,
-        image: result.thumbnail ? result.thumbnail.medium : undefined
+        image: result.thumbnail ? result.thumbnail.medium : undefined,
+        feedUrl: result.feedUrl
       })
     )),
-    tap(v => this.loadingBS.next(false))
   );
   private loadingBS = new BehaviorSubject(false);
   public loading$ = this.loadingBS.asObservable();

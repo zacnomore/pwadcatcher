@@ -5,11 +5,14 @@
     <button mat-button>Search</button>
   </form>
 
-<ng-container *ngIf="!(loading$ | async); else loading">
-  <app-podcast-list *ngIf="(searchResults$ | async) as results" 
-    [list]="results" 
-    (clickItem)="viewPodcast($event, results)"></app-podcast-list>
-</ng-container> 
-<ng-template #loading>
-  <mat-spinner></mat-spinner>
-</ng-template>
+<ng-container *ngIf="(searchResults$ | async) as results">
+  <ng-container *ngIf="(loading$ | async) === false; else loading">
+    <app-podcast-list
+      [list]="(list$ | async)" 
+      (clickItem)="viewPodcast($event, results)">
+    </app-podcast-list>
+  </ng-container> 
+  <ng-template #loading>
+    <mat-spinner></mat-spinner>
+  </ng-template>
+</ng-container>
