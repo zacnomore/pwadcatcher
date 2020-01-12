@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { SubscriptionsComponent } from 'src/app/subscriptions/subscriptions.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { Routes, RouterModule } from '@angular/router';
+import { PodcastListModule } from '../shared/components/podcast-list/podcast-list.module';
 
 
 const routes: Routes = [
@@ -17,6 +18,7 @@ const routes: Routes = [
   imports: [
     CommonModule,
     SharedModule,
+    PodcastListModule,
     RouterModule.forChild(routes)
   ]
 })
