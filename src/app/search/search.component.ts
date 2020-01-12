@@ -25,8 +25,7 @@ export class SearchComponent {
     map<IPodcast[], IListItem[]>(results => results.map(
       result => ({
         title: result.name,
-        image: result.thumbnail ? result.thumbnail.medium : undefined,
-        feedUrl: result.feedUrl
+        image: result.thumbnail ? result.thumbnail.medium : undefined
       })
     )),
   );
