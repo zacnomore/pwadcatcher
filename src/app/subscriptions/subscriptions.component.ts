@@ -3,6 +3,7 @@ import { IListItem } from '../shared/components/podcast-list/podcast-list.compon
 import { SubscriptionsService } from './subscriptions.service';
 import { Router } from '@angular/router';
 import { IPodcast } from '../shared/models/podcast.model';
+import { PodcastService } from '../shared/services/podcast.service';
 
 @Component({
   templateUrl: './subscriptions.component.html',
@@ -21,9 +22,9 @@ export class SubscriptionsComponent implements OnInit {
 
   constructor(
     private subscriptionService: SubscriptionsService,
-    private router: Router) {
-
-  }
+    private podcastService: PodcastService,
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
     // This has timing problems, how to get updated subscriptions?
@@ -33,7 +34,7 @@ export class SubscriptionsComponent implements OnInit {
   }
 
   viewPodcast(index: number): void {
-    // Now how do we get a key? Need a better solution for state transfer..
-    // this.router.navigate(['podcast', 'overview', ...);
+    const key = this.podcastService.getPodcastKey(this.subscriptions[index]);
+    this.router.navigate(['podcast', 'overview', key]);
   }
 }

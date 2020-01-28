@@ -12,18 +12,20 @@ export interface IStorable { [key: string]: Object | undefined; }
   providedIn: 'root'
 })
 export class StoreService {
+  // TODO: Use key for name
   private podcasts = new PwaStore<IPodcast>('podcasts');
   private episodes = new PwaStore<IPodcastEpisode>('episodes');
-  private subscriptions = new PwaStore<ISubscription>('podcastKey');
+  private subscriptions = new PwaStore<ISubscription>('subscriptions');
 
   public addEpisode = this.createSetter(this.episodes, 'audioUrl');
   public getEpisode = this.createGetter(this.episodes);
 
   public addPodcast = this.createSetter(this.podcasts, 'feedUrl');
+  public keyPodcast = this.createKeyer(this.podcasts, 'feedUrl');
   public getPodcast = this.createGetter(this.podcasts);
 
   public addSubscription = this.createSetter(this.subscriptions, 'podcastKey');
-  public removeSubscription = this.createDeleter(this.subscriptions, 'podcastKey');
+  public removeSubscription = this.createDeleter(this.subscriptions);
   public getSubscription = this.createGetter(this.subscriptions);
   public getAllSubscriptions = this.createCollector(this.subscriptions);
 
@@ -41,12 +43,18 @@ export class StoreService {
     return (key: string) => store.get(key);
   }
 
-  private createDeleter<T>(store: PwaStore<T>, keyableProperty: keyof T): (K: string) => void {
+  private createDeleter<T>(store: PwaStore<T>): (K: string) => void {
     return (key: string) => {
       store.set(key, undefined);
     };
   }
 
+  private createKeyer<T extends IStorable>(store: PwaStore<T>, keyableProperty: keyof T): (v: T) => (string | undefined) {
+    return (value: T) => {
+      const prop = value[keyableProperty];
+      if (prop) { return store.toKey(prop.toString()); }
+    };
+  }
 
   private createCollector<T>(store: PwaStore<T>): () => Promise<T[]> {
     return () => store.getAll();
@@ -95,8 +103,8 @@ class PwaStore<V> {
     return Array.from(this.innerStore.values());
   }
 
-  public set(keyableProperty: string, value: V | undefined): string {
-    const key = this.toKey(keyableProperty);
+  public set(keyableValue: string, value: V | undefined): string {
+    const key = this.toKey(keyableValue);
     if (value !== undefined) {
       // TODO: Handle collisions
       this.innerStore.set(key, value);
@@ -109,7 +117,7 @@ class PwaStore<V> {
     return key;
   }
 
-  private toKey(keyableValue: string): string {
+  public toKey(keyableValue: string): string {
     return Math.abs(
       keyableValue.split('').reduce((acc, cur) => {
         // tslint:disable-next-line: no-bitwise
