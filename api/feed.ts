@@ -12,6 +12,7 @@ export default (req: NowRequest, res: NowResponse) => {
     rawFeed.on('data', (chunk) => { rawData += chunk; });
     rawFeed.on('end', () => {
 
+      // TODO: Follow redirects
       addCORS(req, res);
       res.send(rawData);
     });
