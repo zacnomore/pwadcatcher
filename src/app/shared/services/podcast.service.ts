@@ -36,4 +36,8 @@ export class PodcastService {
       })
     );
   }
+
+  public getPodcastKey(podcast: IPodcast): string | undefined {
+    return this.store.keyPodcast(podcast);
+  }
 }

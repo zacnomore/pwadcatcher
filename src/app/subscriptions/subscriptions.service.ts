@@ -9,11 +9,11 @@ export class SubscriptionsService {
 
   constructor(private store: StoreService) { }
 
-  subscribe(podcastKey: string): string | undefined {
+  public subscribe(podcastKey: string): string | undefined {
     return this.store.addSubscription({ podcastKey });
   }
 
-  unsubscribe(podcastKey: string): void {
+  public unsubscribe(podcastKey: string): void {
     return this.store.removeSubscription(podcastKey);
   }
 
