@@ -27,7 +27,9 @@ export class SubscriptionsComponent implements OnInit {
 
   ngOnInit(): void {
     // This has timing problems, how to get updated subscriptions?
-    this.subscriptions = this.subscriptionService.getSubscriptions();
+    this.subscriptionService.getSubscriptions().then(
+      subs => this.subscriptions = subs
+    );
   }
 
   viewPodcast(index: number): void {

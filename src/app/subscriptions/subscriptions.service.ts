@@ -17,12 +17,13 @@ export class SubscriptionsService {
     return this.store.removeSubscription(podcastKey);
   }
 
-  getSubscriptions(): IPodcast[] {
-    return this.store.getAllSubscriptions().map(
-      ({podcastKey}) => this.store.getPodcast(podcastKey)
-    ).filter(
-      (pod): pod is IPodcast => Boolean(pod)
-    );
+  public async getSubscriptions() {
+    const subs = await this.store.getAllSubscriptions();
+    const pods = await Promise.all(subs.map(
+      ({ podcastKey }) => this.store.getPodcast(podcastKey)
+    ));
+
+    return pods.filter((pod): pod is IPodcast => Boolean(pod));
   }
 }
 

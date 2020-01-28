@@ -37,7 +37,7 @@ export class StoreService {
     };
   }
 
-  private createGetter<T>(store: PwaStore<T>): (K: string) => (T | undefined) {
+  private createGetter<T>(store: PwaStore<T>): (K: string) => Promise<(T | undefined)> {
     return (key: string) => store.get(key);
   }
 
@@ -48,7 +48,7 @@ export class StoreService {
   }
 
 
-  private createCollector<T>(store: PwaStore<T>): () => T[] {
+  private createCollector<T>(store: PwaStore<T>): () => Promise<T[]> {
     return () => store.getAll();
   }
 }
@@ -62,9 +62,14 @@ interface ISerializedMap<V> {
   entries: Array<ISerializableKeyValuePair<V>>;
 }
 class PwaStore<V> {
+  private configuredStore = new Store('pwa-podcatcher');
+  private innerStore = new Map<string, V>();
+  private triggerStorage = debounce(() => setIDB(this.idbKey, this.serialize(this.innerStore), this.configuredStore));
+  private initialized: Promise<void>;
+  private markInitialization = () => { console.error('Intialization failed.'); };
 
   constructor(private idbKey: string) {
-
+    this.initialized = new Promise((resolve) => { this.markInitialization = resolve; });
     getIDB(idbKey, this.configuredStore).then(store => {
       if (store && this.isStore(store)) {
         // TODO: Figure out if we can string together some kind of type checking here
@@ -74,20 +79,19 @@ class PwaStore<V> {
           this.innerStore = (deserialized as Map<string, V>);
         }
       }
+      this.markInitialization();
     }).catch(e => {
       console.log('Store does not exist');
     });
   }
-  private configuredStore = new Store('pwa-podcatcher');
-  private innerStore = new Map<string, V>();
-  private triggerStorage = debounce(() => setIDB(this.idbKey, this.serialize(this.innerStore), this.configuredStore));
 
-  public get(key: string): V | undefined {
+  public async get(key: string): Promise<V | undefined> {
+    await this.initialized;
     return this.innerStore.get(key);
   }
 
-  public getAll(): V[] {
-    console.log(Array.from(this.innerStore.values()));
+  public async getAll(): Promise<V[]> {
+    await this.initialized;
     return Array.from(this.innerStore.values());
   }
 

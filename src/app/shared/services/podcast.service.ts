@@ -3,7 +3,7 @@ import { IPodcast, IInitializedPodcast, IPodcastFeed } from '../models/podcast.m
 import { StoreService } from 'src/app/store/store.service';
 import { of, Observable, from, combineLatest } from 'rxjs';
 import { RssReaderService } from './rss-reader.service';
-import { tap } from 'rxjs/operators';
+import { tap, map, switchMap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -22,15 +22,18 @@ export class PodcastService {
   }
 
   public getFeed(key: string): Observable<IPodcastFeed | undefined> {
-    const podcast = this.store.getPodcast(key);
-    if (podcast) {
-      if (podcast.feed) {
-        return of(podcast.feed);
-      }
-      return this.rss.readFeed(podcast.feedUrl).pipe(
-        tap(feed => this.store.addPodcast({...podcast, feed}))
-      );
-    }
-    return of(undefined);
+    return from(this.store.getPodcast(key)).pipe(
+      switchMap(podcast => {
+        if (podcast) {
+          if (podcast.feed) {
+            return of(podcast.feed);
+          }
+          return this.rss.readFeed(podcast.feedUrl).pipe(
+            tap(feed => this.store.addPodcast({...podcast, feed}))
+          );
+        }
+        return of(undefined);
+      })
+    );
   }
 }
