@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { IPodcast, IPodcastEpisode } from '../shared/models/podcast.model';
 import { get as getIDB, set as setIDB, Store} from 'idb-keyval';
 import { debounce } from '../shared/utils';
-import { ISubcription } from '../subscriptions/subscriptions.service';
+import { ISubscription } from '../subscriptions/subscriptions.service';
 
 // Doesn't need to be an `object` as it could be a string or number
 // tslint:disable-next-line: ban-types
@@ -14,7 +14,7 @@ export interface IStorable { [key: string]: Object | undefined; }
 export class StoreService {
   private podcasts = new PwaStore<IPodcast>('podcasts');
   private episodes = new PwaStore<IPodcastEpisode>('episodes');
-  private subscriptions = new PwaStore<ISubcription>('podcastKey');
+  private subscriptions = new PwaStore<ISubscription>('podcastKey');
 
   public addEpisode = this.createSetter(this.episodes, 'audioUrl');
   public getEpisode = this.createGetter(this.episodes);

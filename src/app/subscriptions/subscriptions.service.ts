@@ -27,6 +27,6 @@ export class SubscriptionsService {
   }
 }
 
-export interface ISubcription  extends IStorable {
+export interface ISubscription extends IStorable {
   podcastKey: string;
 }
