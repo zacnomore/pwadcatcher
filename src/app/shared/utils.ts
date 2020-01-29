@@ -1,22 +1,22 @@
 // Adapted from https://github.com/chodorowicz/ts-debounce
 
 // tslint:disable-next-line: no-any
-export type Procedure = (...args: any[]) => void;
+export type Procedure<P> = (...args: any[]) => void;
 
 export interface IOptions {
   isImmediate: boolean;
 }
 
-export function debounce<F extends Procedure>(
+export function debounce<F extends Procedure<Parameters<F>>>(
   func: F,
   waitMilliseconds = 50,
   options: IOptions = {
     isImmediate: false
   },
-): F {
+): (this: ThisParameterType<F>, ...args: Parameters<F>) => void {
   let timeoutId: ReturnType<typeof setTimeout> | undefined;
 
-  return function(this: ThisParameterType<F>, ...args: unknown[]) {
+  return function(this: ThisParameterType<F>, ...args: Parameters<F>) {
     const context = this;
 
     const doLater = () => {
@@ -25,7 +25,6 @@ export function debounce<F extends Procedure>(
         func.apply(context, args);
       }
     };
-
     const shouldCallNow = options.isImmediate && timeoutId === undefined;
 
     if (timeoutId !== undefined) {
@@ -37,7 +36,5 @@ export function debounce<F extends Procedure>(
     if (shouldCallNow) {
       func.apply(context, args);
     }
-  // TODO: Figure out how to extract arguements array type
-  // tslint:disable-next-line: no-any
-  } as any;
+  };
 }
