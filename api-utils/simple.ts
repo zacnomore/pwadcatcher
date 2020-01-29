@@ -1,4 +1,5 @@
 import { IncomingMessage, IncomingHttpHeaders, get } from 'http';
+import { get as httpsGet } from 'https';
 import { followRedirects } from '../api-utils/follow-redirect';
 
 export interface ISimpleResponse {
@@ -7,18 +8,22 @@ export interface ISimpleResponse {
   statusCode?: number;
 }
 
-export function collectResponse(respose: IncomingMessage): Promise<ISimpleResponse> {
+export function collectResponse(response: IncomingMessage): Promise<ISimpleResponse> {
   let rawData = '';
-  respose.on('data', (chunk) => { rawData += chunk; });
+  response.on('data', (chunk) => { rawData += chunk; });
   return new Promise((res, rej) => {
-    respose.on('end', () => res({ rawData, headers: respose.headers, statusCode: respose.statusCode }));
-    respose.on('error', err => rej(err));
+    response.on('end', () => res({ rawData, headers: response.headers, statusCode: response.statusCode }));
+    response.on('error', err => rej(err));
   });
 }
 
 export function simpleRequest(url: string, noFollow: boolean = false): Promise<ISimpleResponse> {
   return new Promise(res => {
-    get(url.replace('https://', 'http://'), async incoming => {
+
+
+  const getMethod = url.includes('https') ? httpsGet : get;
+
+  getMethod(url, async incoming => {
       const response = await collectResponse(incoming);
       if (noFollow) {
         res(response);
