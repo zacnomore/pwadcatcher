@@ -24,7 +24,6 @@ export class AudioPlayerService {
   };
 
   public audioState$: Observable<IAudioState> = this.listenToState(this.audio).pipe(
-    startWith(this.defaultState),
     shareReplay(1),
     tap(console.log)
   );
@@ -43,6 +42,7 @@ export class AudioPlayerService {
     this.audio.play();
   }
 
+
   private listenToState(audio: HTMLAudioElement): Observable<IAudioState> {
     const eventPlans: IEventPlanning[] = [
       { name: 'canplay', handler: this.staticHandler({canPlay: true}) },
@@ -54,10 +54,19 @@ export class AudioPlayerService {
     ];
 
     return this.constructHandlerStream(audio, eventPlans).pipe(
-      scan<(s: IAudioState) => IAudioState, IAudioState>((acc, handler) => handler(acc), this.defaultState)
-    );
-  }
+      scan<(s: IAudioState) => IAudioState, IAudioState>((acc, handler) => handler(acc), this.getCurrentState(audio))
+      );
+    }
 
+
+    private getCurrentState(audio: HTMLAudioElement): IAudioState {
+      return {
+        currentTime: audio.currentTime,
+        duration: audio.duration,
+        isPlaying: !audio.paused,
+        canPlay: audio.readyState === 4
+      };
+    }
 
   private buildHandler(dynamicHandler: (aud: HTMLAudioElement) => Partial<IAudioState>): AudioEventHandler {
     return (pr: IAudioState, e?: Event, a?: HTMLAudioElement) => {
