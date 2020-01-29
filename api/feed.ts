@@ -1,20 +1,24 @@
 import { NowRequest, NowResponse } from '@now/node';
 import { get } from 'http';
+import { get as httpsGet } from 'https';
 import { addCORS } from '../api-utils/cors';
+import { collectResponse } from '../api-utils/simple';
+import { followRedirects } from '../api-utils/follow-redirect';
 
 export default (req: NowRequest, res: NowResponse) => {
   const {
     query: { xmlUrl }
   } = req;
 
-  get(xmlUrl.toString().replace('https://', 'http://'), rawFeed => {
-    let rawData = '';
-    rawFeed.on('data', (chunk) => { rawData += chunk; });
-    rawFeed.on('end', () => {
+  const url = xmlUrl.toString();
+  const getMethod = url.includes('https') ? httpsGet : get;
 
-      // TODO: Follow redirects
-      addCORS(req, res);
-      res.send(rawData);
+  getMethod(url, incoming => {
+    collectResponse(incoming).then(response => {
+      followRedirects(response).then(r => {
+        addCORS(req, res);
+        res.send(r.rawData);
+      });
     });
   });
 };
