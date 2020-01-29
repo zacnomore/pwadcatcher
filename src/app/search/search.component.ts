@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { StoreService } from '../store/store.service';
 import { IPodcast } from '../shared/models/podcast.model';
 
+// TODO: Create search route
 @Component({
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.scss']
