@@ -16,13 +16,6 @@ export class AudioPlayerService {
     [PlayerAction.FastRewind, el => el.currentTime -= 10]
   ]);
 
-  private defaultState: IAudioState = {
-    canPlay: false,
-    currentTime: 0,
-    duration: 0,
-    isPlaying: false
-  };
-
   public audioState$: Observable<IAudioState> = this.listenToState(this.audio).pipe(
     shareReplay(1),
     tap(console.log)
