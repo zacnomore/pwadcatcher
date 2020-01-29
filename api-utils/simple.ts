@@ -1,4 +1,5 @@
 import { IncomingMessage, IncomingHttpHeaders, get } from 'http';
+import { followRedirects } from '../api-utils/follow-redirect';
 
 export interface ISimpleResponse {
   rawData: string;
@@ -15,12 +16,15 @@ export function collectResponse(respose: IncomingMessage): Promise<ISimpleRespon
   });
 }
 
-export function simpleRequest(url: string): Promise<ISimpleResponse> {
+export function simpleRequest(url: string, noFollow: boolean = false): Promise<ISimpleResponse> {
   return new Promise(res => {
-    get(url.replace('https://', 'http://'), incoming => {
-      collectResponse(incoming).then(response => {
+    get(url.replace('https://', 'http://'), async incoming => {
+      const response = await collectResponse(incoming);
+      if (noFollow) {
         res(response);
-      });
+      } else {
+        res(followRedirects(response));
+      }
     });
   });
 }

@@ -5,7 +5,7 @@ import { addCORS } from '../api-utils/cors';
 import { collectResponse } from '../api-utils/simple';
 import { followRedirects } from '../api-utils/follow-redirect';
 
-export default (req: NowRequest, res: NowResponse) => {
+export default async (req: NowRequest, res: NowResponse) => {
   const {
     query: { xmlUrl }
   } = req;
@@ -13,13 +13,12 @@ export default (req: NowRequest, res: NowResponse) => {
   const url = xmlUrl.toString();
   const getMethod = url.includes('https') ? httpsGet : get;
 
-  getMethod(url, incoming => {
-    collectResponse(incoming).then(response => {
-      followRedirects(response).then(r => {
+  getMethod(url, async incoming => {
+    const response = await collectResponse(incoming);
+    followRedirects(response).then(r => {
         addCORS(req, res);
         res.send(r.rawData);
       });
     });
-  });
 };
 
