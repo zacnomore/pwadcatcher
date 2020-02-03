@@ -17,6 +17,12 @@ export class AudioPlayerService {
   ]);
 
   public audioState$: Observable<IAudioState> = this.listenToState(this.audio).pipe(
+    startWith({
+      canPlay: false,
+      currentTime: 0,
+      duration: NaN,
+      isPlaying: false
+    } as IAudioState),
     shareReplay(1),
     tap(console.log)
   );
@@ -47,7 +53,7 @@ export class AudioPlayerService {
     ];
 
     return this.constructHandlerStream(audio, eventPlans).pipe(
-      scan<(s: IAudioState) => IAudioState, IAudioState>((acc, handler) => handler(acc), this.getCurrentState(audio))
+        scan<(s: IAudioState) => IAudioState, IAudioState>((acc, handler) => handler(acc), this.getCurrentState(audio))
       );
     }
 
