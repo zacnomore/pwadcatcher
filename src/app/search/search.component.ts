@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { SearchService } from './services/search.service';
-import { Observable, Subject, BehaviorSubject } from 'rxjs';
-import { switchMap, map, distinctUntilChanged, tap, shareReplay } from 'rxjs/operators';
+import { Observable, Subject, BehaviorSubject, merge } from 'rxjs';
+import { switchMap, map, distinctUntilChanged, tap, shareReplay, filter } from 'rxjs/operators';
 import { FormBuilder } from '@angular/forms';
 import { IListItem } from '../shared/components/podcast-list/podcast-list.component';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { StoreService } from '../store/store.service';
 import { IPodcast } from '../shared/models/podcast.model';
 
@@ -14,11 +14,18 @@ import { IPodcast } from '../shared/models/podcast.model';
   styleUrls: ['./search.component.scss']
 })
 export class SearchComponent {
-  private searchTerm = new Subject<string>();
-  public searchResults$: Observable<IPodcast[]> = this.searchTerm.pipe(
+  private searchTerms = new Subject<string>();
+  public searchResults$: Observable<IPodcast[]> = merge(
+    this.searchTerms,
+    this.route.paramMap.pipe(
+      map(paramMap => paramMap.get('terms')),
+      filter((terms): terms is string => !!terms)
+    )
+  ).pipe(
+    tap(console.log),
     distinctUntilChanged(),
     tap(v => this.loadingBS.next(true)),
-    switchMap(searchTerm => this.searchService.appleSearch(searchTerm)),
+    switchMap(searchTerms => this.searchService.appleSearch(searchTerms)),
     tap(v => this.loadingBS.next(false)),
     shareReplay()
   );
@@ -34,15 +41,21 @@ export class SearchComponent {
   public loading$ = this.loadingBS.asObservable();
 
   public searchForm = this.fb.group({
-    term: ['']
+    terms: ['']
   });
 
-  constructor(private searchService: SearchService, private fb: FormBuilder, private router: Router, private store: StoreService) { }
+  constructor(
+    private searchService: SearchService,
+    private fb: FormBuilder,
+    private router: Router,
+    private store: StoreService,
+    private route: ActivatedRoute) {}
 
   public search() {
-    const term = this.searchForm.get('term');
-    if (term && term.value) {
-      this.searchTerm.next(term.value);
+    const terms = this.searchForm.get('terms');
+    if (terms && terms.value) {
+      this.router.navigate(['/search', terms.value]);
+      this.searchTerms.next(terms.value);
     }
   }
 

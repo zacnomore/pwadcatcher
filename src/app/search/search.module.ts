@@ -9,10 +9,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 
 const routes: Routes = [
-  {
-    path: '',
-    component: SearchComponent
-  }
+  { path: ':terms', component: SearchComponent },
+  { path: '**', component: SearchComponent }
 ];
 
 @NgModule({
