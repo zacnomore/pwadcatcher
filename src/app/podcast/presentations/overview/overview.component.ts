@@ -42,5 +42,6 @@ export class OverviewComponent {
 
   public subscribe() {
     this.subscriptions.subscribe(this.activeId);
+    this.router.navigate(['']);
   }
 }
