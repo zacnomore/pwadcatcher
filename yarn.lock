@@ -130,6 +130,14 @@
     "@angular-devkit/core" "8.3.23"
     rxjs "6.4.0"
 
+"@angular-devkit/schematics@8.3.24":
+  version "8.3.24"
+  resolved "https://registry.yarnpkg.com/@angular-devkit/schematics/-/schematics-8.3.24.tgz#583b1841d032eccf31cc86dbd15c5ac15a50cf95"
+  integrity sha512-HrwDCgw7i3GrNns0Ce5zStWkxBqlcLuDkMcLY6981jpvVzgXMIQ+YqDrJ2kD46xHh979ev7hhw1d6jwPXh85Xw==
+  dependencies:
+    "@angular-devkit/core" "8.3.24"
+    rxjs "6.4.0"
+
 "@angular/animations@~8.2.14":
   version "8.2.14"
   resolved "https://registry.yarnpkg.com/@angular/animations/-/animations-8.2.14.tgz#76736b21e56165e6ca4925fb69605bdcc56aba7d"
@@ -242,14 +250,14 @@
   dependencies:
     tslib "^1.9.0"
 
-"@angular/pwa@^0.803.23":
-  version "0.803.23"
-  resolved "https://registry.yarnpkg.com/@angular/pwa/-/pwa-0.803.23.tgz#d6018e3001b7925462522cd6d2dc60fb30298c5f"
-  integrity sha512-OxDLF5r3Gg3TvtdIkXsHaNJLJS+BVMUct0G6EfdvgxYxQ5pdRyhHDaEMl8WZaokPb8R+R1uwsV2gLW24dT1Iuw==
+"@angular/pwa@^0.803.24":
+  version "0.803.24"
+  resolved "https://registry.yarnpkg.com/@angular/pwa/-/pwa-0.803.24.tgz#427ff9e6be8efc1269f516b2b74276c7b03033cf"
+  integrity sha512-3/x2qw6seTo9B9IQHbRjdmLFQO1tr0sXyBDa2ylWluvpKkFN83NC+ByOInSjbjkOzQ92lRvCNhY446L56dwpkw==
   dependencies:
-    "@angular-devkit/core" "8.3.23"
-    "@angular-devkit/schematics" "8.3.23"
-    "@schematics/angular" "8.3.23"
+    "@angular-devkit/core" "8.3.24"
+    "@angular-devkit/schematics" "8.3.24"
+    "@schematics/angular" "8.3.24"
     parse5-html-rewriting-stream "5.1.0"
 
 "@angular/router@~8.2.14":
@@ -1160,6 +1168,14 @@
   dependencies:
     "@angular-devkit/core" "8.3.23"
     "@angular-devkit/schematics" "8.3.23"
+
+"@schematics/angular@8.3.24":
+  version "8.3.24"
+  resolved "https://registry.yarnpkg.com/@schematics/angular/-/angular-8.3.24.tgz#4d8bfbeed2849bed611e682f418bfcadb0c62277"
+  integrity sha512-0nf/LgMHAvhjWS97Pl3JGMqS9/4PI+C0+vJoAo6D7ax8Fb+wuY5uD6Pb7ZqaZALlEnqTgE+FBQ1K8VBVbuwKbA==
+  dependencies:
+    "@angular-devkit/core" "8.3.24"
+    "@angular-devkit/schematics" "8.3.24"
 
 "@schematics/update@0.803.23":
   version "0.803.23"
