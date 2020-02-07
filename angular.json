@@ -132,5 +132,8 @@
       }
     }
   },
-  "defaultProject": "pwa-podcatcher"
+  "defaultProject": "pwa-podcatcher",
+  "cli": {
+    "analytics": "5ddbc6db-015c-4ade-a349-ab9dc507aff2"
+  }
 }
