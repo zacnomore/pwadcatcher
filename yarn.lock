@@ -108,12 +108,32 @@
     rxjs "6.5.3"
     source-map "0.7.3"
 
+"@angular-devkit/core@9.0.2":
+  version "9.0.2"
+  resolved "https://registry.yarnpkg.com/@angular-devkit/core/-/core-9.0.2.tgz#5febb2810531834ebfe4b52ea0db7144d30ea9e3"
+  integrity sha512-lEmfYs7+oHmXEQ3y97QGm73zs7i6chpx+ZSaBUvMM9oCKj/lytcn+diVG+t4hMavH6TK0lai7DO1rAbYkbmdrA==
+  dependencies:
+    ajv "6.10.2"
+    fast-json-stable-stringify "2.0.0"
+    magic-string "0.25.4"
+    rxjs "6.5.3"
+    source-map "0.7.3"
+
 "@angular-devkit/schematics@9.0.1":
   version "9.0.1"
   resolved "https://registry.yarnpkg.com/@angular-devkit/schematics/-/schematics-9.0.1.tgz#a27a2ba2b5fec92b33564bc5078c5f13c969931a"
   integrity sha512-Cuub9eJm1TWygKTOowRbxMASA8QWeHWzNEU2V3TqUF1Tqy/iPf4cpuMijkFysXjTn2bi2HA9t26AwQkwymbliA==
   dependencies:
     "@angular-devkit/core" "9.0.1"
+    ora "4.0.2"
+    rxjs "6.5.3"
+
+"@angular-devkit/schematics@9.0.2":
+  version "9.0.2"
+  resolved "https://registry.yarnpkg.com/@angular-devkit/schematics/-/schematics-9.0.2.tgz#4df0e4ccfcd4beb444af0fb5d9411c826f0b3778"
+  integrity sha512-+MiSBWErz8hxcbyHioCQtTnFpbqaoCEQEknK0vCb15fFEY2Hi3u2TXK59QNKsqn8w+Mye5dHYhwmpsAC8Wcgtw==
+  dependencies:
+    "@angular-devkit/core" "9.0.2"
     ora "4.0.2"
     rxjs "6.5.3"
 
@@ -212,14 +232,14 @@
   resolved "https://registry.yarnpkg.com/@angular/platform-browser/-/platform-browser-9.0.0.tgz#b9454f29d8edaf024668baa9e07083eef73deac2"
   integrity sha512-2PR/o57HjZvKEnAF8ODeqxmeC90oth9dLTMrJNoI5MET0IeErKeI/9Sl5cLQuXC+lSVN5rOMCvDb74VWSno5yw==
 
-"@angular/pwa@^0.900.1":
-  version "0.900.1"
-  resolved "https://registry.yarnpkg.com/@angular/pwa/-/pwa-0.900.1.tgz#f5e2c5b3834459e71c324eed44f51625142da315"
-  integrity sha512-huGyyiQnck/963vqc80nMJX8414jLXuvmXjGq6cn4sp4n8cxhJwmKvxgX4daaqJRjlrYiSWXYtTXxvHDkP7A0A==
+"@angular/pwa@^0.900.2":
+  version "0.900.2"
+  resolved "https://registry.yarnpkg.com/@angular/pwa/-/pwa-0.900.2.tgz#ee16ca6a84cdd4faf2a5edf4105df3665dab62af"
+  integrity sha512-JqRNvX0//rFbBQfk3iuzKxpIJPq5JYUrp99p6a5z0cpxYsu7R33Gc5qisN2CqlQR4HqspJuNmoGZ1hxPCZBq5A==
   dependencies:
-    "@angular-devkit/core" "9.0.1"
-    "@angular-devkit/schematics" "9.0.1"
-    "@schematics/angular" "9.0.1"
+    "@angular-devkit/core" "9.0.2"
+    "@angular-devkit/schematics" "9.0.2"
+    "@schematics/angular" "9.0.2"
     parse5-html-rewriting-stream "5.1.0"
 
 "@angular/router@^9.0.0":
@@ -1128,6 +1148,14 @@
   dependencies:
     "@angular-devkit/core" "9.0.1"
     "@angular-devkit/schematics" "9.0.1"
+
+"@schematics/angular@9.0.2":
+  version "9.0.2"
+  resolved "https://registry.yarnpkg.com/@schematics/angular/-/angular-9.0.2.tgz#d06950506f2aff28a24066bb3a54d0651c2450cd"
+  integrity sha512-H6ZyxLYoIN68bbNKnUjBCPtB0fcwnpIyTkqXQHa3B4HITcU3uee4PLAl3xCkTS2NGv8m/0eWND9zt5wryGf8PQ==
+  dependencies:
+    "@angular-devkit/core" "9.0.2"
+    "@angular-devkit/schematics" "9.0.2"
 
 "@schematics/update@0.900.1":
   version "0.900.1"
