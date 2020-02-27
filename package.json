@@ -4,7 +4,9 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "launch-services": "npx now dev",
+    "develop": "yarn start",
+    "develop:local-services": "npx now dev",
+    "dev": "ng serve --port $PORT -c=local-services",
     "build": "ng build --configuration=production",
     "test": "ng test",
     "lint": "ng lint",
