@@ -4,7 +4,9 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "launch-services": "npx now dev",
+    "develop": "yarn start",
+    "develop:local-services": "npx now dev",
+    "dev": "ng serve --port $PORT -c=local-services",
     "build": "ng build --configuration=production",
     "test": "ng test",
     "lint": "ng lint",
@@ -51,6 +53,7 @@
     "ts-node": "^8.6.2",
     "tslib": "^1.11.0",
     "tslint": "^5.0.0",
-    "typescript": "^3.7.5"
+    "typescript": "^3.7.5",
+    "yarn": "^1.22.0"
   }
 }
