@@ -116,17 +116,6 @@
     rxjs "6.5.3"
     source-map "0.7.3"
 
-"@angular-devkit/core@9.0.4":
-  version "9.0.4"
-  resolved "https://registry.yarnpkg.com/@angular-devkit/core/-/core-9.0.4.tgz#e137052eea491f3bc0d50a2571c4449c620c2f80"
-  integrity sha512-7+/vDm+zh7wTJbBeSdTHGhE+TQj6JOriCPl8Pj8HZU1TtNLvIFR4vhClWavPvhb8xWSbndalvQyOWOsLmuDnEA==
-  dependencies:
-    ajv "6.10.2"
-    fast-json-stable-stringify "2.0.0"
-    magic-string "0.25.4"
-    rxjs "6.5.3"
-    source-map "0.7.3"
-
 "@angular-devkit/core@9.0.5":
   version "9.0.5"
   resolved "https://registry.yarnpkg.com/@angular-devkit/core/-/core-9.0.5.tgz#4ac28d94af02a24e84165a36142efc0e8a88f76f"
@@ -1190,10 +1179,10 @@
     "@types/minimatch" "*"
     "@types/node" "*"
 
-"@types/jasmine@*", "@types/jasmine@^3.5.7":
-  version "3.5.7"
-  resolved "https://registry.yarnpkg.com/@types/jasmine/-/jasmine-3.5.7.tgz#c4237935a4b0db31ada6b0de10e2b0658e7b2643"
-  integrity sha512-HoPp5ZafWFXr36yRUOJNuRbvFNklxvN+I9JXfAaZTHBiEw4ZkN4FBnjbV4YHRNNG433ypHP2K+lOeQyRdyuGxQ==
+"@types/jasmine@*", "@types/jasmine@^3.5.8":
+  version "3.5.8"
+  resolved "https://registry.yarnpkg.com/@types/jasmine/-/jasmine-3.5.8.tgz#448e81df1693943b09466ad33d460dc427dd22fb"
+  integrity sha512-q/L59BjgE6VJtuIM4iDEEwT7xdSWVHMqC+td9sft5RfgHpDZ4Gdn0vLV59wKZ7PjGuVLCL7aNCdoiw5u6ZKSgA==
 
 "@types/jasminewd2@^2.0.8":
   version "2.0.8"
