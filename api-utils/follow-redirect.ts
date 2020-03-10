@@ -3,7 +3,6 @@ export async function followRedirects(response: ISimpleResponse, numberToFollow:
     // Is a redirect
     if (response.statusCode && response.statusCode >= 300 && response.statusCode < 400) {
       // Cannot follow
-      console.log(response);
       if (!response.headers.location) {
         throw new Error('No redirect location');
       } else if (numberToFollow <= 0) {
