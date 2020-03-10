@@ -1,10 +1,8 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component } from '@angular/core';
 import { AudioPlayerService, IAudioState, PlayerAction } from './services/audio-player.service';
-import { Observable, Subscription, from } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
-import { map, filter, switchMap, tap, startWith } from 'rxjs/operators';
-import { IPodcastEpisode } from '../shared/models/podcast.model';
-import { PodcastService } from '../shared/services/podcast.service';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { IImage } from '../shared/models/image.model';
 
 @Component({
   templateUrl: './player.component.html',
@@ -12,19 +10,14 @@ import { PodcastService } from '../shared/services/podcast.service';
 })
 export class PlayerComponent {
   public audioState$: Observable<IAudioState> = this.audio.audioState$;
-  public activePodcast$: Observable<IPodcastEpisode> = this.activeRoute.paramMap.pipe(
-    map(params => params.get('episode')),
-    filter((key: string | null): key is string => Boolean(key)),
-    map(key => this.podcasts.getEpisode(key)),
-    switchMap(promise => from(promise)),
-    filter((key: IPodcastEpisode | undefined): key is IPodcastEpisode => Boolean(key)),
-    tap(episode => this.audio.updateSource(episode.audioUrl))
+  public activePodcast$: Observable<PlayerView> = this.audio.currentEpisode$.pipe(
+    map(episode => ({
+      thumbnail: episode?.image?.large || episode?.image?.medium || episode?.image?.small
+    }))
   );
 
   constructor(
-    private audio: AudioPlayerService,
-    private activeRoute: ActivatedRoute,
-    private podcasts: PodcastService
+    private audio: AudioPlayerService
   ) {}
 
   public togglePlay = (playing: boolean) => this.audio.doAction(playing ? PlayerAction.Pause : PlayerAction.Play);
@@ -32,4 +25,7 @@ export class PlayerComponent {
   public rewind = () => this.audio.doAction(PlayerAction.FastRewind);
 }
 
+interface PlayerView {
+  thumbnail?: IImage;
 
+}

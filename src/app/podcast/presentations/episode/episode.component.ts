@@ -27,7 +27,7 @@ export class EpisodeComponent {
   playEpisode(episodeKey: string) {
     this.podcastService.getEpisode(episodeKey).then(ep => {
       if (ep !== undefined) {
-        this.audioService.updateSource(ep.audioUrl);
+        this.audioService.playEpisode(ep);
       }
     });
   }

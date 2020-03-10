@@ -1,7 +1,7 @@
 <div class="window">
   <ng-container *ngIf="(activePodcast$ | async) as pod; else noPod">
-    <ng-container *ngIf="(pod?.image?.large || pod?.image?.medium || pod?.image?.small) as image; else noImage">
-      <img src="image" alt="Thumbnail of the currently playing podcast">
+    <ng-container *ngIf="pod?.thumbnail as image; else noImage">
+      <img [src]="image?.src" [alt]="image?.alt">
     </ng-container>
     <ng-template #noImage>
       No image available
