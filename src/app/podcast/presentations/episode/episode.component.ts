@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { map, filter, share } from 'rxjs/operators';
 import { PodcastService } from 'src/app/shared/services/podcast.service';
 import { AudioPlayerService } from 'src/app/player/services/audio-player.service';
@@ -14,6 +14,7 @@ export class EpisodeComponent {
 
   constructor(
     private activatedRoute: ActivatedRoute,
+    private router: Router,
     private podcastService: PodcastService,
     private audioService: AudioPlayerService
   ) { }
@@ -27,7 +28,8 @@ export class EpisodeComponent {
   playEpisode(episodeKey: string) {
     this.podcastService.getEpisode(episodeKey).then(ep => {
       if (ep !== undefined) {
-        this.audioService.updateSource(ep.audioUrl);
+        this.audioService.playEpisode(ep);
+        this.router.navigate(['/player']);
       }
     });
   }
