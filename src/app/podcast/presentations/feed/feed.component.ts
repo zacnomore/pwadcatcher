@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map, filter, share, switchMap, tap } from 'rxjs/operators';
 import { PodcastService } from 'src/app/shared/services/podcast.service';
-import { IPodcastFeed } from 'src/app/shared/models/podcast.model';
+import { IPodcastFeed, IPodcastEpisode } from 'src/app/shared/models/podcast.model';
 import { IListItem } from 'src/app/shared/components/podcast-list/podcast-list.component';
 import { StoreService } from 'src/app/store/store.service';
 
@@ -33,11 +33,17 @@ export class FeedComponent {
   );
 
   public listItems$: Observable<IFeedItem[]> = this.feed$.pipe(
-    map(feed => feed.episodes.map(ep => ({
-      title: ep.title,
-      image: ep.image ? ep.image.small : feed.defaultImage ? feed.defaultImage.small : undefined,
-      episodeKey: this.store.addEpisode(ep)
-    })))
+    map(feed => feed.episodes.map(ep => {
+      const enhancedEp: IPodcastEpisode = {
+        ...ep,
+        image: ep.image || feed.defaultImage
+      };
+      return {
+        title: enhancedEp.title,
+        image: enhancedEp.image?.small,
+        episodeKey: this.store.addEpisode(enhancedEp)
+      };
+    }))
   );
 
 
