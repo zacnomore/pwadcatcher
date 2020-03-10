@@ -22,7 +22,6 @@ export class SearchComponent {
       filter((terms): terms is string => !!terms)
     )
   ).pipe(
-    tap(console.log),
     distinctUntilChanged(),
     tap(v => this.loadingBS.next(true)),
     switchMap(searchTerms => this.searchService.appleSearch(searchTerms)),

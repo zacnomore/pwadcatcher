@@ -23,8 +23,7 @@ export class AudioPlayerService {
       duration: NaN,
       isPlaying: false
     } as IAudioState),
-    shareReplay(1),
-    tap(console.log)
+    shareReplay(1)
   );
 
   public doAction(key: PlayerAction): void {

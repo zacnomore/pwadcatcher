@@ -67,7 +67,7 @@ interface ISerializableKeyValuePair<V> {
 }
 
 interface ISerializedMap<V> {
-  entries: Array<ISerializableKeyValuePair<V>>;
+  entries: ISerializableKeyValuePair<V>[];
 }
 class PwaStore<V> {
   private configuredStore = new Store('pwa-podcatcher');
@@ -89,7 +89,7 @@ class PwaStore<V> {
       }
       this.markInitialization();
     }).catch(e => {
-      console.log('Store does not exist');
+      console.warn('Store does not exist');
     });
   }
 
@@ -135,7 +135,7 @@ class PwaStore<V> {
   private serialize(m: Map<string, V>): ISerializedMap<V> {
     return Array.from(m.entries()).reduce((acc: ISerializedMap<V>, [key, value]: [string, V]) =>
       ({ entries: [...acc.entries, { key, value }] }), {
-      entries: [] as Array<ISerializableKeyValuePair<V>>
+      entries: [] as ISerializableKeyValuePair<V>[]
     });
   }
 

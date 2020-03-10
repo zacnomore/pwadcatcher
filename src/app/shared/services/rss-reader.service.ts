@@ -13,7 +13,6 @@ export class RssReaderService {
   constructor(private http: HttpClient, private env: EnvironmentService) {}
 
   public readFeed(feedUrl: string): Observable<IPodcastFeed | undefined> {
-    console.log(feedUrl, 'read feed');
     return this.http.get(`${this.env.env.feedReadUrl}?xmlUrl=${feedUrl}`, {responseType: 'text'}).pipe(
       map(xml => {
         const { elements: root } = xml2js(xml) as XMLElement;
