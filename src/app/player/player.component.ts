@@ -10,11 +10,14 @@ import { IImage } from '../shared/models/image.model';
 })
 export class PlayerComponent {
   public audioState$: Observable<IAudioState> = this.audio.audioState$;
-  public activePodcast$: Observable<PlayerView> = this.audio.currentEpisode$.pipe(
-    map(episode => ({
-      thumbnail: episode?.image?.large || episode?.image?.medium || episode?.image?.small
-    }))
-  );
+  public activePodcast$: Observable<PlayerView | undefined> = this.audio.currentEpisode$.pipe(
+    map(episode => {
+      if (episode) {
+        return {
+          thumbnail: episode?.image?.large || episode?.image?.medium || episode?.image?.small
+        };
+      }
+    }));
 
   constructor(
     private audio: AudioPlayerService
