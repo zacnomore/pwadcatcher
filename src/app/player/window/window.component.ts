@@ -15,7 +15,7 @@ export class WindowComponent {
     map(episode => {
       if (episode) {
         return {
-          thumbnail: episode?.image?.large || episode?.image?.medium || episode?.image?.small
+          thumbnail: episode?.thumbnail?.large || episode?.thumbnail?.medium || episode?.thumbnail?.small
         };
       }
     }));

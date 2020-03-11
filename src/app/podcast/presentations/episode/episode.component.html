@@ -1,2 +1,5 @@
-<p>episode works!</p>
-  <button *ngIf="(episodeKey$ | async) as key" mat-button (click)="playEpisode(key)">Play!</button>
+<ng-container *ngIf="(episode$ | async) as ep">
+  <img [src]="ep.thumbnail?.large?.src || ep.thumbnail?.medium?.src || ep.thumbnail?.small.src" [alt]="ep.thumbnail?.small.alt">
+  <h1>{{ep.title}}</h1>
+  <button mat-flat-button color="primary" (click)="playEpisode(ep)">Play!</button>
+</ng-container>

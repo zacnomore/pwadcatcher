@@ -37,13 +37,14 @@ export class FeedComponent {
       const enhancedEp: IPodcastEpisode = {
         ...ep,
         title: ep.title || `Episode ${index + 1}`,
-        image: ep.image || feed.defaultImage
+        thumbnail: ep.thumbnail || feed.defaultImage
       };
-      return {
+      const item: IFeedItem = {
         title: enhancedEp.title,
-        image: enhancedEp.image?.small,
+        image: enhancedEp.thumbnail?.small,
         episodeKey: this.store.addEpisode(enhancedEp)
       };
+      return item;
     }))
   );
 
