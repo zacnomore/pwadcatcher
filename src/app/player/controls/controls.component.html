@@ -1,26 +1,28 @@
-<ng-container *ngIf="(audioState$ | async) as audio;">
-  <mat-progress-bar
-    mode="determinate"
-    [value]="(audio.currentTime / audio.duration) * 100">
-  </mat-progress-bar>
-  <button mat-button>
-    <mat-icon>skip_previous</mat-icon>
-  </button>
-  
-  <button mat-button (click)="rewind()">
-    <mat-icon>fast_rewind</mat-icon>
-  </button>
-  
-  <button mat-button (click)="togglePlay(audio.isPlaying)">
-    <mat-icon *ngIf="audio.isPlaying;">pause</mat-icon>
-    <mat-icon *ngIf="!audio.isPlaying;">play_arrow</mat-icon>
-  </button>
-  
-  <button mat-button (click)="forward()">
-    <mat-icon>fast_forward</mat-icon>
-  </button>
-        
-  <button mat-button>
-    <mat-icon>skip_next</mat-icon>
-  </button>
+<ng-container *ngIf="(audioState$ | async) as audio">
+  <ng-container *ngIf="audio.canPlay">
+    <mat-progress-bar
+      mode="determinate"
+      [value]="(audio.currentTime / audio.duration) * 100">
+    </mat-progress-bar>
+    <button mat-button>
+      <mat-icon>skip_previous</mat-icon>
+    </button>
+    
+    <button mat-button (click)="rewind()">
+      <mat-icon>fast_rewind</mat-icon>
+    </button>
+    
+    <button mat-button (click)="togglePlay(audio.isPlaying)">
+      <mat-icon *ngIf="audio.isPlaying;">pause</mat-icon>
+      <mat-icon *ngIf="!audio.isPlaying;">play_arrow</mat-icon>
+    </button>
+    
+    <button mat-button (click)="forward()">
+      <mat-icon>fast_forward</mat-icon>
+    </button>
+          
+    <button mat-button>
+      <mat-icon>skip_next</mat-icon>
+    </button>
+  </ng-container>
 </ng-container>
