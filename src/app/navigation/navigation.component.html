@@ -1,4 +1,6 @@
-<mat-button-toggle (change)="menu.toggle()">Menu</mat-button-toggle>
+<nav>
+  <mat-button-toggle (change)="menu.toggle()">Menu</mat-button-toggle>
+</nav>
 <mat-sidenav-container>
   <mat-sidenav #menu>
     <mat-nav-list>
@@ -10,5 +12,6 @@
 
   <mat-sidenav-content>
     <ng-content></ng-content>
+    <app-controls></app-controls>
   </mat-sidenav-content>
 </mat-sidenav-container>

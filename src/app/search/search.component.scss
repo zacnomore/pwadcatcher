@@ -1,0 +1,10 @@
+:host {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+}
+
+app-podcast-list {
+  flex: 1;
+  overflow: auto;
+}
