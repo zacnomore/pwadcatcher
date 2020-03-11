@@ -19,7 +19,8 @@ export class SearchComponent {
     this.searchTerms,
     this.route.paramMap.pipe(
       map(paramMap => paramMap.get('terms')),
-      filter((terms): terms is string => !!terms)
+      filter((terms): terms is string => !!terms),
+      tap(term => this.searchForm.controls.terms.setValue(term))
     )
   ).pipe(
     distinctUntilChanged(),
