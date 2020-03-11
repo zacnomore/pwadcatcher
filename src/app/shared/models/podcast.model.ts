@@ -22,5 +22,5 @@ export interface IPodcastEpisode extends IStorable {
   title: string;
   audioUrl: string;
   publishDate?: Date;
-  image?: IImageSet;
+  thumbnail?: IImageSet;
 }

@@ -1,5 +1,5 @@
 <ng-container *ngIf="(overview$ | async) as overview">
-  <img [src]="overview.thumbnail?.large?.src || overview.thumbnail?.medium?.src || overview.thumbnail?.small.src" alt="">
+  <img [src]="overview.thumbnail?.large?.src || overview.thumbnail?.medium?.src || overview.thumbnail?.small.src" [alt]="overview.thumbnail?.small.alt">
   <h1 *ngIf="overview.name">{{overview.name}}</h1>
   <h2 *ngIf="overview.author">{{overview.author}}</h2>
   <nav>
