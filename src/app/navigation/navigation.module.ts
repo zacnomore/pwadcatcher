@@ -5,6 +5,7 @@ import { SharedModule } from '../shared/shared.module';
 import { RouterModule } from '@angular/router';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatListModule } from '@angular/material/list';
+import { ControlsModule } from '../player/controls/controls.module';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import { MatListModule } from '@angular/material/list';
     SharedModule,
     MatButtonToggleModule,
     MatListModule,
-    RouterModule
+    RouterModule,
+    ControlsModule,
   ],
   exports: [
     NavigationComponent

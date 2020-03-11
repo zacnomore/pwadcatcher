@@ -1,4 +1,4 @@
-<div class="controls" *ngIf="(audioState$ | async) as audio;">
+<ng-container class="controls" *ngIf="(audioState$ | async) as audio;">
   <mat-progress-bar
     mode="determinate"
     [value]="(audio.currentTime / audio.duration) * 100">
@@ -23,4 +23,4 @@
   <button mat-button>
     <mat-icon>skip_next</mat-icon>
   </button>
-</div>
+</ng-container>

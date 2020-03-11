@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { IAudioState, AudioPlayerService, PlayerAction } from '../services/audio-player.service';
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-controls',

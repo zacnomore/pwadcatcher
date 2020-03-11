@@ -12,6 +12,9 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
     CommonModule,
     SharedModule,
     MatProgressBarModule,
+  ],
+  exports: [
+    ControlsComponent
   ]
 })
 export class ControlsModule { }
