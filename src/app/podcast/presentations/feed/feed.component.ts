@@ -33,9 +33,10 @@ export class FeedComponent {
   );
 
   public listItems$: Observable<IFeedItem[]> = this.feed$.pipe(
-    map(feed => feed.episodes.map(ep => {
+    map(feed => feed.episodes.map((ep, index) => {
       const enhancedEp: IPodcastEpisode = {
         ...ep,
+        title: ep.title || `Episode ${index + 1}`,
         image: ep.image || feed.defaultImage
       };
       return {
