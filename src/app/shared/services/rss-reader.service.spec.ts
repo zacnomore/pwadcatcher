@@ -9,7 +9,7 @@ describe('RssReaderService', () => {
   }));
 
   it('should be created', () => {
-    const service: RssReaderService = TestBed.get(RssReaderService);
+    const service: RssReaderService = TestBed.inject(RssReaderService);
     expect(service).toBeTruthy();
   });
 });

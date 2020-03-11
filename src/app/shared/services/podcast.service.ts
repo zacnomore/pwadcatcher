@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { IPodcast, IInitializedPodcast, IPodcastFeed } from '../models/podcast.model';
+import { IPodcast, IPodcastFeed } from '../models/podcast.model';
 import { StoreService } from 'src/app/store/store.service';
-import { of, Observable, from, combineLatest } from 'rxjs';
+import { of, Observable, from } from 'rxjs';
 import { RssReaderService } from './rss-reader.service';
-import { tap, map, switchMap } from 'rxjs/operators';
+import { tap, switchMap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
