@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, fromEvent, merge, BehaviorSubject } from 'rxjs';
-import { map, scan, tap, startWith, shareReplay } from 'rxjs/operators';
+import { map, scan, startWith, shareReplay } from 'rxjs/operators';
 import { IPodcastEpisode } from 'src/app/shared/models/podcast.model';
 
 @Injectable({

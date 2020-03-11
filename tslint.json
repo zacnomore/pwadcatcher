@@ -85,7 +85,6 @@
     "max-file-line-count": [true, 200],
     "triple-equals": true,
     "no-any": true,
-    "no-unused-variable": true,
     "adjacent-overload-signatures": true,
     "arrow-return-shorthand": true,
     "await-promise": true,
