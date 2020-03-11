@@ -16,3 +16,20 @@ mat-sidenav-content {
   justify-content: center;
   flex-direction: column;
 }
+
+$nav-height: 50px;
+nav {
+  height: $nav-height;
+}
+
+$controls-height: 52px;
+app-controls {
+  height: $controls-height;
+}
+
+// ::slotted eventually....
+:host ::ng-deep ng-component {
+  flex: 1;
+  max-height: calc(100vh - #{$nav-height} - #{$controls-height});
+  overflow: auto;
+}
