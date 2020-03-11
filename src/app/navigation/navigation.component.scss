@@ -28,7 +28,7 @@ app-controls {
 }
 
 // ::slotted eventually....
-:host ::ng-deep ng-component {
+:host ::ng-deep router-outlet + * {
   flex: 1;
   max-height: calc(100vh - #{$nav-height} - #{$controls-height});
   overflow: auto;
