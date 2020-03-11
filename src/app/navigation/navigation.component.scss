@@ -10,3 +10,26 @@ mat-sidenav-container {
   flex: 1;
   width: 100%;
 }
+
+mat-sidenav-content {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+$nav-height: 50px;
+nav {
+  height: $nav-height;
+}
+
+$controls-height: 52px;
+app-controls {
+  height: $controls-height;
+}
+
+// ::slotted eventually....
+:host ::ng-deep router-outlet + * {
+  flex: 1;
+  max-height: calc(100vh - #{$nav-height} - #{$controls-height});
+  overflow: auto;
+}

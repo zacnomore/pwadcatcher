@@ -1,0 +1,11 @@
+<ng-container *ngIf="(activePodcast$ | async) as pod; else noPod">
+  <ng-container *ngIf="pod?.thumbnail as image; else noImage">
+    <img [src]="image?.src" [alt]="image?.alt">
+  </ng-container>
+  <ng-template #noImage>
+    No image available
+  </ng-template>
+</ng-container>
+<ng-template #noPod>
+  No podcast playing
+</ng-template>

@@ -1,18 +1,4 @@
-<div class="window">
-  <ng-container *ngIf="(activePodcast$ | async) as pod; else noPod">
-    <ng-container *ngIf="pod?.thumbnail as image; else noImage">
-      <img [src]="image?.src" [alt]="image?.alt">
-    </ng-container>
-    <ng-template #noImage>
-      No image available
-    </ng-template>
-  </ng-container>
-  <ng-template #noPod>
-    No podcast playing
-  </ng-template>
-</div>
-
-<div class="controls" *ngIf="(audioState$ | async) as audio;">
+<ng-container *ngIf="(audioState$ | async) as audio;">
   <mat-progress-bar
     mode="determinate"
     [value]="(audio.currentTime / audio.duration) * 100">
@@ -37,4 +23,4 @@
   <button mat-button>
     <mat-icon>skip_next</mat-icon>
   </button>
-</div>
+</ng-container>
