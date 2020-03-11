@@ -9,7 +9,6 @@ import { IImage } from '../shared/models/image.model';
   styleUrls: ['./player.component.scss']
 })
 export class PlayerComponent {
-  public audioState$: Observable<IAudioState> = this.audio.audioState$;
   public activePodcast$: Observable<PlayerView | undefined> = this.audio.currentEpisode$.pipe(
     map(episode => {
       if (episode) {
@@ -23,9 +22,6 @@ export class PlayerComponent {
     private audio: AudioPlayerService
   ) {}
 
-  public togglePlay = (playing: boolean) => this.audio.doAction(playing ? PlayerAction.Pause : PlayerAction.Play);
-  public forward = () => this.audio.doAction(PlayerAction.FastForward);
-  public rewind = () => this.audio.doAction(PlayerAction.FastRewind);
 }
 
 interface PlayerView {

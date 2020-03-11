@@ -1,0 +1,9 @@
+:host {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+
+  mat-progress-bar {
+    flex-basis: 100%;
+  }
+}
