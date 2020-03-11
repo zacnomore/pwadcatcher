@@ -10,3 +10,9 @@ mat-sidenav-container {
   flex: 1;
   width: 100%;
 }
+
+mat-sidenav-content {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
