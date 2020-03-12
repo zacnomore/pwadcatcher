@@ -29,10 +29,11 @@ export class OverviewComponent {
 
   public overview$: Observable<IPodcast> = this.podcastKey$.pipe(
     switchMap(id => this.podcastService.getPodcast(id)),
-    filter((podcast): podcast is IPodcast => podcast !== undefined));
+    filter((podcast): podcast is IPodcast => podcast !== undefined)
+  );
 
   public details$: Observable<IPodcastFeed> = this.podcastKey$.pipe(
-    mergeMap(key => this.podcastService.getFeed(key)),
+    switchMap(key => this.podcastService.getFeed(key)),
     filter((podcast): podcast is IPodcastFeed => podcast !== undefined)
   );
 

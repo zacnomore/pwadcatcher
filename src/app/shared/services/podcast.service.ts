@@ -29,7 +29,7 @@ export class PodcastService {
             return of(podcast.feed);
           }
           return this.rss.readFeed(podcast.feedUrl).pipe(
-            tap(feed => this.store.addPodcast({...podcast, feed}))
+            tap(feed => this.store.addPodcast({ ...podcast, feed }))
           );
         }
         return of(undefined);

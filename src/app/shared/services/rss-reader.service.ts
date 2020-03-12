@@ -29,12 +29,19 @@ export class RssReaderService {
           const { attributes: enclosure = defaultUrl } = (elements || []).find(el => el.name === 'enclosure') || { attributes: defaultUrl };
           const audioUrl = (enclosure.url || '').toString();
 
-          // TODO: Include episode image
 
-          return {
+
+          const { elements: descriptionProps } = (elements || []).find(
+            el => el.name === 'description' || el.name === 'itunes:summary'
+          ) || { elements: [] };
+          const { cdata: description = '' } = (descriptionProps || []).find(el => el.cdata !== undefined) || { cdata: '' };
+
+          const episode: IPodcastEpisode = {
+            audioUrl,
             title: title.toString(),
-            audioUrl
+            summary: description.toString()
           };
+          return episode;
         });
         const noImage = { href: undefined };
         const { attributes: image } = (channel || []).find(el => el.name === 'itunes:image') || { attributes: noImage };
