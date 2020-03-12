@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { SearchService } from './services/search.service';
-import { Observable, Subject, BehaviorSubject, merge } from 'rxjs';
-import { switchMap, map, distinctUntilChanged, tap, shareReplay, filter } from 'rxjs/operators';
+import { Observable, BehaviorSubject } from 'rxjs';
+import { switchMap, map, distinctUntilChanged, tap, shareReplay, filter, startWith } from 'rxjs/operators';
 import { FormBuilder } from '@angular/forms';
 import { IListItem } from '../shared/components/podcast-list/podcast-list.component';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -14,19 +14,15 @@ import { IPodcast } from '../shared/models/podcast.model';
   styleUrls: ['./search.component.scss']
 })
 export class SearchComponent {
-  private searchTerms = new Subject<string>();
-  public searchResults$: Observable<IPodcast[]> = merge(
-    this.searchTerms,
-    this.route.paramMap.pipe(
-      map(paramMap => paramMap.get('terms')),
-      filter((terms): terms is string => !!terms),
-      tap(term => this.searchForm.controls.terms.setValue(term))
-    )
-  ).pipe(
+  private loadingBS = new BehaviorSubject(false);
+  public loading$ = this.loadingBS.asObservable();
+  public searchResults$: Observable<IPodcast[]> = this.route.queryParamMap.pipe(
+    map(qParamMap => qParamMap.get('terms')),
+    filter((terms): terms is string => !!terms),
+    tap(term => this.searchForm.controls.terms.setValue(term)),
     distinctUntilChanged(),
-    tap(v => this.loadingBS.next(true)),
     switchMap(searchTerms => this.searchService.appleSearch(searchTerms)),
-    tap(v => this.loadingBS.next(false)),
+    tap(() => this.loadingBS.next(false)),
     shareReplay()
   );
   public list$ = this.searchResults$.pipe(
@@ -37,8 +33,6 @@ export class SearchComponent {
       })
     )),
   );
-  private loadingBS = new BehaviorSubject(false);
-  public loading$ = this.loadingBS.asObservable();
 
   public searchForm = this.fb.group({
     terms: ['']
@@ -49,13 +43,13 @@ export class SearchComponent {
     private fb: FormBuilder,
     private router: Router,
     private store: StoreService,
-    private route: ActivatedRoute) {}
+    private route: ActivatedRoute) { }
 
   public search() {
     const terms = this.searchForm.get('terms');
     if (terms && terms.value) {
-      this.router.navigate(['/search', terms.value]);
-      this.searchTerms.next(terms.value);
+      this.loadingBS.next(true);
+      this.router.navigate(['/search'], { queryParams: { terms: terms.value } });
     }
   }
 
