@@ -1,9 +1,9 @@
 <form [formGroup]="searchForm" (ngSubmit)="search()">
-    <mat-form-field>
-      <input matInput formControlName="terms" placeholder="Search" />
-    </mat-form-field>
-    <button mat-flat-button color="primary">Search</button>
-  </form>
+  <mat-form-field>
+    <input matInput formControlName="terms" placeholder="Search" />
+  </mat-form-field>
+  <button mat-flat-button color="primary">Search</button>
+</form>
 
 <ng-container *ngIf="(searchResults$ | async) as results">
   <ng-container *ngIf="!(loading$ | async); else loading">
