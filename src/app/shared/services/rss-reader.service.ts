@@ -34,17 +34,21 @@ export class RssReaderService {
           const { elements: descriptionProps } = (elements || []).find(
             el => el.name === 'description' || el.name === 'itunes:summary'
           ) || { elements: [] };
-          const { cdata: description = '' } = (descriptionProps || []).find(el => el.cdata !== undefined) || { cdata: '' };
+          const { cdata: summary = '' } = (descriptionProps || []).find(el => el.cdata !== undefined) || { cdata: '' };
 
           const episode: IPodcastEpisode = {
             audioUrl,
             title: title.toString(),
-            summary: description.toString()
+            summary: summary.toString()
           };
           return episode;
         });
         const noImage = { href: undefined };
         const { attributes: image } = (channel || []).find(el => el.name === 'itunes:image') || { attributes: noImage };
+        const { elements: descriptionNodes } = (channel || []).find(
+          el => el.name === 'itunes:summary' || el.name === 'description'
+        ) || { elements: [] };
+        const description = (((descriptionNodes || []).find(el => el.text !== undefined) || {text: ''}).text || '').toString();
 
         const feed: IPodcastFeed = {
           defaultImage: image && typeof image.href === 'string'  ? {
@@ -52,7 +56,8 @@ export class RssReaderService {
               src: image.href
             }
           } : undefined,
-          episodes
+          episodes,
+          description
         };
         return feed;
       }),
