@@ -46,7 +46,6 @@ export class ControlsComponent {
       readableTime = date.toISOString().substr(14, 5);
     }
 
-    console.log(readableTime);
     return {
       readableTime,
       isValid: true
