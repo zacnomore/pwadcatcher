@@ -14,9 +14,11 @@ export class WindowComponent {
   public activePodcast$: Observable<PlayerView | undefined> = this.audio.currentEpisode$.pipe(
     map(episode => {
       if (episode) {
-        return {
-          thumbnail: episode?.thumbnail?.large || episode?.thumbnail?.medium || episode?.thumbnail?.small
+        const model: PlayerView = {
+          thumbnail: episode?.thumbnail?.large || episode?.thumbnail?.medium || episode?.thumbnail?.small,
+          title: episode.title
         };
+        return model;
       }
     }));
 
@@ -28,5 +30,5 @@ export class WindowComponent {
 
 interface PlayerView {
   thumbnail?: IImage;
-
+  title?: string;
 }
