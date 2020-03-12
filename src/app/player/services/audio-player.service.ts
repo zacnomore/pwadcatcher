@@ -8,6 +8,7 @@ import { IPodcastEpisode } from 'src/app/shared/models/podcast.model';
 })
 export class AudioPlayerService {
   private readonly audio = new Audio();
+  // TODO: Finish hooking up playlist
   private playlist: IPodcastEpisode[] = [];
   private currentEpisodeIndex = -1;
 
@@ -34,6 +35,7 @@ export class AudioPlayerService {
     shareReplay(1)
   );
 
+  // TODO: The params thing is a bit silly. It should take additional information typed by what kind of action
   public doAction(actionType: PlayerAction, params?: number): void {
     const action = this.audioActions.get(actionType);
     if (action) {
