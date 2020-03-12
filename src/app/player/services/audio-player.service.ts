@@ -11,13 +11,14 @@ export class AudioPlayerService {
   private playlist: IPodcastEpisode[] = [];
   private currentEpisodeIndex = -1;
 
-  private audioActions = new Map<PlayerAction, (el: HTMLAudioElement) => void>([
+  private audioActions = new Map<PlayerAction, (el: HTMLAudioElement, params?: number) => void>([
     [PlayerAction.Play, el => el.play()],
     [PlayerAction.Pause, el => el.pause()],
     [PlayerAction.SkipNext, () => this.playEpisode(this.playlist[this.currentEpisodeIndex + 1])],
     [PlayerAction.SkipPrevious, () => this.playEpisode(this.playlist[this.currentEpisodeIndex + 1])],
     [PlayerAction.FastForward, el => el.currentTime += 10],
-    [PlayerAction.FastRewind, el => el.currentTime -= 10]
+    [PlayerAction.FastRewind, el => el.currentTime -= 10],
+    [PlayerAction.Seek, (el, params) => params ? el.currentTime = params : undefined ]
   ]);
 
   private currentEpisodeBS = new BehaviorSubject<IPodcastEpisode | null>(null);
@@ -33,10 +34,10 @@ export class AudioPlayerService {
     shareReplay(1)
   );
 
-  public doAction(key: PlayerAction): void {
-    const action = this.audioActions.get(key);
+  public doAction(actionType: PlayerAction, params?: number): void {
+    const action = this.audioActions.get(actionType);
     if (action) {
-      action(this.audio);
+      action(this.audio, params);
     }
   }
 
@@ -120,7 +121,8 @@ export enum PlayerAction {
   SkipNext,
   SkipPrevious,
   FastForward,
-  FastRewind
+  FastRewind,
+  Seek
 }
 
 
