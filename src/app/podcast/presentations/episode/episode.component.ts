@@ -27,8 +27,7 @@ export class EpisodeComponent {
   );
 
   public episode$: Observable<IPodcastEpisode | undefined> = this.episodeKey$.pipe(
-    switchMap(key => this.podcastService.getEpisode(key)),
-    tap(console.log)
+    switchMap(key => this.podcastService.getEpisode(key))
   );
 
   playEpisode(episode: IPodcastEpisode) {
