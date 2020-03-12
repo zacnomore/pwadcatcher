@@ -10,11 +10,16 @@ import { tap, map } from 'rxjs/operators';
 })
 export class ControlsComponent {
   public audioState$: Observable<ControlsModel> = this.audio.audioState$.pipe(
-    map(audio => ({
-      ...audio,
-      currentTimeReadable: this.toTimeString(audio.currentTime),
-      durationReadable: this.toTimeString(audio.duration)
-    } as ControlsModel))
+    map(audio => {
+      const durationData = this.toTimeString(audio.duration);
+      const model: ControlsModel = {
+        ...audio,
+        hasDuration: durationData.isValid,
+        durationReadable: durationData.readableTime,
+        currentTimeReadable: this.toTimeString(audio.currentTime).readableTime,
+      };
+      return model;
+    })
   );
   public togglePlay = (playing: boolean) => this.audio.doAction(playing ? PlayerAction.Pause : PlayerAction.Play);
   public forward = () => this.audio.doAction(PlayerAction.FastForward);
@@ -25,21 +30,31 @@ export class ControlsComponent {
 
   constructor(private audio: AudioPlayerService) { }
 
-  private toTimeString(time: number) {
+  private toTimeString(time: number): { readableTime: string, isValid: boolean} {
     if (isNaN(time)) {
-      return '--:--';
+      return {
+        readableTime: '--:--',
+        isValid: false
+      };
     }
     const date = new Date(0);
+    let readableTime: string;
     date.setSeconds(time);
     if (date.getUTCHours() > 0) {
-      return date.toISOString().substr(11, 8);
+      readableTime = date.toISOString().substr(11, 8);
     } else {
-      return date.toISOString().substr(14, 5);
+      readableTime = date.toISOString().substr(14, 5);
     }
+
+    return {
+      readableTime,
+      isValid: true
+    };
   }
 }
 
 interface ControlsModel extends IAudioState {
   currentTimeReadable: string;
   durationReadable: string;
+  hasDuration: boolean;
 }
