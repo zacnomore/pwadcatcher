@@ -10,6 +10,13 @@
 }
 
 .details {
+  max-width: 800px;
+  margin: 0 20px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
   h1, h2 {
     text-align: center;
   }
