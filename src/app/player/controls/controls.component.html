@@ -3,32 +3,33 @@
     <span class="current-time">{{audio.currentTimeReadable}}</span>
     <mat-slider
       [disabled]="!audio.hasDuration"
-       thumbLabel
-       [displayWith]="formatLabel"
-       min="0"
-       [max]="audio.duration"
-       (valueChange)="seek($event)">
-     </mat-slider>
-     <span class="end-time">{{audio.durationReadable}}</span>
+      [value]="audio.currentTime"
+      thumbLabel
+      [displayWith]="formatLabel"
+      min="0"
+      [max]="audio.duration"
+      (valueChange)="seek($event)">
+    </mat-slider>
+    <span class="end-time">{{audio.durationReadable}}</span>
    </div>
    <button mat-button>
-     <mat-icon>skip_previous</mat-icon>
+    <mat-icon>skip_previous</mat-icon>
    </button>
    
    <button mat-button (click)="rewind()" [disabled]="!audio.canPlay">
-     <mat-icon>fast_rewind</mat-icon>
+    <mat-icon>fast_rewind</mat-icon>
    </button>
    
    <button mat-button (click)="togglePlay(audio.isPlaying)" [disabled]="!audio.canPlay">
-     <mat-icon *ngIf="audio.isPlaying;">pause</mat-icon>
-     <mat-icon *ngIf="!audio.isPlaying;">play_arrow</mat-icon>
+    <mat-icon *ngIf="audio.isPlaying;">pause</mat-icon>
+    <mat-icon *ngIf="!audio.isPlaying;">play_arrow</mat-icon>
    </button>
    
-   <button mat-button (click)="forward()" [disabled]="!audio.canPlay">
-     <mat-icon>fast_forward</mat-icon>
-   </button>
-         
-   <button mat-button>
-     <mat-icon>skip_next</mat-icon>
-   </button>
+  <button mat-button (click)="forward()" [disabled]="!audio.canPlay">
+    <mat-icon>fast_forward</mat-icon>
+  </button>
+
+  <button mat-button>
+    <mat-icon>skip_next</mat-icon>
+  </button>
 </ng-container>
