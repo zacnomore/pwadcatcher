@@ -16,13 +16,16 @@ export class ControlsComponent {
       durationReadable: this.toTimeString(audio.duration)
     } as ControlsModel))
   );
-
-  constructor(private audio: AudioPlayerService) { }
-
   public togglePlay = (playing: boolean) => this.audio.doAction(playing ? PlayerAction.Pause : PlayerAction.Play);
   public forward = () => this.audio.doAction(PlayerAction.FastForward);
   public rewind = () => this.audio.doAction(PlayerAction.FastRewind);
-  private toTimeString = (time: number) => {
+  public seek = (value: number) => this.audio.doAction(PlayerAction.Seek, value);
+  public formatLabel = (value: number) => this.toTimeString(value);
+
+
+  constructor(private audio: AudioPlayerService) { }
+
+  private toTimeString(time: number) {
     if (isNaN(time)) {
       return '--:--';
     }
@@ -34,7 +37,6 @@ export class ControlsComponent {
       return date.toISOString().substr(14, 5);
     }
   }
-
 }
 
 interface ControlsModel extends IAudioState {
