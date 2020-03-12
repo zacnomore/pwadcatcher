@@ -1,9 +1,13 @@
 <ng-container *ngIf="(audioState$ | async) as audio">
   <ng-container *ngIf="audio.canPlay">
-    <mat-progress-bar
-      mode="determinate"
-      [value]="(audio.currentTime / audio.duration) * 100">
-    </mat-progress-bar>
+    <div class="scrubber">
+      <span class="current-time">{{audio.currentTimeReadable}}</span>
+      <mat-progress-bar
+        mode="determinate"
+        [value]="(audio.currentTime / audio.duration) * 100">
+      </mat-progress-bar>
+      <span class="end-time">{{audio.durationReadable}}</span>
+    </div>
     <button mat-button>
       <mat-icon>skip_previous</mat-icon>
     </button>
