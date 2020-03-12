@@ -2,6 +2,7 @@
   <div class="scrubber">
     <span class="current-time">{{audio.currentTimeReadable}}</span>
     <mat-slider
+      [disabled]="!audio.hasDuration"
        thumbLabel
        [displayWith]="formatLabel"
        min="0"
