@@ -25,7 +25,7 @@ export class ControlsComponent {
   public forward = () => this.audio.doAction(PlayerAction.FastForward);
   public rewind = () => this.audio.doAction(PlayerAction.FastRewind);
   public seek = (value: number) => this.audio.doAction(PlayerAction.Seek, value);
-  public formatLabel = (value: number) => this.toTimeString(value);
+  public formatLabel = (value: number) => this.toTimeString(value).readableTime;
 
 
   constructor(private audio: AudioPlayerService) { }
@@ -46,6 +46,7 @@ export class ControlsComponent {
       readableTime = date.toISOString().substr(14, 5);
     }
 
+    console.log(readableTime);
     return {
       readableTime,
       isValid: true
