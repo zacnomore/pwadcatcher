@@ -1,7 +1,9 @@
 <ng-container *ngIf="(episode$ | async) as ep">
   <img [src]="ep.thumbnail?.large?.src || ep.thumbnail?.medium?.src || ep.thumbnail?.small.src" [alt]="ep.thumbnail?.small.alt">
-  <h1 *ngIf="ep.title">{{ep.title}}</h1>
-  <h2 *ngIf="ep.publishDate">{{ep.publishDate}}</h2>
-  <p *ngIf="ep.summary" [innerHTML]="ep.summary"></p>
-  <button mat-flat-button color="primary" (click)="playEpisode(ep)">Play!</button>
+  <div class="details">
+    <h1 *ngIf="ep.title">{{ep.title}}</h1>
+    <h2 *ngIf="ep.publishDate">{{ep.publishDate}}</h2>
+    <p *ngIf="ep.summary" [innerHTML]="ep.summary"></p>
+    <button mat-flat-button color="primary" (click)="playEpisode(ep)">Play!</button>
+  </div>
 </ng-container>
