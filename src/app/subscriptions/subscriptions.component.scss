@@ -1,0 +1,11 @@
+:host {
+  display: block;
+}
+
+.no-subscriptions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100%;
+}
