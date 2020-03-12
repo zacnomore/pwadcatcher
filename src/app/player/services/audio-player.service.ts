@@ -8,16 +8,18 @@ import { IPodcastEpisode } from 'src/app/shared/models/podcast.model';
 })
 export class AudioPlayerService {
   private readonly audio = new Audio();
+  // TODO: Finish hooking up playlist
   private playlist: IPodcastEpisode[] = [];
   private currentEpisodeIndex = -1;
 
-  private audioActions = new Map<PlayerAction, (el: HTMLAudioElement) => void>([
+  private audioActions = new Map<PlayerAction, (el: HTMLAudioElement, params?: number) => void>([
     [PlayerAction.Play, el => el.play()],
     [PlayerAction.Pause, el => el.pause()],
     [PlayerAction.SkipNext, () => this.playEpisode(this.playlist[this.currentEpisodeIndex + 1])],
     [PlayerAction.SkipPrevious, () => this.playEpisode(this.playlist[this.currentEpisodeIndex + 1])],
     [PlayerAction.FastForward, el => el.currentTime += 10],
-    [PlayerAction.FastRewind, el => el.currentTime -= 10]
+    [PlayerAction.FastRewind, el => el.currentTime -= 10],
+    [PlayerAction.Seek, (el, params) => params ? el.currentTime = params : undefined ]
   ]);
 
   private currentEpisodeBS = new BehaviorSubject<IPodcastEpisode | null>(null);
@@ -33,10 +35,11 @@ export class AudioPlayerService {
     shareReplay(1)
   );
 
-  public doAction(key: PlayerAction): void {
-    const action = this.audioActions.get(key);
+  // TODO: The params thing is a bit silly. It should take additional information typed by what kind of action
+  public doAction(actionType: PlayerAction, params?: number): void {
+    const action = this.audioActions.get(actionType);
     if (action) {
-      action(this.audio);
+      action(this.audio, params);
     }
   }
 
@@ -120,7 +123,8 @@ export enum PlayerAction {
   SkipNext,
   SkipPrevious,
   FastForward,
-  FastRewind
+  FastRewind,
+  Seek
 }
 
 

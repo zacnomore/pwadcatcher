@@ -3,11 +3,6 @@
   justify-content: center;
   flex-wrap: wrap;
 
-  mat-progress-bar {
-    flex-basis: 100%;
-  }
-
-
   .mat-button {
     line-height: 48px;
     padding: 0 8px;
@@ -17,5 +12,19 @@
     font-size: 42px;
     width: 48px;
     height: 48px;
+  }
+}
+
+.scrubber {
+  display: flex;
+  flex-basis: 100%;
+  align-items: center;
+
+  mat-slider {
+    flex: 1;
+  }
+
+  span {
+    margin: 0 10px;
   }
 }

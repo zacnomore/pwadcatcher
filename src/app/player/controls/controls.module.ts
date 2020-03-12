@@ -2,16 +2,14 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ControlsComponent } from './controls.component';
 import { SharedModule } from 'src/app/shared/shared.module';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
-
-
+import {MatSliderModule} from '@angular/material/slider';
 
 @NgModule({
   declarations: [ControlsComponent],
   imports: [
     CommonModule,
     SharedModule,
-    MatProgressBarModule,
+    MatSliderModule
   ],
   exports: [
     ControlsComponent

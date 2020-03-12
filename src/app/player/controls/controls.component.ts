@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { IAudioState, AudioPlayerService, PlayerAction } from '../services/audio-player.service';
-import { tap } from 'rxjs/operators';
+import { tap, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-controls',
@@ -9,12 +9,37 @@ import { tap } from 'rxjs/operators';
   styleUrls: ['./controls.component.scss']
 })
 export class ControlsComponent {
-  public audioState$: Observable<IAudioState> = this.audio.audioState$;
-
-  constructor(private audio: AudioPlayerService) { }
-
+  public audioState$: Observable<ControlsModel> = this.audio.audioState$.pipe(
+    map(audio => ({
+      ...audio,
+      currentTimeReadable: this.toTimeString(audio.currentTime),
+      durationReadable: this.toTimeString(audio.duration)
+    } as ControlsModel))
+  );
   public togglePlay = (playing: boolean) => this.audio.doAction(playing ? PlayerAction.Pause : PlayerAction.Play);
   public forward = () => this.audio.doAction(PlayerAction.FastForward);
   public rewind = () => this.audio.doAction(PlayerAction.FastRewind);
+  public seek = (value: number) => this.audio.doAction(PlayerAction.Seek, value);
+  public formatLabel = (value: number) => this.toTimeString(value);
 
+
+  constructor(private audio: AudioPlayerService) { }
+
+  private toTimeString(time: number) {
+    if (isNaN(time)) {
+      return '--:--';
+    }
+    const date = new Date(0);
+    date.setSeconds(time);
+    if (date.getUTCHours() > 0) {
+      return date.toISOString().substr(11, 8);
+    } else {
+      return date.toISOString().substr(14, 5);
+    }
+  }
+}
+
+interface ControlsModel extends IAudioState {
+  currentTimeReadable: string;
+  durationReadable: string;
 }
