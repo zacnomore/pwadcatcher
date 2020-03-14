@@ -5,6 +5,7 @@ import { map, filter, share, switchMap, tap } from 'rxjs/operators';
 import { PodcastService } from 'src/app/shared/services/podcast.service';
 import { AudioPlayerService } from 'src/app/player/services/audio-player.service';
 import { IPodcastEpisode } from 'src/app/shared/models/podcast.model';
+import { PlaylistService } from 'src/app/playlist/services/playlist.service';
 
 @Component({
   selector: 'app-episode',
@@ -17,7 +18,7 @@ export class EpisodeComponent {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private podcastService: PodcastService,
-    private audioService: AudioPlayerService
+    private playlistService: PlaylistService
   ) { }
 
   private episodeKey$: Observable<string> = this.activatedRoute.paramMap.pipe(
@@ -31,7 +32,7 @@ export class EpisodeComponent {
   );
 
   playEpisode(episode: IPodcastEpisode) {
-      this.audioService.playEpisode(episode);
+      this.playlistService.playEpisode(episode);
       this.router.navigate(['/player']);
   }
 }
