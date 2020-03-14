@@ -1,2 +1,2 @@
-<app-podcast-list [list]="playlist$ | async" [draggable]="true">
+<app-podcast-list [list]="playlist$ | async" (reorder)="reorderPlaylist($event)" [draggable]="true">
 </app-podcast-list>

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PlaylistService } from './services/playlist.service';
 import { map } from 'rxjs/operators';
-import { IListItem } from '../shared/components/podcast-list/podcast-list.component';
+import { IListItem, ReorderedItem } from '../shared/components/podcast-list/podcast-list.component';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -21,7 +21,9 @@ export class PlaylistComponent {
     }))
   );
 
-
   constructor(private playlistService: PlaylistService) {}
 
+  public reorderPlaylist(reorderedItem: ReorderedItem) {
+    this.playlistService.reorder(reorderedItem.previousIndex, reorderedItem.currentIndex);
+  }
 }

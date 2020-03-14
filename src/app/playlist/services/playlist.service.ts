@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { IPodcastEpisode } from 'src/app/shared/models/podcast.model';
 import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
 import { map, distinctUntilChanged, shareReplay } from 'rxjs/operators';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 @Injectable({
   providedIn: 'root'
@@ -40,5 +41,20 @@ export class PlaylistService {
     } else {
       this.currentEpisodeBS.next(newIndex);
     }
+  }
+
+  public reorder(oldIndex: number, newIndex: number) {
+    if (this.currentEpisodeBS.value === oldIndex) {
+      this.currentEpisodeBS.next(newIndex);
+    }
+    debugger;
+
+    const valueToMove = this.playlistBS.value[oldIndex];
+    const newPlaylist = [
+      ...this.playlistBS.value.slice(0, oldIndex),
+      ...this.playlistBS.value.slice(oldIndex + 1, this.playlistBS.value.length)
+    ];
+    newPlaylist.splice(newIndex, 0, valueToMove);
+    this.playlistBS.next(newPlaylist);
   }
 }
