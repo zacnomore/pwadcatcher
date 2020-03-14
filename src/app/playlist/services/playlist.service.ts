@@ -38,7 +38,7 @@ export class PlaylistService {
   }
 
   public changeEpisode(indexShift: number) {
-    const newIndex = (this.currentEpisodeBS.value || -1) + indexShift;
+    const newIndex = (this.currentEpisodeBS.value === null ? -1 : this.currentEpisodeBS.value) + indexShift;
     if (newIndex > this.playlistBS.value.length - 1 || newIndex < 0) {
       this.currentEpisodeBS.next(null);
     } else {

@@ -24,6 +24,8 @@ export class ControlsComponent {
   public togglePlay = (playing: boolean) => this.audio.doAction(playing ? PlayerAction.Pause : PlayerAction.Play);
   public forward = () => this.audio.doAction(PlayerAction.FastForward);
   public rewind = () => this.audio.doAction(PlayerAction.FastRewind);
+  public prev = () => this.audio.doAction(PlayerAction.SkipPrevious);
+  public next = () => this.audio.doAction(PlayerAction.SkipNext);
   public seek = (value: number) => this.audio.doAction(PlayerAction.Seek, value);
   public formatLabel = (value: number) => this.toTimeString(value).readableTime;
 
