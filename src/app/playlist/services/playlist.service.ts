@@ -13,7 +13,7 @@ export class PlaylistService {
 
   private currentEpisodeBS = new BehaviorSubject<number | null>(null);
   public currentEpisode$: Observable<IPodcastEpisode | null> = combineLatest([this.playlist$, this.currentEpisodeBS]).pipe(
-    map(([playlist, currentIndex]) => currentIndex !== null ? playlist[currentIndex] : null),
+    map(([playlist, currentIndex]) => currentIndex !== null ? playlist[currentIndex] || null : null),
     distinctUntilChanged(),
     shareReplay()
   );
@@ -24,6 +24,9 @@ export class PlaylistService {
   }
 
   public addToPlaylist(episode: IPodcastEpisode): void {
+    if (this.currentEpisodeBS.value === null) {
+      this.currentEpisodeBS.next(0);
+    }
     this.playlistBS.next([...this.playlistBS.value, episode]);
   }
 
