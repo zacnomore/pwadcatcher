@@ -35,4 +35,9 @@ export class EpisodeComponent {
       this.playlistService.playEpisode(episode);
       this.router.navigate(['/player']);
   }
+
+  queEpisode(episode: IPodcastEpisode) {
+    this.playlistService.addToPlaylist(episode);
+    this.router.navigate(['/playlist']);
+  }
 }
