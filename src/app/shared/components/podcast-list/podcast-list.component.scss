@@ -19,3 +19,21 @@ mat-action-list {
     cursor: grab;
   }
 }
+
+// TODO: Replace? This isn't a happy dragger
+::ng-deep button.cdk-drag {
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 0 16px;
+  border: none;
+  
+  .mat-list-item-content {
+    display: flex;
+    align-items: center;
+
+    box-sizing: border-box;
+    padding: 0 16px;
+    height: inherit;
+  }
+}

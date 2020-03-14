@@ -47,7 +47,6 @@ export class PlaylistService {
     if (this.currentEpisodeBS.value === oldIndex) {
       this.currentEpisodeBS.next(newIndex);
     }
-    debugger;
 
     const valueToMove = this.playlistBS.value[oldIndex];
     const newPlaylist = [
