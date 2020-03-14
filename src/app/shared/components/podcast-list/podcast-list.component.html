@@ -6,14 +6,15 @@
       <mat-icon cdkDragHandle class="anchor">drag_handle</mat-icon>
       <img [src]="item.image?.src" />
       <h3>{{item.title}}</h3>
+      <mat-icon *ngIf="item.icon">{{item.icon}}</mat-icon>
     </button>
   </ng-container>
   <ng-template #nonDraggable>
     <button mat-list-item *ngFor="let item of list; let i = index;" (click)="onClickItem(i)">
       <img [src]="item.image?.src" />
       <h3>{{item.title}}</h3>
+      <mat-icon *ngIf="item.icon">{{item.icon}}</mat-icon>
     </button>
   </ng-template>
-  
 </mat-action-list>
   

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { PlaylistService } from './services/playlist.service';
 import { map } from 'rxjs/operators';
 import { IListItem, ReorderedItem } from '../shared/components/podcast-list/podcast-list.component';
-import { Observable } from 'rxjs';
+import { Observable, combineLatest } from 'rxjs';
 
 @Component({
   selector: 'app-playlist',
@@ -10,11 +10,12 @@ import { Observable } from 'rxjs';
   styleUrls: ['./playlist.component.scss']
 })
 export class PlaylistComponent {
-  public playlist$: Observable<IListItem[]> = this.playlistService.playlist$.pipe(
-    map(episodes => episodes.map(episode => {
-      const item: IListItem = {
+  public playlist$: Observable<IListItem[]> = combineLatest([this.playlistService.playlist$, this.playlistService.currentEpisode$]).pipe(
+    map(([episodes, current]) => episodes.map(episode => {
+    const item: IListItem = {
         title: episode.title,
-        image: episode.thumbnail?.small
+        image: episode.thumbnail?.small,
+        icon: episode === current ? 'play_arrow' : undefined
       };
 
       return item;
