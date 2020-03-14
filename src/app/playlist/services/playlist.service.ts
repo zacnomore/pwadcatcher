@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { IPodcastEpisode } from 'src/app/shared/models/podcast.model';
 import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
 import { map, distinctUntilChanged, shareReplay } from 'rxjs/operators';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +15,15 @@ export class PlaylistService {
     map(([playlist, currentIndex]) => currentIndex !== null ? playlist[currentIndex] || null : null),
     distinctUntilChanged(),
     shareReplay()
+  );
+
+  public canPlayNext$ = combineLatest([this.currentEpisodeBS, this.playlist$]).pipe(
+    map(([index, playlist]) => {
+    return index !== null && index + 1 < playlist.length;
+    }));
+
+  public canPlayPrev$: Observable<boolean> = this.currentEpisodeBS.pipe(
+    map(index => !!index && index > 0)
   );
 
   public playEpisode(episode: IPodcastEpisode) {

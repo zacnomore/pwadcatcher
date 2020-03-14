@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, combineLatest } from 'rxjs';
 import { IAudioState, AudioPlayerService, PlayerAction } from '../services/audio-player.service';
 import { tap, map } from 'rxjs/operators';
+import { PlaylistService } from 'src/app/playlist/services/playlist.service';
 
 @Component({
   selector: 'app-controls',
@@ -9,11 +10,15 @@ import { tap, map } from 'rxjs/operators';
   styleUrls: ['./controls.component.scss']
 })
 export class ControlsComponent {
-  public audioState$: Observable<ControlsModel> = this.audio.audioState$.pipe(
-    map(audio => {
+  public audioState$: Observable<ControlsModel> = combineLatest(
+    [this.audio.audioState$, this.playlist.canPlayNext$, this.playlist.canPlayPrev$]
+  ).pipe(
+    map(([audio, canSkip, canPrev]) => {
       const durationData = this.toTimeString(audio.duration);
       const model: ControlsModel = {
         ...audio,
+        canSkip,
+        canPrev,
         hasDuration: durationData.isValid,
         durationReadable: durationData.readableTime,
         currentTimeReadable: this.toTimeString(audio.currentTime).readableTime,
@@ -30,7 +35,7 @@ export class ControlsComponent {
   public formatLabel = (value: number) => this.toTimeString(value).readableTime;
 
 
-  constructor(private audio: AudioPlayerService) { }
+  constructor(private audio: AudioPlayerService, private playlist: PlaylistService) { }
 
   private toTimeString(time: number): { readableTime: string, isValid: boolean} {
     if (isNaN(time)) {
@@ -59,4 +64,6 @@ interface ControlsModel extends IAudioState {
   currentTimeReadable: string;
   durationReadable: string;
   hasDuration: boolean;
+  canSkip: boolean;
+  canPrev: boolean;
 }
