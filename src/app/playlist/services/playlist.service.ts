@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { IPodcastEpisode } from 'src/app/shared/models/podcast.model';
 import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
-import { map, distinctUntilChanged, shareReplay } from 'rxjs/operators';
+import { map, distinctUntilChanged, shareReplay, debounceTime } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +13,7 @@ export class PlaylistService {
   private currentEpisodeBS = new BehaviorSubject<number | null>(null);
   public currentEpisode$: Observable<IPodcastEpisode | null> = combineLatest([this.playlist$, this.currentEpisodeBS]).pipe(
     map(([playlist, currentIndex]) => currentIndex !== null ? playlist[currentIndex] || null : null),
+    debounceTime(100), // This is needed because reordering the items needs both bs's to change
     distinctUntilChanged(),
     shareReplay()
   );
@@ -55,9 +56,6 @@ export class PlaylistService {
   }
 
   public reorder(oldIndex: number, newIndex: number) {
-    if (this.currentEpisodeBS.value === oldIndex) {
-      this.currentEpisodeBS.next(newIndex);
-    }
 
     const valueToMove = this.playlistBS.value[oldIndex];
     const newPlaylist = [
@@ -65,6 +63,11 @@ export class PlaylistService {
       ...this.playlistBS.value.slice(oldIndex + 1, this.playlistBS.value.length)
     ];
     newPlaylist.splice(newIndex, 0, valueToMove);
+
+    const playingEpisode = this.playlistBS.value[this.currentEpisodeBS.value === null ? -1 : this.currentEpisodeBS.value];
+    const playingIndex = newPlaylist.findIndex(ep => ep === playingEpisode);
+
     this.playlistBS.next(newPlaylist);
+    this.currentEpisodeBS.next(playingIndex === -1 ? null : playingIndex);
   }
 }
