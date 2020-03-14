@@ -8,7 +8,9 @@ import { IImage } from '../../models/image.model';
 })
 export class PodcastListComponent {
   @Input() list?: IListItem[];
+  @Input() draggable?: boolean;
   @Output() clickItem = new EventEmitter<number>();
+  @Output() reorder = new EventEmitter<[]>();
 
   public onClickItem(index: number) {
     this.clickItem.emit(index);

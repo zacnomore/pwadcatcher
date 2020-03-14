@@ -14,4 +14,8 @@ mat-action-list {
     box-sizing: border-box;
     object-fit: contain;
   }
+
+  .anchor {
+    cursor: grab;
+  }
 }
