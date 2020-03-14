@@ -15,6 +15,11 @@ mat-action-list {
     object-fit: contain;
   }
 
+  h3 {
+    flex: 1;
+    padding-right: 40px;
+  }
+
   .anchor {
     cursor: grab;
   }
