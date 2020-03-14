@@ -1,39 +1,41 @@
 import { Injectable } from '@angular/core';
 import { Observable, fromEvent, merge, BehaviorSubject } from 'rxjs';
-import { map, scan, startWith, shareReplay } from 'rxjs/operators';
+import { map, scan, startWith, shareReplay, tap, filter, switchMap } from 'rxjs/operators';
 import { IPodcastEpisode } from 'src/app/shared/models/podcast.model';
+import { PlaylistService } from 'src/app/playlist/services/playlist.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AudioPlayerService {
   private readonly audio = new Audio();
-  // TODO: Finish hooking up playlist
-  private playlist: IPodcastEpisode[] = [];
-  private currentEpisodeIndex = -1;
 
   private audioActions = new Map<PlayerAction, (el: HTMLAudioElement, params?: number) => void>([
     [PlayerAction.Play, el => el.play()],
     [PlayerAction.Pause, el => el.pause()],
-    [PlayerAction.SkipNext, () => this.playEpisode(this.playlist[this.currentEpisodeIndex + 1])],
-    [PlayerAction.SkipPrevious, () => this.playEpisode(this.playlist[this.currentEpisodeIndex + 1])],
+    [PlayerAction.SkipNext, () => this.playlistService.changeEpisode(1)],
+    [PlayerAction.SkipPrevious, () => this.playlistService.changeEpisode(-1)],
     [PlayerAction.FastForward, el => el.currentTime += 10],
     [PlayerAction.FastRewind, el => el.currentTime -= 10],
     [PlayerAction.Seek, (el, params) => params ? el.currentTime = params : undefined ]
   ]);
 
-  private currentEpisodeBS = new BehaviorSubject<IPodcastEpisode | null>(null);
-  public currentEpisode$: Observable<IPodcastEpisode | null> = this.currentEpisodeBS.pipe();
-
-  public audioState$: Observable<IAudioState> = this.listenToState(this.audio).pipe(
-    startWith({
-      canPlay: false,
-      currentTime: 0,
-      duration: NaN,
-      isPlaying: false
-    } as IAudioState),
+  public audioState$: Observable<IAudioState> = this.playlistService.currentEpisode$.pipe(
+    filter((cur): cur is IPodcastEpisode => cur !== null),
+    tap(currentEp => this.loadAudio(currentEp)),
+    switchMap(() => {
+      return this.listenToState(this.audio).pipe(
+        startWith({
+          canPlay: false,
+          currentTime: 0,
+          duration: NaN,
+          isPlaying: false
+        } as IAudioState));
+    }),
     shareReplay(1)
   );
+
+  constructor(private playlistService: PlaylistService) { }
 
   // TODO: The params thing is a bit silly. It should take additional information typed by what kind of action
   public doAction(actionType: PlayerAction, params?: number): void {
@@ -43,20 +45,7 @@ export class AudioPlayerService {
     }
   }
 
-  public addToPlaylist(episode: IPodcastEpisode) {
-    this.playlist.push(episode);
-  }
-
-  public removeFromPlaylist({ index, episode }: { index: undefined; episode: IPodcastEpisode; } | { index: number; episode: undefined; }) {
-    this.playlist = this.playlist.filter((ep, ind) => {
-      return ep !== episode && ind !== index;
-    });
-  }
-
-  public playEpisode(episode: IPodcastEpisode): void {
-    this.playlist.unshift(episode);
-    this.currentEpisodeIndex = 0;
-    this.currentEpisodeBS.next(episode);
+  private loadAudio(episode: IPodcastEpisode) {
     this.audio.src = episode.audioUrl;
     this.audio.load();
     this.audio.play();
@@ -126,7 +115,6 @@ export enum PlayerAction {
   FastRewind,
   Seek
 }
-
 
 type AudioEventHandler = (prev: IAudioState, event?: Event, audio?: HTMLAudioElement) => IAudioState;
 
