@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PlaylistService } from './services/playlist.service';
-import { map } from 'rxjs/operators';
+import { map, distinctUntilChanged } from 'rxjs/operators';
 import { IListItem, ReorderedItem } from '../shared/components/podcast-list/podcast-list.component';
 import { Observable, combineLatest } from 'rxjs';
 import { AudioPlayerService } from '../player/services/audio-player.service';
@@ -12,19 +12,23 @@ import { AudioPlayerService } from '../player/services/audio-player.service';
 })
 export class PlaylistComponent {
   public playlist$: Observable<IListItem[]> = combineLatest(
-    [this.playlistService.playlist$, this.playlistService.currentEpisode$, this.audioService.audioState$]
+    [this.playlistService.playlist$, this.playlistService.currentEpisode$, this.audioService.audioState$.pipe(
+      map(aud => aud.isPlaying),
+      distinctUntilChanged()
+    )]
   ).pipe(
-    map(([episodes, current, audio]) => episodes.map(episode => {
+    map(([episodes, current, isPlaying]) => episodes.map(episode => {
     const item: IListItem = {
         title: episode.title,
         image: episode.thumbnail?.small,
       icon: episode === current ?
-        audio.isPlaying ? 'play_arrow' : 'pause'
+        isPlaying ? 'play_arrow' : 'pause'
         : undefined
       };
 
       return item;
-    }))
+    })),
+    distinctUntilChanged()
   );
 
   constructor(

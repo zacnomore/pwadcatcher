@@ -13,8 +13,8 @@ export class AudioPlayerService {
   private audioActions = new Map<PlayerAction, (el: HTMLAudioElement, params?: number) => void>([
     [PlayerAction.Play, el => el.play()],
     [PlayerAction.Pause, el => el.pause()],
-    [PlayerAction.SkipNext, () => this.playlistService.changeEpisode(1)],
-    [PlayerAction.SkipPrevious, () => this.playlistService.changeEpisode(-1)],
+    [PlayerAction.SkipNext, () => this.playlistService.changeEpisode({ indexShift: 1 })],
+    [PlayerAction.SkipPrevious, () => this.playlistService.changeEpisode({ indexShift: -1 })],
     [PlayerAction.FastForward, el => el.currentTime += 10],
     [PlayerAction.FastRewind, el => el.currentTime -= 10],
     [PlayerAction.Seek, (el, params) => params ? el.currentTime = params : undefined ]
