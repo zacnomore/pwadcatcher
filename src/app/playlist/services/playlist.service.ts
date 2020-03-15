@@ -50,7 +50,11 @@ export class PlaylistService {
     this.playlistBS.next([...this.playlistBS.value, episode]);
   }
 
-  public removeFromPlaylist({ index, episode }: { index: undefined; episode: IPodcastEpisode; } | { index: number; episode: undefined; }) {
+  public removeFromPlaylist(
+    { index, episode }:
+      { index?: undefined; episode: IPodcastEpisode; } |
+      { index: number; episode?: undefined; }
+  ) {
     const newPlaylist = this.playlistBS.value.filter((ep, ind) => {
       return ep !== episode && ind !== index;
     });
@@ -83,6 +87,13 @@ export class PlaylistService {
 
     this.playlistBS.next(newPlaylist);
     this.currentEpisodeBS.next(playingIndex === -1 ? null : playingIndex);
+  }
+
+
+  endEpisode() {
+    if (this.currentEpisodeBS.value !== null) {
+      this.removeFromPlaylist({ index: this.currentEpisodeBS.value });
+    }
   }
 
   private initPlaylist(): void {

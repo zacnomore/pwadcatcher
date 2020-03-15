@@ -58,7 +58,8 @@ export class AudioPlayerService {
       { name: 'timeupdate', handler: this.buildHandler((a: HTMLAudioElement) => ({ currentTime: a.currentTime })) },
       { name: 'pause', handler: this.staticHandler({ isPlaying: false }) },
       { name: 'playing', handler: this.staticHandler({ isPlaying: true }) },
-      { name: 'durationchange', handler: this.buildHandler((a: HTMLAudioElement) => ({ duration: a.duration })) }
+      { name: 'durationchange', handler: this.buildHandler((a: HTMLAudioElement) => ({ duration: a.duration })) },
+      { name: 'ended', handler: this.sideEffect(() => { this.playlistService.endEpisode(); }) }
     ];
 
     return this.constructHandlerStream(audio, eventPlans).pipe(
@@ -86,6 +87,13 @@ export class AudioPlayerService {
 
   private staticHandler(change: Partial<IAudioState>): AudioEventHandler {
     return (prev: IAudioState) => ({ ...prev, ...change }) as IAudioState;
+  }
+
+  private sideEffect(effect: () => void): AudioEventHandler {
+    return (prev: IAudioState) => {
+      effect();
+      return prev;
+    };
   }
 
   private constructHandlerStream(t: HTMLAudioElement, plans: IEventPlanning[]): Observable<(state: IAudioState) => IAudioState> {
