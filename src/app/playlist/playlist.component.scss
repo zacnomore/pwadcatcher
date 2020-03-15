@@ -1,0 +1,7 @@
+app-podcast-list {
+  height: 100%;
+
+  &.empty {
+    display: flex;
+  }
+}
