@@ -10,15 +10,17 @@ import { PodcastService } from '../shared/services/podcast.service';
   styleUrls: ['./subscriptions.component.scss']
 })
 export class SubscriptionsComponent implements OnInit {
-  private subscriptions: IPodcast[] = [];
-  public get list(): IListItem[] {
-    return this.subscriptions.map(
+  private _subscriptions: IPodcast[] = [];
+  private set subscriptions(value: IPodcast[]) {
+    this._subscriptions = value;
+    this.list = value.map(
       sub => ({
         title: sub.name,
         image: sub.thumbnail ? sub.thumbnail.small : undefined
       })
     );
   }
+  public list: IListItem[] = [];
 
   constructor(
     private subscriptionService: SubscriptionsService,
@@ -34,7 +36,7 @@ export class SubscriptionsComponent implements OnInit {
   }
 
   viewPodcast(index: number): void {
-    const key = this.podcastService.getPodcastKey(this.subscriptions[index]);
+    const key = this.podcastService.getPodcastKey(this._subscriptions[index]);
     this.router.navigate(['podcast', 'feed', key]);
   }
 }
