@@ -25,7 +25,7 @@ export class PodcastListComponent {
 export interface IListItem {
   title: string;
   image?: IImage;
-  icon?: string;
+  selected?: boolean;
 }
 
 export interface ReorderedItem {

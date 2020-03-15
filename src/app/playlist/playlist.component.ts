@@ -18,14 +18,11 @@ export class PlaylistComponent {
     )]
   ).pipe(
     map(([episodes, current, isPlaying]) => episodes.map(episode => {
-    const item: IListItem = {
+      const item: IListItem = {
         title: episode.title,
         image: episode.thumbnail?.small,
-      icon: episode === current ?
-        isPlaying ? 'play_arrow' : 'pause'
-        : undefined
+        selected: isPlaying && current === episode
       };
-
       return item;
     })),
     distinctUntilChanged()
