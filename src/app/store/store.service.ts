@@ -3,18 +3,19 @@ import { IPodcast, IPodcastEpisode } from '../shared/models/podcast.model';
 import { get as getIDB, set as setIDB, Store} from 'idb-keyval';
 import { debounce } from '../shared/utils';
 import { ISubscription } from '../subscriptions/subscriptions.service';
+import { ISerializablePlaylist } from '../playlist/services/playlist.service';
 
 // Doesn't need to be an `object` as it could be a string or number
 // tslint:disable-next-line: ban-types
-export interface IStorable { [key: string]: Object | undefined; }
+export interface IStorable { [key: string]: Object | undefined | null; }
 
 @Injectable({
   providedIn: 'root'
 })
 export class StoreService {
-  // TODO: Use key for name
   private podcasts = new PwaStore<IPodcast>('podcasts');
   private episodes = new PwaStore<IPodcastEpisode>('episodes');
+  private playlist = new PwaStore<ISerializablePlaylist>('playlist');
   private subscriptions = new PwaStore<ISubscription>('subscriptions');
 
   public addEpisode = this.createSetter(this.episodes, 'audioUrl');
@@ -28,6 +29,9 @@ export class StoreService {
   public removeSubscription = this.createDeleter(this.subscriptions);
   public getSubscription = this.createGetter(this.subscriptions);
   public getAllSubscriptions = this.createCollector(this.subscriptions);
+
+  public setPlaylist = this.createSetter(this.playlist, 'playlistKey');
+  public getPlaylist = this.createGetter(this.playlist);
 
   private createSetter<T extends IStorable>(store: PwaStore<T>, keyableProperty: keyof T): (v: T) => (string | undefined) {
     return (value: T) => {

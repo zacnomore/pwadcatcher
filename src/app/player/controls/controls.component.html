@@ -12,7 +12,7 @@
     </mat-slider>
     <span class="end-time">{{audio.durationReadable}}</span>
    </div>
-   <button mat-button>
+   <button mat-button (click)="prev()" [disabled]="!audio.canPrev">
     <mat-icon>skip_previous</mat-icon>
    </button>
    
@@ -29,7 +29,7 @@
     <mat-icon>fast_forward</mat-icon>
   </button>
 
-  <button mat-button>
+  <button mat-button (click)="next()" [disabled]="!audio.canSkip">
     <mat-icon>skip_next</mat-icon>
   </button>
 </ng-container>

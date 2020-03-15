@@ -8,10 +8,41 @@ mat-action-list {
   margin: 8px 0;
   height: 64px;
 
+  &.selected {
+    background: rgba(0, 0, 0, .2);
+  }
+
   img {
     max-height: 100%;
     padding: 8px 16px 8px 8px;
     box-sizing: border-box;
     object-fit: contain;
+  }
+
+  h3 {
+    flex: 1;
+    padding-right: 40px;
+  }
+
+  .anchor {
+    cursor: grab;
+  }
+}
+
+// TODO: Replace? This isn't a happy dragger
+::ng-deep button.cdk-drag {
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 0 16px;
+  border: none;
+  
+  .mat-list-item-content {
+    display: flex;
+    align-items: center;
+
+    box-sizing: border-box;
+    padding: 0 16px;
+    height: inherit;
   }
 }
