@@ -6,15 +6,15 @@
 </form>
 
 <ng-container *ngIf="(searchResults$ | async) as results">
-  <ng-container *ngIf="(loading$ | async) === (false | null | undefined); else loading">
+  <ng-container *ngIf="(loading$ | async); else list">
+    <div class="spinner">
+      <mat-spinner></mat-spinner>
+    </div>
+  </ng-container> 
+  <ng-template #list>
     <app-podcast-list
       [list]="(list$ | async)" 
       (clickItem)="viewPodcast($event, results)">
     </app-podcast-list>
-  </ng-container> 
-  <ng-template #loading>
-    <div class="spinner">
-      <mat-spinner></mat-spinner>
-    </div>
   </ng-template>
 </ng-container>
