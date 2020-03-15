@@ -21,7 +21,6 @@ export class AudioPlayerService {
   ]);
 
   public audioState$: Observable<IAudioState> = this.playlistService.currentEpisode$.pipe(
-    filter((cur): cur is IPodcastEpisode => cur !== null),
     tap(currentEp => this.loadAudio(currentEp)),
     switchMap(() => {
       return this.listenToState(this.audio).pipe(
@@ -45,10 +44,14 @@ export class AudioPlayerService {
     }
   }
 
-  private loadAudio(episode: IPodcastEpisode) {
-    this.audio.src = episode.audioUrl;
-    this.audio.load();
-    this.audio.play();
+  private loadAudio(episode: IPodcastEpisode | null) {
+    if (episode) {
+      this.audio.src = episode.audioUrl;
+      this.audio.load();
+      this.audio.play();
+    } else {
+      this.audio.src = '';
+    }
   }
 
   private listenToState(audio: HTMLAudioElement): Observable<IAudioState> {
