@@ -46,12 +46,16 @@ export class PlaylistService {
     this.playlistBS.next(newPlaylist);
   }
 
-  public changeEpisode(indexShift: number) {
-    const newIndex = (this.currentEpisodeBS.value === null ? -1 : this.currentEpisodeBS.value) + indexShift;
-    if (newIndex > this.playlistBS.value.length - 1 || newIndex < 0) {
-      this.currentEpisodeBS.next(null);
-    } else {
-      this.currentEpisodeBS.next(newIndex);
+  public changeEpisode({ indexShift, index }: { indexShift?: number, index?: number }) {
+    if (indexShift) {
+      const newIndex = (this.currentEpisodeBS.value === null ? -1 : this.currentEpisodeBS.value) + indexShift;
+      if (newIndex > this.playlistBS.value.length - 1 || newIndex < 0) {
+        this.currentEpisodeBS.next(null);
+      } else {
+        this.currentEpisodeBS.next(newIndex);
+      }
+    } else if(index) {
+      this.currentEpisodeBS.next(index);
     }
   }
 
