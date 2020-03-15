@@ -6,7 +6,7 @@
 </form>
 
 <ng-container *ngIf="(searchResults$ | async) as results">
-  <ng-container *ngIf="!(loading$ | async); else loading">
+  <ng-container *ngIf="(loading$ | async) === (false | null | undefined); else loading">
     <app-podcast-list
       [list]="(list$ | async)" 
       (clickItem)="viewPodcast($event, results)">
