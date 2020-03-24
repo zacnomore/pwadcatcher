@@ -127,15 +127,6 @@
     rxjs "6.5.3"
     source-map "0.7.3"
 
-"@angular-devkit/schematics@9.0.6":
-  version "9.0.6"
-  resolved "https://registry.yarnpkg.com/@angular-devkit/schematics/-/schematics-9.0.6.tgz#5ad6e523919fee1314a12c9aa773612b4f5dbedb"
-  integrity sha512-X7qZDJVrFcPUn+jNUeOH7Bx1D7YTpTFr0d3DBIsQzseReSGu7ugWziQPS4gc5Xm5K0nb8vx6DYtyW0FaIvX0ZA==
-  dependencies:
-    "@angular-devkit/core" "9.0.6"
-    ora "4.0.2"
-    rxjs "6.5.3"
-
 "@angular-devkit/schematics@9.0.7":
   version "9.0.7"
   resolved "https://registry.yarnpkg.com/@angular-devkit/schematics/-/schematics-9.0.7.tgz#df5936b0cf24a102d110da7ab3ab63feab7e28ff"
@@ -241,14 +232,14 @@
   resolved "https://registry.yarnpkg.com/@angular/platform-browser/-/platform-browser-9.0.6.tgz#6545454f964f3cbcfc8d854d89c0f2d97f4cd7b7"
   integrity sha512-CA7dW+j1mVh3OUo3C2vIn05NxNgrDPK4vpfRIwBIn1gErpnIXCa2vgnRzn3H9zKizKt0iuwSIukEnWG280Q0xg==
 
-"@angular/pwa@^0.900.6":
-  version "0.900.6"
-  resolved "https://registry.yarnpkg.com/@angular/pwa/-/pwa-0.900.6.tgz#070496a4cf96b663768303d89a5c531ea143bd7e"
-  integrity sha512-pEdQmoPU9ulKbqXDoApER+xv+JStlvs3ZDz3XxTM7gUkR+0TGABbkBYQVmSAIBLK2tvZ2Q73XqCJCCSfwB5ATg==
+"@angular/pwa@^0.900.7":
+  version "0.900.7"
+  resolved "https://registry.yarnpkg.com/@angular/pwa/-/pwa-0.900.7.tgz#dab4e04aa1e14f73eda98738a7a0f9e69d50faaf"
+  integrity sha512-rS+5D4txDeJhYTIs9lKyvjP/tWAH10/4JHTPQaIebqzIrN9ZFcvAWZ86/ZTXfl8pYBS3bs4s45BwQ1+KwyA3Lg==
   dependencies:
-    "@angular-devkit/core" "9.0.6"
-    "@angular-devkit/schematics" "9.0.6"
-    "@schematics/angular" "9.0.6"
+    "@angular-devkit/core" "9.0.7"
+    "@angular-devkit/schematics" "9.0.7"
+    "@schematics/angular" "9.0.7"
     parse5-html-rewriting-stream "5.1.0"
 
 "@angular/router@^9.0.6":
@@ -971,14 +962,6 @@
   integrity sha512-EjP/pdBMKsEMCGQ1OLLmBGnjA3QZG1erYTrMqmDVqypeQsY1UUFTY4h1C4d6WNq33qk/nMxpcJzuAhxt+nLQyg==
   dependencies:
     "@types/node" "*"
-
-"@schematics/angular@9.0.6":
-  version "9.0.6"
-  resolved "https://registry.yarnpkg.com/@schematics/angular/-/angular-9.0.6.tgz#791f05f7a4ddaa77daece79377abebf0df6fb840"
-  integrity sha512-oYIfSJF9ISAJWJjIiUnj8Rp1m4t9T3oqKl1FzkMWXvUmR1BfkO2S2/Moi2RQ0aHG6D9Oz4CJjrsQRmjaqBpEZw==
-  dependencies:
-    "@angular-devkit/core" "9.0.6"
-    "@angular-devkit/schematics" "9.0.6"
 
 "@schematics/angular@9.0.7":
   version "9.0.7"
