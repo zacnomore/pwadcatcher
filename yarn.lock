@@ -1087,10 +1087,10 @@
     rxjs "6.5.4"
     webpack-sources "1.4.3"
 
-"@now/node@^1.4.1":
-  version "1.4.1"
-  resolved "https://registry.yarnpkg.com/@now/node/-/node-1.4.1.tgz#a07e22abb34d892e77fef1471f35518ddb39dbfc"
-  integrity sha512-EjP/pdBMKsEMCGQ1OLLmBGnjA3QZG1erYTrMqmDVqypeQsY1UUFTY4h1C4d6WNq33qk/nMxpcJzuAhxt+nLQyg==
+"@now/node@^1.5.1":
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/@now/node/-/node-1.5.1.tgz#e0d559ea5d1efaa5cc8a7c35208aa6ad01634ab2"
+  integrity sha512-2nXhdqo4aNShHuTwbdQmZQX4jYXAoI85+FTPStD5DZVC3kbSS8m5RDxJu7Op7ffBPwIu8Nmp6ukjXct3Abad7g==
   dependencies:
     "@types/node" "*"
 
