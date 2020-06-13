@@ -2,6 +2,7 @@ import { IImageSet } from './image.model';
 import { IStorable } from 'src/app/store/store.service';
 
 export interface IPodcast extends IStorable {
+  key: number;
   name: string;
   feedUrl: string;
   description?: string;
