@@ -33,7 +33,11 @@ export class PlaylistComponent {
     private audioService: AudioPlayerService
   ) { }
 
-  public reorderPlaylist(reorderedItem: ReorderedItem) {
+  public reorderPlaylist(reorderedItem: ReorderedItem): void {
     this.playlistService.reorder(reorderedItem.previousIndex, reorderedItem.currentIndex);
+  }
+
+  public removeFromPlaylist(index: number): void {
+    this.playlistService.removeFromPlaylist({index});
   }
 }
