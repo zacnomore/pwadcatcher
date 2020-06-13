@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Observable, fromEvent, merge, BehaviorSubject } from 'rxjs';
-import { map, scan, startWith, shareReplay, tap, filter, switchMap } from 'rxjs/operators';
+import { Observable, fromEvent, merge } from 'rxjs';
+import { map, scan, startWith, shareReplay, tap, switchMap } from 'rxjs/operators';
 import { IPodcastEpisode } from 'src/app/shared/models/podcast.model';
 import { PlaylistService } from 'src/app/playlist/services/playlist.service';
 
@@ -44,7 +44,7 @@ export class AudioPlayerService {
     }
   }
 
-  private loadAudio(episode: IPodcastEpisode | null) {
+  private loadAudio(episode: IPodcastEpisode | null): void {
     if (episode) {
       this.audio.src = episode.audioUrl;
       this.audio.load();

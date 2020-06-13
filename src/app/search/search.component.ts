@@ -45,7 +45,7 @@ export class SearchComponent {
     private store: StoreService,
     private route: ActivatedRoute) { }
 
-  public search() {
+  public search(): void {
     const terms = this.searchForm.get('terms');
     if (terms && terms.value) {
       this.loadingBS.next(true);
@@ -53,7 +53,7 @@ export class SearchComponent {
     }
   }
 
-  public viewPodcast(index: number, currentResults: IPodcast[]) {
+  public viewPodcast(index: number, currentResults: IPodcast[]): void {
     const key = this.store.addPodcast(currentResults[index]);
     this.router.navigate(['podcast', 'overview', key]);
   }

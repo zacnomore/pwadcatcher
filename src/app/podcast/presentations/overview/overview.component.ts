@@ -37,11 +37,11 @@ export class OverviewComponent {
       filter((podcast): podcast is IPodcastFeed => podcast !== undefined)
     );
 
-  public viewFeed() {
+  public viewFeed(): void {
     this.router.navigate(['podcast', 'feed', this.activeId]);
   }
 
-  public subscribe() {
+  public subscribe(): void {
     this.subscriptions.subscribe(this.activeId);
     this.router.navigate(['']);
   }

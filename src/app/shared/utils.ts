@@ -9,14 +9,14 @@ export interface IOptions {
 
 export function debounce<F extends Procedure<Parameters<F>>>(
   func: F,
-  waitMilliseconds = 50,
+  waitMilliseconds: number = 50,
   options: IOptions = {
     isImmediate: false
   },
 ): (this: ThisParameterType<F>, ...args: Parameters<F>) => void {
   let timeoutId: ReturnType<typeof setTimeout> | undefined;
 
-  return function(this: ThisParameterType<F>, ...args: Parameters<F>) {
+  return function(this: ThisParameterType<F>, ...args: Parameters<F>): void {
     const context = this;
 
     const doLater = () => {

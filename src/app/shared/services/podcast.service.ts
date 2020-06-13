@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { IPodcast, IPodcastFeed } from '../models/podcast.model';
+import { IPodcast, IPodcastFeed, IPodcastEpisode } from '../models/podcast.model';
 import { StoreService } from 'src/app/store/store.service';
 import { of, Observable, from } from 'rxjs';
 import { RssReaderService } from './rss-reader.service';
@@ -14,7 +14,7 @@ export class PodcastService {
   constructor(private store: StoreService, private rss: RssReaderService, private searchService: SearchService) {}
 
   // TODO: Setup differentiated key types for each store
-  public async getEpisode(key: string) {
+  public async getEpisode(key: string): Promise<IPodcastEpisode | undefined> {
     return this.store.getEpisode(key);
   }
 

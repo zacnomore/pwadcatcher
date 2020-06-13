@@ -5,11 +5,4 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
   templateUrl: './navigation.component.html',
   styleUrls: ['./navigation.component.scss']
 })
-export class NavigationComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit() {
-  }
-
-}
+export class NavigationComponent {}

@@ -38,7 +38,7 @@ export class PlaylistService {
     this.initPlaylist();
   }
 
-  public playEpisode(episode: IPodcastEpisode) {
+  public playEpisode(episode: IPodcastEpisode): void {
     this.addToPlaylist(episode);
     this.currentEpisodeBS.next(this.playlistBS.value.length - 1);
   }
@@ -54,14 +54,14 @@ export class PlaylistService {
     { index, episode }:
       { index?: undefined; episode: IPodcastEpisode; } |
       { index: number; episode?: undefined; }
-  ) {
+  ): void {
     const newPlaylist = this.playlistBS.value.filter((ep, ind) => {
       return ep !== episode && ind !== index;
     });
     this.playlistBS.next(newPlaylist);
   }
 
-  public changeEpisode({ indexShift, index }: { indexShift?: number, index?: number }) {
+  public changeEpisode({ indexShift, index }: { indexShift?: number, index?: number }): void {
     if (indexShift) {
       const newIndex = (this.currentEpisodeBS.value === null ? -1 : this.currentEpisodeBS.value) + indexShift;
       if (newIndex > this.playlistBS.value.length - 1 || newIndex < 0) {
@@ -74,7 +74,7 @@ export class PlaylistService {
     }
   }
 
-  public reorder(oldIndex: number, newIndex: number) {
+  public reorder(oldIndex: number, newIndex: number): void {
     const valueToMove = this.playlistBS.value[oldIndex];
     const newPlaylist = [
       ...this.playlistBS.value.slice(0, oldIndex),
@@ -90,7 +90,7 @@ export class PlaylistService {
   }
 
 
-  endEpisode() {
+  endEpisode(): void {
     if (this.currentEpisodeBS.value !== null) {
       this.removeFromPlaylist({ index: this.currentEpisodeBS.value });
     }
