@@ -31,12 +31,12 @@ export class EpisodeComponent {
     switchMap(key => this.podcastService.getEpisode(key))
   );
 
-  playEpisode(episode: IPodcastEpisode) {
+  playEpisode(episode: IPodcastEpisode): void {
       this.playlistService.playEpisode(episode);
       this.router.navigate(['/player']);
   }
 
-  queEpisode(episode: IPodcastEpisode) {
+  queEpisode(episode: IPodcastEpisode): void {
     this.playlistService.addToPlaylist(episode);
     this.router.navigate(['/playlist']);
   }

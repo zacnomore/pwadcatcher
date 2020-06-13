@@ -96,6 +96,7 @@
         "allow-leading-underscore"
       ]
     },
+    "typedef": [true, "call-signature", "parameter"],
     "cyclomatic-complexity": true,
     "semicolon": true
   },

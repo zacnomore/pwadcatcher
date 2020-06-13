@@ -49,7 +49,7 @@ export class FeedComponent {
   );
 
 
-  viewEpisode(feed: IFeedItem[], index: number) {
+  viewEpisode(feed: IFeedItem[], index: number): void {
     this.router.navigate(['podcast', 'episode', feed[index].episodeKey]);
   }
 }

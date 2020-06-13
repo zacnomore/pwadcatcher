@@ -17,7 +17,7 @@ export class SubscriptionsService {
     return this.store.removeSubscription(podcastKey);
   }
 
-  public async getSubscriptions() {
+  public async getSubscriptions(): Promise<IPodcast[]> {
     const subs = await this.store.getAllSubscriptions();
     const pods = await Promise.all(subs.map(
       ({ podcastKey }) => this.store.getPodcast(podcastKey)
