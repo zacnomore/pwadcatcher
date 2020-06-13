@@ -36,7 +36,6 @@ export class SubscriptionsComponent implements OnInit {
   }
 
   viewPodcast(index: number): void {
-    const key = this.podcastService.getPodcastKey(this._subscriptions[index]);
-    this.router.navigate(['podcast', 'feed', key]);
+    this.router.navigate(['podcast', 'feed', this._subscriptions[index].key]);
   }
 }

@@ -22,4 +22,15 @@ export class SearchService {
       })
     );
   }
+
+  public findPodcast(key: string): Observable<IPodcast | undefined> {
+    return this.http.get<IAppleSearch>(`${this.env.env.appleSearchUrl}?term=${key}`).pipe(
+      map(({ results }) => results.map(resultToPodcast)),
+      map(results => results[0]),
+      catchError((e: HttpErrorResponse) => {
+        console.error(e.status);
+        return of(undefined);
+      })
+    );
+  }
 }

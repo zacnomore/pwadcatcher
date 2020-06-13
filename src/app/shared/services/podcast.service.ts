@@ -4,13 +4,14 @@ import { StoreService } from 'src/app/store/store.service';
 import { of, Observable, from } from 'rxjs';
 import { RssReaderService } from './rss-reader.service';
 import { tap, switchMap } from 'rxjs/operators';
+import { SearchService } from 'src/app/search/services/search.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PodcastService {
 
-  constructor(private store: StoreService, private rss: RssReaderService) {}
+  constructor(private store: StoreService, private rss: RssReaderService, private searchService: SearchService) {}
 
   // TODO: Setup differentiated key types for each store
   public async getEpisode(key: string) {
@@ -18,7 +19,15 @@ export class PodcastService {
   }
 
   public async getPodcast(key: string): Promise<IPodcast | undefined> {
-    return this.store.getPodcast(key);
+    return from(this.store.getPodcast(key)).pipe(
+      switchMap(resultFromStore => {
+        if(resultFromStore) {
+          return of(resultFromStore);
+        } else {
+          return this.searchService.findPodcast(key);
+        }
+      })
+    ).toPromise();
   }
 
   public getFeed(key: string): Observable<IPodcastFeed | undefined> {
@@ -35,9 +44,5 @@ export class PodcastService {
         return of(undefined);
       })
     );
-  }
-
-  public getPodcastKey(podcast: IPodcast): string | undefined {
-    return this.store.keyPodcast(podcast);
   }
 }
