@@ -1,7 +1,8 @@
 <app-podcast-list
   *ngIf="(playlist$ | async) as playlist"
   (reorder)="reorderPlaylist($event)"
+  (removeItem)="removeFromPlaylist($event)"
   [list]="playlist"
-  [draggable]="true"
+  [editable]="true"
   [class.empty]="!playlist.length">
 </app-podcast-list>

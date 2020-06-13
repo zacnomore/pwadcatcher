@@ -9,12 +9,17 @@ import { CdkDragDrop } from '@angular/cdk/drag-drop/drag-events';
 })
 export class PodcastListComponent {
   @Input() list?: IListItem[];
-  @Input() draggable?: boolean;
+  @Input() editable?: boolean;
   @Output() clickItem = new EventEmitter<number>();
+  @Output() removeItem = new EventEmitter<number>();
   @Output() reorder = new EventEmitter<ReorderedItem>();
 
   public onClickItem(index: number): void {
     this.clickItem.emit(index);
+  }
+
+  public onDeleteItem(index: number): void {
+    this.removeItem.emit(index);
   }
 
   public drop({previousIndex, currentIndex}: CdkDragDrop<IListItem[]>): void {
