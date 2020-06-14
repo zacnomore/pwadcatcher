@@ -1,13 +1,13 @@
 // Adapted from https://github.com/chodorowicz/ts-debounce
 
 // tslint:disable-next-line: no-any
-export type Procedure<P> = (...args: any[]) => void;
+export type Procedure = (...args: any[]) => void;
 
 export interface IOptions {
   isImmediate: boolean;
 }
 
-export function debounce<F extends Procedure<Parameters<F>>>(
+export function debounce<F extends Procedure> (
   func: F,
   waitMilliseconds: number = 50,
   options: IOptions = {
