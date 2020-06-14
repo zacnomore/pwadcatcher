@@ -54,7 +54,7 @@ export class SearchComponent {
   }
 
   public viewPodcast(index: number, currentResults: IPodcast[]): void {
-    const key = this.store.addPodcast(currentResults[index]);
+    const key = this.store.setPodcast(currentResults[index]);
     this.router.navigate(['podcast', 'overview', key]);
   }
 }

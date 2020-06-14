@@ -10,7 +10,7 @@ export class SubscriptionsService {
   constructor(private store: StoreService) { }
 
   public subscribe(podcastKey: string): string | undefined {
-    return this.store.addSubscription({ podcastKey });
+    return this.store.setSubscription({ podcastKey });
   }
 
   public unsubscribe(podcastKey: string): void {

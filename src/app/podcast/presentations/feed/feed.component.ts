@@ -42,7 +42,7 @@ export class FeedComponent {
       const item: IFeedItem = {
         title: enhancedEp.title,
         image: enhancedEp.thumbnail?.small,
-        episodeKey: this.store.addEpisode(enhancedEp)
+        episodeKey: this.store.setEpisode(enhancedEp)
       };
       return item;
     }))
