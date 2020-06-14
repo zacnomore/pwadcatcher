@@ -38,3 +38,21 @@ export function debounce<F extends Procedure> (
     }
   };
 }
+
+
+// Adapted from https://gist.github.com/Almenon/f2043143e6e7b4610817cb48c962d4d5#file-throttle-ts-L48
+
+export function throttle<F extends Procedure>(fn: F, wait: number): (...args:Parameters<F>) => void {
+  let wasCalled = false;
+  const context = this;
+
+  return (...args) => {
+    if (!wasCalled) {
+      fn.apply(context, args);
+      wasCalled = true;
+      setTimeout(() => {
+        wasCalled = false;
+      }, wait);
+    }
+  };
+}

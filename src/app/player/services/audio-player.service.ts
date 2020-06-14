@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Observable, fromEvent, merge } from 'rxjs';
-import { map, scan, startWith, shareReplay, tap, switchMap } from 'rxjs/operators';
+import { map, scan, startWith, shareReplay, tap, switchMap, withLatestFrom } from 'rxjs/operators';
 import { IPodcastEpisode } from 'src/app/shared/models/podcast.model';
-import { PlaylistService } from 'src/app/playlist/services/playlist.service';
+import { PlaylistService, ISerializablePlaylist } from 'src/app/playlist/services/playlist.service';
+import { throttle } from 'src/app/shared/utils';
+import { StoreService } from 'src/app/store/store.service';
 
 @Injectable({
   providedIn: 'root'
@@ -20,21 +22,39 @@ export class AudioPlayerService {
     [PlayerAction.Seek, (el, params) => params ? el.currentTime = params : undefined ]
   ]);
 
+  private storeAudioState = throttle((state: IAudioState, episode: IPodcastEpisode) => {
+    this.storeService.setEpisode({
+      ...episode,
+      lastPlayheadPosition: state.currentTime
+    });
+  }, 4000);
+
   public audioState$: Observable<IAudioState> = this.playlistService.currentEpisode$.pipe(
+    // Side-effect sets the native audio player
     tap(currentEp => this.loadAudio(currentEp)),
-    switchMap(() => {
+    // Listen to the native player's state
+    switchMap((currentEp) => {
       return this.listenToState(this.audio).pipe(
         startWith({
           canPlay: false,
           currentTime: 0,
           duration: NaN,
           isPlaying: false
-        } as IAudioState));
+        } as IAudioState),
+        map(audio => ({audio, currentEp}))
+      );
     }),
+    // Persist playhead state
+    tap(({audio, currentEp}) => {
+      if(currentEp) {
+        this.storeAudioState(audio, currentEp);
+      }
+    }),
+    map(({audio}) => audio),
     shareReplay(1)
   );
 
-  constructor(private playlistService: PlaylistService) { }
+  constructor(private playlistService: PlaylistService, private storeService: StoreService) { }
 
   // TODO: The params thing is a bit silly. It should take additional information typed by what kind of action
   public doAction(actionType: PlayerAction, params?: number): void {
@@ -48,6 +68,9 @@ export class AudioPlayerService {
     if (episode) {
       this.audio.src = episode.audioUrl;
       this.audio.load();
+      if(episode.lastPlayheadPosition) {
+        this.audio.currentTime = episode.lastPlayheadPosition;
+      }
       this.audio.play();
     } else {
       this.audio.src = '';
