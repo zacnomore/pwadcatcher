@@ -22,18 +22,18 @@ export class StoreService {
   private playlist = new PersistentStore<ISerializablePlaylist>('playlist');
   private subscriptions = new PersistentStore<ISubscription>('subscriptions');
 
-  public addEpisode = this.createSetter({ store: this.episodes, keyableProperty: 'audioUrl' });
+  public setEpisode = this.createSetter({ store: this.episodes, keyableProperty: 'audioUrl' });
   public getEpisode = this.createGetter(this.episodes);
 
-  public addPodcast = this.createSetter({ store: this.podcasts, prekeyedProperty: 'key' });
+  public setPodcast = this.createSetter({ store: this.podcasts, prekeyedProperty: 'key' });
   public getPodcast = this.createGetter(this.podcasts);
 
-  public addSubscription = this.createSetter({ store: this.subscriptions, keyableProperty: 'podcastKey' });
+  public setSubscription = this.createSetter({ store: this.subscriptions, keyableProperty: 'podcastKey' });
   public removeSubscription = this.createDeleter(this.subscriptions);
   public getSubscription = this.createGetter(this.subscriptions);
   public getAllSubscriptions = this.createCollector(this.subscriptions);
 
-  public setPlaylist = this.createSetter({ store: this.playlist, keyableProperty: 'playlistKey' });
+  public setPlaylist = this.createSetter({ store: this.playlist, prekeyedProperty: 'playlistKey' });
   public getPlaylist = this.createGetter(this.playlist);
 
   private createSetter<T extends IStorable>(config: ISetterConfig<T> | ISetterConfigPreHashed<T>): (v: T) => (string | undefined) {
