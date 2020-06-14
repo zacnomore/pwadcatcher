@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { PlaylistService } from './services/playlist.service';
 import { map, distinctUntilChanged } from 'rxjs/operators';
 import { IListItem, ReorderedItem } from '../shared/components/podcast-list/podcast-list.component';

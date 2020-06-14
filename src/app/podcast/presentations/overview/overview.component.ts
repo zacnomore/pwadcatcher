@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { map, filter, switchMap, share, tap, mergeMap, shareReplay } from 'rxjs/operators';
+import { map, filter, switchMap, tap, shareReplay } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { IPodcast, IPodcastFeed } from 'src/app/shared/models/podcast.model';
 import { PodcastService } from 'src/app/shared/services/podcast.service';

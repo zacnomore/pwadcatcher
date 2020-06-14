@@ -3,7 +3,6 @@ import { IListItem } from '../shared/components/podcast-list/podcast-list.compon
 import { SubscriptionsService } from './subscriptions.service';
 import { Router } from '@angular/router';
 import { IPodcast } from '../shared/models/podcast.model';
-import { PodcastService } from '../shared/services/podcast.service';
 
 @Component({
   templateUrl: './subscriptions.component.html',
@@ -24,7 +23,6 @@ export class SubscriptionsComponent implements OnInit {
 
   constructor(
     private subscriptionService: SubscriptionsService,
-    private podcastService: PodcastService,
     private router: Router
   ) { }
 
