@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Observable, combineLatest } from 'rxjs';
 import { IAudioState, AudioPlayerService, PlayerAction } from '../services/audio-player.service';
-import { tap, map } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { PlaylistService } from 'src/app/playlist/services/playlist.service';
 
 @Component({

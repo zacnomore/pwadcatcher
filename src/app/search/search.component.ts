@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { SearchService } from './services/search.service';
 import { Observable, BehaviorSubject } from 'rxjs';
-import { switchMap, map, distinctUntilChanged, tap, shareReplay, filter, startWith } from 'rxjs/operators';
+import { switchMap, map, distinctUntilChanged, tap, shareReplay, filter } from 'rxjs/operators';
 import { FormBuilder } from '@angular/forms';
 import { IListItem } from '../shared/components/podcast-list/podcast-list.component';
 import { Router, ActivatedRoute } from '@angular/router';

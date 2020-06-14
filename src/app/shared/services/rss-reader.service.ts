@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { map, catchError, tap } from 'rxjs/operators';
+import { map, catchError } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { of, Observable } from 'rxjs';
 import { IPodcastFeed, IPodcastEpisode } from '../models/podcast.model';

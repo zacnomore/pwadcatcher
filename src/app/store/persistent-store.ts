@@ -1,7 +1,5 @@
 import { get as getIDB, set as setIDB, Store} from 'idb-keyval';
 import { debounce } from '../shared/utils';
-import { Injectable } from '@angular/core';
-
 
 interface ISerializableKeyValuePair<V> {
   key: string;

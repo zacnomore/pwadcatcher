@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { AudioPlayerService } from '../services/audio-player.service';
 import { IImage } from 'src/app/shared/models/image.model';
 import { PlaylistService } from 'src/app/playlist/services/playlist.service';
 
