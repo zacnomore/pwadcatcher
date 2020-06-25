@@ -1,6 +1,6 @@
 <form [formGroup]="searchForm" (ngSubmit)="search()">
   <mat-form-field>
-    <input matInput formControlName="terms" placeholder="Search" />
+    <input #terms matInput formControlName="terms" placeholder="Search" />
   </mat-form-field>
   <button mat-flat-button color="primary">Search</button>
 </form>
@@ -13,7 +13,7 @@
   </ng-container> 
   <ng-template #list>
     <app-podcast-list
-      [list]="(list$ | async)" 
+      [list]="toList(results, terms.value)" 
       (clickItem)="viewPodcast($event, results)">
     </app-podcast-list>
   </ng-template>
