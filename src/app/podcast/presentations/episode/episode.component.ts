@@ -5,6 +5,7 @@ import { map, filter, share, switchMap } from 'rxjs/operators';
 import { PodcastService } from 'src/app/shared/services/podcast.service';
 import { IPodcastEpisode } from 'src/app/shared/models/podcast.model';
 import { PlaylistService } from 'src/app/playlist/services/playlist.service';
+import { DownloadService } from 'src/app/download/download.service';
 
 @Component({
   selector: 'app-episode',
@@ -17,7 +18,8 @@ export class EpisodeComponent {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private podcastService: PodcastService,
-    private playlistService: PlaylistService
+    private playlistService: PlaylistService,
+    private downloadService: DownloadService
   ) { }
 
   private episodeKey$: Observable<string> = this.activatedRoute.paramMap.pipe(
@@ -38,5 +40,9 @@ export class EpisodeComponent {
   queEpisode(episode: IPodcastEpisode): void {
     this.playlistService.addToPlaylist(episode);
     this.router.navigate(['/playlist']);
+  }
+
+  downloadEpisode(episode: IPodcastEpisode): void {
+    this.downloadService.downloadEpisode(episode).subscribe(console.log);
   }
 }

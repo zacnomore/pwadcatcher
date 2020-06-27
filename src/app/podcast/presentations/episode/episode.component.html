@@ -6,5 +6,6 @@
     <p *ngIf="ep.summary" [innerHTML]="ep.summary"></p>
     <button mat-flat-button color="primary" (click)="playEpisode(ep)">Play</button>
     <button mat-flat-button color="primary" (click)="queEpisode(ep)">Add to Playlist</button>
+    <button mat-flat-button color="primary" (click)="downloadEpisode(ep)">Download</button>
   </div>
 </ng-container>
