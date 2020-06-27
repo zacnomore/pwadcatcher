@@ -66,11 +66,10 @@ export class AudioPlayerService {
 
   private loadAudio(episode: IPodcastEpisode | null): void {
     if (episode) {
-      this.audio.src = episode.audioUrl;
+      const src = episode.audio !== undefined ? URL.createObjectURL(episode.audio) : episode.audioUrl;
+      this.audio.src = src;
       this.audio.load();
-      if(episode.lastPlayheadPosition) {
-        this.audio.currentTime = episode.lastPlayheadPosition;
-      }
+      this.audio.currentTime = episode.lastPlayheadPosition || 0;
       this.audio.play();
     } else {
       this.audio.src = '';

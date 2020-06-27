@@ -43,6 +43,6 @@ export class EpisodeComponent {
   }
 
   downloadEpisode(episode: IPodcastEpisode): void {
-    this.downloadService.downloadEpisode(episode).subscribe(console.log);
+    this.downloadService.downloadEpisode(episode);
   }
 }

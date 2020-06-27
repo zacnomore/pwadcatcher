@@ -24,6 +24,7 @@ export interface IPodcastFeed {
 export interface IPodcastEpisode extends IStorable {
   title: string;
   audioUrl: string;
+  audio?: Blob;
   summary?: string;
   publishDate?: Date;
   thumbnail?: IImageSet;
