@@ -1,44 +1,69 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { IPodcastEpisode } from '../shared/models/podcast.model';
-import { HttpClient, HttpRequest, HttpEventType, HttpResponse } from '@angular/common/http';
-import { map, filter, share } from 'rxjs/operators';
 import { StoreService } from '../store/store.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DownloadService {
-  constructor(private http: HttpClient, private store: StoreService) { }
+  constructor(private store: StoreService) { }
 
-  public downloadEpisode(episode: IPodcastEpisode): Observable<IDownloadProgress> {
-    const req = new HttpRequest('GET', episode.audioUrl, {
-      responseType: 'blob',
-      reportProgress: true,
+  public downloadEpisode(episode: IPodcastEpisode): Observable<DownloadProgress> {
+    const sub = new Subject<DownloadProgress>();
+    // const downloader = this.buildDownloader(episode.audioUrl);
+    fetch(episode.audioUrl, {
+      mode: 'no-cors'
+    }).then(resp => resp.blob()).then(audio => {
+      this.store.setEpisode({...episode, audio});
+      sub.next(new DownloadProgress(1, 1, true));
     });
+    return sub.asObservable();
+  }
 
-    const progress = this.http.request<Blob>(req).pipe(
-      map(event => {
-        if (event.type === HttpEventType.DownloadProgress && event.total) {
-          const percentDone = Math.round(100 * event.loaded / event.total) || 0;
-          return { percentDone, complete: false };
-        } else if (event instanceof HttpResponse && event.body instanceof Blob) {
-          this.store.setEpisode({...episode, audio: event.body});
-          return { percentDone: 100, complete: true };
+  public async download(downloader: AsyncGenerator<DownloadProgress | Blob>, sub: Subject<DownloadProgress>): Promise<Blob | undefined> {
+    for await(const progress of downloader) {
+      if(progress instanceof DownloadProgress) {
+        sub.next(progress);
+      } else {
+        return progress;
+      }
+    }
+  }
+
+  public async* buildDownloader(url: string): AsyncGenerator<DownloadProgress | Blob> {
+    const response = await fetch(url);
+
+    if(response.body) {
+        const reader = response.body.getReader();
+        const total: number = +(response.headers.get('Content-Length') || Number.MAX_SAFE_INTEGER);
+        let receivedLength = 0; // received that many bytes at the moment
+        const chunks: Uint8Array[] = []; // array of received binary chunks (comprises the body)
+
+        let downloading = true;
+        while(downloading) {
+          const {done, value} = await reader.read();
+          downloading = !done;
+          if(value) {
+            chunks.push(value);
+            receivedLength += value.length;
+            yield new DownloadProgress(total, receivedLength);
+          }
         }
-      }),
-      filter<IDownloadProgress | undefined, IDownloadProgress>((event): event is IDownloadProgress => event !== undefined),
-      share()
-    );
 
-    // We want the call to complete whether or not the requester is watching progress
-    progress.subscribe();
-
-    return progress;
+      const chunksAll = new Uint8Array(receivedLength);
+      let position = 0;
+      for(const chunk of chunks) {
+        chunksAll.set(chunk, position);
+        position += chunk.length;
+      }
+      yield new Blob([chunksAll]);
+    } else {
+      throw new Error('No body in response');
+    }
   }
 }
 
-export interface IDownloadProgress {
-  percentDone?: number;
-  complete: boolean;
+export class DownloadProgress {
+  constructor(public received?: number, public total?: number, public complete?: boolean) {}
 }
