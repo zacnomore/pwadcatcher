@@ -5,7 +5,7 @@ import { map, filter, share, switchMap } from 'rxjs/operators';
 import { PodcastService } from 'src/app/shared/services/podcast.service';
 import { IPodcastEpisode } from 'src/app/shared/models/podcast.model';
 import { PlaylistService } from 'src/app/playlist/services/playlist.service';
-import { DownloadService } from 'src/app/download/download.service';
+import { DownloadService, DownloadProgress } from 'src/app/download/download.service';
 
 @Component({
   selector: 'app-episode',
@@ -13,6 +13,7 @@ import { DownloadService } from 'src/app/download/download.service';
   styleUrls: ['./episode.component.scss']
 })
 export class EpisodeComponent {
+  downloadProgress?: Observable<DownloadProgress>;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -32,17 +33,17 @@ export class EpisodeComponent {
     switchMap(key => this.podcastService.getEpisode(key))
   );
 
-  playEpisode(episode: IPodcastEpisode): void {
+  public playEpisode(episode: IPodcastEpisode): void {
       this.playlistService.playEpisode(episode);
       this.router.navigate(['/player']);
   }
 
-  queEpisode(episode: IPodcastEpisode): void {
+  public queEpisode(episode: IPodcastEpisode): void {
     this.playlistService.addToPlaylist(episode);
     this.router.navigate(['/playlist']);
   }
 
-  downloadEpisode(episode: IPodcastEpisode): void {
-    this.downloadService.downloadEpisode(episode);
+  public downloadEpisode(episode: IPodcastEpisode): void {
+    this.downloadProgress = this.downloadService.downloadEpisode(episode);
   }
 }

@@ -12,4 +12,5 @@ export interface IEnvironment {
   production: boolean;
   appleSearchUrl: string;
   feedReadUrl: string;
+  corsBounceUrl: (audioUrl: string) => string;
 }

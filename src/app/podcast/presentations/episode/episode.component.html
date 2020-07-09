@@ -7,5 +7,12 @@
     <button mat-flat-button color="primary" (click)="playEpisode(ep)">Play</button>
     <button mat-flat-button color="primary" (click)="queEpisode(ep)">Add to Playlist</button>
     <button mat-flat-button color="primary" (click)="downloadEpisode(ep)">Download</button>
+    <ng-container *ngIf="(downloadProgress | async) as download">
+      <mat-progress-bar *ngIf="!download.progressNotAvailable" mode="determinate" [value]="download.progress"></mat-progress-bar>
+      <mat-progress-bar *ngIf="download.progressNotAvailable" mode="indeterminate"></mat-progress-bar>
+      {{
+        download.progress
+      }}
+    </ng-container>
   </div>
 </ng-container>

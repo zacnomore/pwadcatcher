@@ -2,26 +2,25 @@ import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { IPodcastEpisode } from '../shared/models/podcast.model';
 import { StoreService } from '../store/store.service';
+import { EnvironmentService } from '../environments/environment.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DownloadService {
-  constructor(private store: StoreService) { }
+  constructor(private store: StoreService, private env: EnvironmentService) {}
 
   public downloadEpisode(episode: IPodcastEpisode): Observable<DownloadProgress> {
-    const sub = new Subject<DownloadProgress>();
-    // const downloader = this.buildDownloader(episode.audioUrl);
-    fetch(episode.audioUrl, {
-      mode: 'no-cors'
-    }).then(resp => resp.blob()).then(audio => {
+    const progressReporter = new Subject<DownloadProgress>();
+    const downloader = this.buildDownloader(episode.audioUrl);
+    this.download(downloader, progressReporter).then(audio => {
       this.store.setEpisode({...episode, audio});
-      sub.next(new DownloadProgress(1, 1, true));
+      progressReporter.next(new DownloadProgress(1, 1, true));
     });
-    return sub.asObservable();
+    return progressReporter.asObservable();
   }
 
-  public async download(downloader: AsyncGenerator<DownloadProgress | Blob>, sub: Subject<DownloadProgress>): Promise<Blob | undefined> {
+  private async download(downloader: AsyncGenerator<DownloadProgress | Blob>, sub: Subject<DownloadProgress>): Promise<Blob | undefined> {
     for await(const progress of downloader) {
       if(progress instanceof DownloadProgress) {
         sub.next(progress);
@@ -31,25 +30,25 @@ export class DownloadService {
     }
   }
 
-  public async* buildDownloader(url: string): AsyncGenerator<DownloadProgress | Blob> {
-    const response = await fetch(url);
+  private async* buildDownloader(url: string): AsyncGenerator<DownloadProgress | Blob> {
+    const response = await fetch(url).catch(() => {
+      return fetch(this.env.env.corsBounceUrl(url));
+    });
 
     if(response.body) {
-        const reader = response.body.getReader();
-        const total: number = +(response.headers.get('Content-Length') || Number.MAX_SAFE_INTEGER);
-        let receivedLength = 0; // received that many bytes at the moment
-        const chunks: Uint8Array[] = []; // array of received binary chunks (comprises the body)
+      const contentLength: string = response.headers.get('Content-Length') || String(Number.MAX_SAFE_INTEGER);
+      const total = Number.parseInt(contentLength, 10);
+      const iterableReader = this.buildIterableReader<Uint8Array>(response.body.getReader());
+      let receivedLength = 0;
+      const chunks: Uint8Array[] = [];
 
-        let downloading = true;
-        while(downloading) {
-          const {done, value} = await reader.read();
-          downloading = !done;
-          if(value) {
-            chunks.push(value);
-            receivedLength += value.length;
-            yield new DownloadProgress(total, receivedLength);
-          }
+      for await (const {value} of iterableReader) {
+        if(value !== undefined) {
+          chunks.push(value);
+          receivedLength += value.length;
+          yield new DownloadProgress(receivedLength, total);
         }
+      }
 
       const chunksAll = new Uint8Array(receivedLength);
       let position = 0;
@@ -58,12 +57,24 @@ export class DownloadService {
         position += chunk.length;
       }
       yield new Blob([chunksAll]);
-    } else {
-      throw new Error('No body in response');
+
+    }
+  }
+
+  private async* buildIterableReader<T>(reader: ReadableStreamDefaultReader<T>): AsyncGenerator<ReadableStreamReadResult<T>> {
+    let finished = false;
+    while(!finished) {
+      const red = await reader.read();
+      finished = red.done;
+      yield red;
     }
   }
 }
 
 export class DownloadProgress {
-  constructor(public received?: number, public total?: number, public complete?: boolean) {}
+  constructor(public received?: number, public total?: number, public complete?: boolean, public progressNotAvailable: boolean = false) {}
+
+  public get progress(): number {
+    return ((this.received || 0) / (this.total || Number.MAX_SAFE_INTEGER)) * 100;
+  }
 }

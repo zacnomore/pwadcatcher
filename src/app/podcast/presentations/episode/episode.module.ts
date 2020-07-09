@@ -2,8 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { EpisodeComponent } from './episode.component';
 import { SharedModule } from 'src/app/shared/shared.module';
-
-
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @NgModule({
   declarations: [
@@ -14,7 +13,8 @@ import { SharedModule } from 'src/app/shared/shared.module';
   ],
   imports: [
     CommonModule,
-    SharedModule
+    SharedModule,
+    MatProgressBarModule
   ]
 })
 export class EpisodeModule { }
