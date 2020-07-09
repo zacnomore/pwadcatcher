@@ -5,7 +5,7 @@ import { map, filter, share, switchMap } from 'rxjs/operators';
 import { PodcastService } from 'src/app/shared/services/podcast.service';
 import { IPodcastEpisode } from 'src/app/shared/models/podcast.model';
 import { PlaylistService } from 'src/app/playlist/services/playlist.service';
-import { DownloadService, DownloadProgress } from 'src/app/download/download.service';
+import { DownloadService, IDownloadReport } from 'src/app/download/download.service';
 
 @Component({
   selector: 'app-episode',
@@ -13,7 +13,7 @@ import { DownloadService, DownloadProgress } from 'src/app/download/download.ser
   styleUrls: ['./episode.component.scss']
 })
 export class EpisodeComponent {
-  downloadProgress?: Observable<DownloadProgress>;
+  downloadProgress?: Observable<IDownloadReport>;
 
   constructor(
     private activatedRoute: ActivatedRoute,

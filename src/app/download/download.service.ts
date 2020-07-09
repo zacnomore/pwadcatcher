@@ -2,25 +2,32 @@ import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { IPodcastEpisode } from '../shared/models/podcast.model';
 import { StoreService } from '../store/store.service';
-import { EnvironmentService } from '../environments/environment.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DownloadService {
-  constructor(private store: StoreService, private env: EnvironmentService) {}
+  constructor(private store: StoreService) {}
 
-  public downloadEpisode(episode: IPodcastEpisode): Observable<DownloadProgress> {
-    const progressReporter = new Subject<DownloadProgress>();
+  public downloadEpisode(episode: IPodcastEpisode): Observable<IDownloadReport> {
+    const progressReporter = new Subject<IDownloadReport>();
     const downloader = this.buildDownloader(episode.audioUrl);
     this.download(downloader, progressReporter).then(audio => {
       this.store.setEpisode({...episode, audio});
       progressReporter.next(new DownloadProgress(1, 1, true));
+    }).catch(fail => {
+      progressReporter.next({
+        reason: 'cors',
+        failure: true
+      });
     });
     return progressReporter.asObservable();
   }
 
-  private async download(downloader: AsyncGenerator<DownloadProgress | Blob>, sub: Subject<DownloadProgress>): Promise<Blob | undefined> {
+  private async download(
+    downloader: AsyncGenerator<DownloadProgress | Blob>,
+    sub: Subject<IDownloadReport>
+  ): Promise<Blob | undefined> {
     for await(const progress of downloader) {
       if(progress instanceof DownloadProgress) {
         sub.next(progress);
@@ -31,9 +38,7 @@ export class DownloadService {
   }
 
   private async* buildDownloader(url: string): AsyncGenerator<DownloadProgress | Blob> {
-    const response = await fetch(url).catch(() => {
-      return fetch(this.env.env.corsBounceUrl(url));
-    });
+    const response = await fetch(url);
 
     if(response.body) {
       const contentLength: string = response.headers.get('Content-Length') || String(Number.MAX_SAFE_INTEGER);
@@ -71,10 +76,17 @@ export class DownloadService {
   }
 }
 
-export class DownloadProgress {
-  constructor(public received?: number, public total?: number, public complete?: boolean, public progressNotAvailable: boolean = false) {}
 
+export class DownloadProgress {
+  constructor(public received?: number, public total?: number, public complete?: boolean) {}
+  failure = false;
   public get progress(): number {
     return ((this.received || 0) / (this.total || Number.MAX_SAFE_INTEGER)) * 100;
   }
 }
+export interface IDownloadFailure {
+  failure: true;
+  reason: string;
+}
+
+export type IDownloadReport = DownloadProgress | IDownloadFailure;
