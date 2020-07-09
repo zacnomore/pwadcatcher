@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
-import { map, filter, share, switchMap } from 'rxjs/operators';
+import { map, filter, share, switchMap, tap } from 'rxjs/operators';
 import { PodcastService } from 'src/app/shared/services/podcast.service';
 import { IPodcastEpisode } from 'src/app/shared/models/podcast.model';
 import { PlaylistService } from 'src/app/playlist/services/playlist.service';
@@ -44,6 +44,6 @@ export class EpisodeComponent {
   }
 
   public downloadEpisode(episode: IPodcastEpisode): void {
-    this.downloadProgress = this.downloadService.downloadEpisode(episode);
+    this.downloadProgress = this.downloadService.downloadEpisode(episode).pipe(tap(console.log));
   }
 }

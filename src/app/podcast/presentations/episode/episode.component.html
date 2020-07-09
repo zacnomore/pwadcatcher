@@ -8,10 +8,10 @@
     <button mat-flat-button color="primary" (click)="queEpisode(ep)">Add to Playlist</button>
     <button mat-flat-button color="primary" (click)="downloadEpisode(ep)">Download</button>
     <ng-container *ngIf="(downloadProgress | async) as download">
-      <mat-progress-bar *ngIf="!download.failure; else downloadFail" mode="determinate" [value]="download.progress"></mat-progress-bar>
-      <ng-container #downloadFail>
+      <mat-progress-bar *ngIf="!download.failure; else downloadFail;" mode="determinate" [value]="download.progress"></mat-progress-bar>
+      <ng-template #downloadFail>
         Audio can not be downloaded, only streaming is allowed for security reasons
-      </ng-container>
+      </ng-template>
     </ng-container>
   </div>
 </ng-container>
