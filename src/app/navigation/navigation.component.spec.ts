@@ -1,12 +1,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { NavigationComponent } from './navigation.component';
-import { SharedModule } from '../shared/shared.module';
-import { MatSidenavModule } from '@angular/material/sidenav';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { MatListModule } from '@angular/material/list';
-import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 describe('NavigationComponent', () => {
   let component: NavigationComponent;
@@ -15,7 +12,8 @@ describe('NavigationComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [NavigationComponent],
-      imports: [SharedModule, MatSidenavModule, MatListModule, MatButtonToggleModule, RouterTestingModule, NoopAnimationsModule]
+      imports: [RouterTestingModule, NoopAnimationsModule],
+      schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();
   }));
