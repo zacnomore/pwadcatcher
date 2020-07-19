@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { IPodcast, IPodcastFeed, IPodcastEpisode } from '../models/podcast.model';
+import { IPodcast, IPodcastFeed, IPodcastEpisode } from '../podcast.model';
 import { StoreService } from 'src/app/store/store.service';
 import { of, Observable, from } from 'rxjs';
 import { RssReaderService } from './rss-reader.service';

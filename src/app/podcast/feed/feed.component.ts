@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map, filter, share, switchMap } from 'rxjs/operators';
 import { PodcastService } from 'src/app/shared/services/podcast.service';
-import { IPodcastFeed, IPodcastEpisode } from 'src/app/shared/models/podcast.model';
+import { IPodcastFeed, IPodcastEpisode } from 'src/app/shared/podcast.model';
 import { IListItem } from 'src/app/shared/components/podcast-list/podcast-list.component';
 import { StoreService } from 'src/app/store/store.service';
 

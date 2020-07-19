@@ -4,7 +4,7 @@ import { IAppleSearch, resultToPodcast } from './apple.model';
 import { map, catchError } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
 import { EnvironmentService } from 'src/app/environments/environment.service';
-import { IPodcast } from 'src/app/shared/models/podcast.model';
+import { IPodcast } from 'src/app/shared/podcast.model';
 
 @Injectable({
   providedIn: 'root'
