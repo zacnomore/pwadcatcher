@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, fromEvent, merge } from 'rxjs';
 import { map, scan, startWith, shareReplay, tap, switchMap } from 'rxjs/operators';
-import { IPodcastEpisode } from 'src/app/shared/models/podcast.model';
+import { IPodcastEpisode } from 'src/app/shared/podcast.model';
 import { PlaylistService } from 'src/app/playlist/services/playlist.service';
 import { throttle } from 'src/app/shared/utils';
 import { StoreService } from 'src/app/store/store.service';

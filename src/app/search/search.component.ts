@@ -6,7 +6,7 @@ import { FormBuilder } from '@angular/forms';
 import { IListItem } from '../shared/components/podcast-list/podcast-list.component';
 import { Router, ActivatedRoute } from '@angular/router';
 import { StoreService } from '../store/store.service';
-import { IPodcast } from '../shared/models/podcast.model';
+import { IPodcast } from '../shared/podcast.model';
 
 // TODO: Create search route
 @Component({

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { IPodcastEpisode } from 'src/app/shared/models/podcast.model';
+import { IPodcastEpisode } from 'src/app/shared/podcast.model';
 import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
 import { map, distinctUntilChanged, shareReplay, debounceTime, tap } from 'rxjs/operators';
 import { IStorable, StoreService } from 'src/app/store/store.service';

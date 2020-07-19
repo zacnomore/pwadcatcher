@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { StoreService, IStorable } from '../store/store.service';
-import { IPodcast } from '../shared/models/podcast.model';
+import { IPodcast } from '../shared/podcast.model';
 
 @Injectable({
   providedIn: 'root'
