@@ -1,15 +1,17 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ControlsComponent } from './controls.component';
-import { SharedModule } from 'src/app/shared/shared.module';
 import {MatSliderModule} from '@angular/material/slider';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 
 @NgModule({
   declarations: [ControlsComponent],
   imports: [
     CommonModule,
-    SharedModule,
-    MatSliderModule
+    MatSliderModule,
+    MatIconModule,
+    MatButtonModule
   ],
   exports: [
     ControlsComponent

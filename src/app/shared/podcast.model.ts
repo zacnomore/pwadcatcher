@@ -1,4 +1,3 @@
-import { IImageSet } from './image.model';
 import { IStorable } from 'src/app/store/store.service';
 
 export interface IPodcast extends IStorable {
@@ -29,3 +28,16 @@ export interface IPodcastEpisode extends IStorable {
   thumbnail?: IImageSet;
   lastPlayheadPosition?: number;
 }
+
+
+export interface IImageSet {
+  small: IImage;
+  medium?: IImage;
+  large?: IImage;
+}
+
+export interface IImage {
+  src: string;
+  alt?: string;
+}
+

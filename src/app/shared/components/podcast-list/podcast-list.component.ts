@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { IImage } from '../../models/image.model';
 import { CdkDragDrop } from '@angular/cdk/drag-drop/drag-events';
+import { IImage } from '../../podcast.model';
 
 @Component({
   selector: 'app-podcast-list',

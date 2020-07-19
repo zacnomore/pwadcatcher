@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { IImage } from 'src/app/shared/models/image.model';
 import { PlaylistService } from 'src/app/playlist/services/playlist.service';
+import { IImage } from 'src/app/shared/podcast.model';
 
 @Component({
   selector: 'app-window',

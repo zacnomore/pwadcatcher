@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { map, catchError } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { of, Observable } from 'rxjs';
-import { IPodcastFeed, IPodcastEpisode } from '../models/podcast.model';
+import { IPodcastFeed, IPodcastEpisode } from '../podcast.model';
 import { EnvironmentService } from 'src/app/environments/environment.service';
 import { xml2js, Element as XMLElement } from 'xml-js';
 
