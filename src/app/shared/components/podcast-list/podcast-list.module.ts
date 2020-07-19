@@ -1,16 +1,20 @@
 import { NgModule } from '@angular/core';
 import { PodcastListComponent } from './podcast-list.component';
-import { SharedModule } from '../../shared.module';
 import { MatListModule } from '@angular/material/list';
 import {DragDropModule} from '@angular/cdk/drag-drop';
+import { CommonModule } from '@angular/common';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 
 @NgModule({
   declarations: [PodcastListComponent],
   imports: [
-    SharedModule,
     MatListModule,
-    DragDropModule
+    DragDropModule,
+    CommonModule,
+    MatIconModule,
+    MatButtonModule
   ],
   exports: [PodcastListComponent]
 })
