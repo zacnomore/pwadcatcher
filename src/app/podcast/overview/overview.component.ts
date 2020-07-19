@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { map, filter, switchMap, tap, shareReplay } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-import { IPodcast, IPodcastFeed } from 'src/app/shared/models/podcast.model';
+import { IPodcast, IPodcastFeed } from 'src/app/shared/podcast.model';
 import { PodcastService } from 'src/app/shared/services/podcast.service';
 import { SubscriptionsService } from 'src/app/subscriptions/subscriptions.service';
 

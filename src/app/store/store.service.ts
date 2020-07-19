@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { IPodcast, IPodcastEpisode } from '../shared/models/podcast.model';
+import { IPodcast, IPodcastEpisode } from '../shared/podcast.model';
 import { ISubscription } from '../subscriptions/subscriptions.service';
 import { ISerializablePlaylist } from '../playlist/services/playlist.service';
 import { PersistentStore } from './persistent-store';

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { IListItem } from '../shared/components/podcast-list/podcast-list.component';
 import { SubscriptionsService } from './subscriptions.service';
 import { Router } from '@angular/router';
-import { IPodcast } from '../shared/models/podcast.model';
+import { IPodcast } from '../shared/podcast.model';
 
 @Component({
   templateUrl: './subscriptions.component.html',

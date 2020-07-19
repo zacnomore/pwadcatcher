@@ -1,4 +1,4 @@
-import { IPodcast } from 'src/app/shared/models/podcast.model';
+import { IPodcast } from 'src/app/shared/podcast.model';
 
 export interface IAppleSearch {
   resultCount: number;
