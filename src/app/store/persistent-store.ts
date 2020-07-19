@@ -1,76 +1,55 @@
-import { get as getIDB, set as setIDB, Store} from 'idb-keyval';
-import { debounce } from '../shared/utils';
-
-interface ISerializableKeyValuePair<V> {
-  key: string;
-  value: V;
-}
-
-interface ISerializedMap<V> {
-  entries: ISerializableKeyValuePair<V>[];
-}
+import { get as getIDB, set as setIDB, Store, keys} from 'idb-keyval';
 
 export class PersistentStore<V> {
-  private configuredStore = new Store('pwa-podcatcher');
-  private innerStore = new Map<string, V>();
+  private cache = new Map<string, V>();
   private initialized: Promise<void>;
+  private configuredStore: Store;
 
-  private triggerStorage = debounce(() => setIDB(this.idbKey, this.serialize(this.innerStore), this.configuredStore));
   private markInitialization = () => { console.error('Intialization failed.'); };
 
   constructor(private idbKey: string) {
     this.initialized = new Promise((resolve) => { this.markInitialization = resolve; });
-    getIDB(idbKey, this.configuredStore).then(store => {
-      if (store && this.isStore(store)) {
-        // TODO: Figure out if we can string together some kind of type checking here
-        const deserialized = this.deserialize(store as ISerializedMap<V>);
-        if (deserialized) {
-          this.innerStore = (deserialized as Map<string, V>);
-        }
-      }
+    this.configuredStore = new Store(this.idbKey);
+    this.moveStoreToMap(this.configuredStore).then(data => {
+      this.cache = data;
       this.markInitialization();
-    }).catch(e => {
-      console.warn('Store does not exist');
     });
   }
 
   public async get(key: string): Promise<V | undefined> {
     await this.initialized;
-    return this.innerStore.get(key);
+    return this.cache.get(key);
   }
 
   public async getAll(): Promise<V[]> {
     await this.initialized;
-    return Array.from(this.innerStore.values());
+    return Array.from(this.cache.values());
   }
 
   public set(key: string, value: V | undefined): string {
     if (value !== undefined) {
-      // TODO: Handle collisions
-      this.innerStore.set(key, value);
+      this.cache.set(key, value);
     } else {
-      this.innerStore.delete(key);
+      this.cache.delete(key);
     }
-    this.triggerStorage();
+    setIDB(key, value, this.configuredStore);
     return key;
   }
 
-  private isStore(s: unknown): s is ISerializedMap<unknown> {
-    return Boolean((s as ISerializedMap<unknown>).entries);
-  }
-
-  private serialize(m: Map<string, V>): ISerializedMap<V> {
-    return Array.from(m.entries()).reduce((acc: ISerializedMap<V>, [key, value]: [string, V]) =>
-      ({ entries: [...acc.entries, { key, value }] }), {
-      entries: [] as ISerializableKeyValuePair<V>[]
-    });
-  }
-
-  private deserialize(serialized: ISerializedMap<V>): Map<string, V> {
+  private async moveStoreToMap(store: Store): Promise<Map<string, V>> {
     const map = new Map<string, V>();
-    serialized.entries.forEach(({ key, value }) => {
-      map.set(key, value);
-    });
+    try {
+      const storeKeys = await keys(store);
+      storeKeys.forEach(key => {
+        getIDB(key, store).then(value => {
+          // TODO: Figure out if we can string together some kind of type checking here
+          // tslint:disable-next-line: no-any
+          map.set(key.toString(), value as any as V);
+        });
+      });
+    } catch {
+      console.warn('Store does not exist');
+    }
     return map;
   }
 }
