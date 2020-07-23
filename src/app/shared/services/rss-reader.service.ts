@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { of, Observable } from 'rxjs';
 import { IPodcastFeed, IPodcastEpisode } from '../podcast.model';
 import { EnvironmentService } from 'src/app/environments/environment.service';
-import {parse} from 'overly-simple-xml-parser/dist/index.umd';
+import { parse } from 'overly-simple-xml-parser';
 
 type RecursivePartial<T> = {
   [P in keyof T]?:

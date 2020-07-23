@@ -6050,10 +6050,10 @@ osenv@^0.1.5:
     os-homedir "^1.0.0"
     os-tmpdir "^1.0.0"
 
-overly-simple-xml-parser@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/overly-simple-xml-parser/-/overly-simple-xml-parser-0.2.0.tgz#38afa22e3d18290807df0552b625ccc453eeaed5"
-  integrity sha512-Vmx+oCUNSZhnwSAOBBk7neRnALqA4urlKqdrsvegURqMEFn3kmRPFQTFhH3tV6efmM1+7jIK9QQ6AGryuRdOKQ==
+overly-simple-xml-parser@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/overly-simple-xml-parser/-/overly-simple-xml-parser-0.3.0.tgz#c35dabfc3fe6e68c672f618f623fea7a2c03cf06"
+  integrity sha512-cNOX57HN/YjeTsMZO+pV2h7TqQjkGT/z9aGD8mGRJxus9WESp3lJJNT90S1e3xjjiSzdcvtuxhJt4wCgeb364w==
 
 p-finally@^1.0.0:
   version "1.0.0"
