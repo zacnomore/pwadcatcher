@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { of, Observable } from 'rxjs';
 import { IPodcastFeed, IPodcastEpisode } from '../podcast.model';
 import { EnvironmentService } from 'src/app/environments/environment.service';
-import { parse } from 'fast-xml-parser';
+import {parse} from 'overly-simple-xml-parser/dist/index.umd';
 
 type RecursivePartial<T> = {
   [P in keyof T]?:
@@ -22,13 +22,11 @@ export class RssReaderService {
   public readFeed(feedUrl: string): Observable<IPodcastFeed | undefined> {
     return this.http.get(`${this.env.env.feedReadUrl}?xmlUrl=${feedUrl}`, {responseType: 'text'}).pipe(
       map(xml => {
-        const {rss} = parse(xml, {
-          ignoreAttributes: false
-        }) as RecursivePartial<{
+        const {rss} = parse(xml) as RecursivePartial<{
           rss: {
             channel: {
               'itunes:image': {
-                '@_url': string;
+                '@_href': string;
               };
               title: string;
               description: string;
@@ -42,14 +40,13 @@ export class RssReaderService {
                   '@_url': string;
                 };
               'itunes:image': {
-                '@_url': string;
+                '@_href': string;
               };
               }[];
             }
           }
         }>;
-
-        const defaultUrl = rss?.channel?.['itunes:image']?.['@_url'] || rss?.channel?.image?.url;
+        const defaultUrl = rss?.channel?.['itunes:image']?.['@_href'] || rss?.channel?.image?.url;
         const defaultImage = defaultUrl ? {
           small: {
             src: defaultUrl
@@ -67,7 +64,7 @@ export class RssReaderService {
           audioUrl: enclosure?.['@_url'],
           thumbnail: {
             small:  {
-              src: image?.['@_url'] || defaultImage?.small.src || ''
+              src: image?.['@_href'] || defaultImage?.small.src || ''
             }
           }
         }) as IPodcastEpisode) || [];
