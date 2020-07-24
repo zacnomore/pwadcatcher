@@ -4,7 +4,14 @@ import { HttpClient } from '@angular/common/http';
 import { of, Observable } from 'rxjs';
 import { IPodcastFeed, IPodcastEpisode } from '../podcast.model';
 import { EnvironmentService } from 'src/app/environments/environment.service';
-import { xml2js, Element as XMLElement } from 'xml-js';
+import { parse } from 'overly-simple-xml-parser';
+
+type RecursivePartial<T> = {
+  [P in keyof T]?:
+    T[P] extends (infer U)[] ? RecursivePartial<U>[] :
+    T[P] extends object ? RecursivePartial<T[P]> :
+    T[P];
+};
 
 @Injectable({
   providedIn: 'root'
@@ -15,50 +22,61 @@ export class RssReaderService {
   public readFeed(feedUrl: string): Observable<IPodcastFeed | undefined> {
     return this.http.get(`${this.env.env.feedReadUrl}?xmlUrl=${feedUrl}`, {responseType: 'text'}).pipe(
       map(xml => {
-        const { elements: root } = xml2js(xml) as XMLElement;
-        const rss: XMLElement = (root || []).find(el => el.name === 'rss') || {elements: []};
-        const {elements: channel } = (rss.elements || []).find(el => el.name === 'channel') || { elements: []};
+        const {rss} = parse(xml) as RecursivePartial<{
+          rss: {
+            channel: {
+              'itunes:image': {
+                '@_href': string;
+              };
+              title: string;
+              description: string;
+              image: {
+                url: string;
+              };
+              item: {
+                title: string;
+                description: string;
+                enclosure: {
+                  '@_url': string;
+                };
+              'itunes:image': {
+                '@_href': string;
+              };
+              }[];
+            }
+          }
+        }>;
+        const defaultUrl = rss?.channel?.['itunes:image']?.['@_href'] || rss?.channel?.image?.url;
+        const defaultImage = defaultUrl ? {
+          small: {
+            src: defaultUrl
+          }
+        } : undefined;
 
-        const episodes: IPodcastEpisode[] | undefined = (channel || []).filter(
-          el => el.name === 'item'
-        ).map(({ elements }) => {
-          const { elements: titleProps } = (elements || []).find(el => el.name === 'title') || {elements: []};
-          const { text: title = '' } = (titleProps || []).find(el => el.text !== undefined) || { text: '' };
-
-          const defaultUrl = { url: '' };
-          const { attributes: enclosure = defaultUrl } = (elements || []).find(el => el.name === 'enclosure') || { attributes: defaultUrl };
-          const audioUrl = (enclosure.url || '').toString();
-
-
-
-          const { elements: descriptionProps } = (elements || []).find(
-            el => el.name === 'description' || el.name === 'itunes:summary'
-          ) || { elements: [] };
-          const { cdata: summary = '' } = (descriptionProps || []).find(el => el.cdata !== undefined) || { cdata: '' };
-
-          const episode: IPodcastEpisode = {
-            audioUrl,
-            title: title.toString(),
-            summary: summary.toString()
-          };
-          return episode;
-        });
-        const noImage = { href: undefined };
-        const { attributes: image } = (channel || []).find(el => el.name === 'itunes:image') || { attributes: noImage };
-        const { elements: descriptionNodes } = (channel || []).find(
-          el => el.name === 'itunes:summary' || el.name === 'description'
-        ) || { elements: [] };
-        const description = (((descriptionNodes || []).find(el => el.text !== undefined) || {text: ''}).text || '').toString();
+        const episodes: IPodcastEpisode[] | undefined = rss?.channel?.item?.map(({
+          title,
+          description,
+          enclosure,
+          'itunes:image': image
+        }) => ({
+          title,
+          summary: description,
+          audioUrl: enclosure?.['@_url'],
+          thumbnail: {
+            small:  {
+              src: image?.['@_href'] || defaultImage?.small.src || ''
+            }
+          }
+        }) as IPodcastEpisode) || [];
 
         const feed: IPodcastFeed = {
-          defaultImage: image && typeof image.href === 'string'  ? {
-            small: {
-              src: image.href
-            }
-          } : undefined,
           episodes,
-          description
+          defaultImage,
+          description: rss?.channel?.description
         };
+        console.log(rss);
+        console.log(feed);
+
         return feed;
       }),
       catchError(err => {
