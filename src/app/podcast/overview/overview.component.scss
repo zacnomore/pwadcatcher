@@ -15,19 +15,17 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: center;
 
   h1, h2 {
     text-align: center;
   }
+}
 
-  nav {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-  
-    button {
-      margin: 5px 10px;
-    }
+nav {
+  display: flex;
+  flex-wrap: wrap;
+
+  button {
+    margin: 10px;
   }
 }

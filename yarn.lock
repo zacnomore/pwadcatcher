@@ -6046,7 +6046,7 @@ osenv@^0.1.5:
     os-homedir "^1.0.0"
     os-tmpdir "^1.0.0"
 
-overly-simple-xml-parser@^0.3.0:
+overly-simple-xml-parser@^0.3.3:
   version "0.3.3"
   resolved "https://registry.yarnpkg.com/overly-simple-xml-parser/-/overly-simple-xml-parser-0.3.3.tgz#96ab5754d06e3f53c9f650eaac49026e761d5dfc"
   integrity sha512-ftlX6sG18DuGzL+/aGp7GRCKOflwpRJrTTjItsQtIB4FMHl/S8XHeHVdeKrnofdwuz5bo26mKUjmbW+B4QRTxw==

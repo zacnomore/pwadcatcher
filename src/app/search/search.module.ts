@@ -6,6 +6,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CommonModule } from '@angular/common';
+import { MatButtonModule } from '@angular/material/button';
 
 
 const routes: Routes = [
@@ -17,6 +18,7 @@ const routes: Routes = [
   imports: [
     PodcastListModule,
     MatInputModule,
+    MatButtonModule,
     ReactiveFormsModule,
     MatProgressSpinnerModule,
     CommonModule,

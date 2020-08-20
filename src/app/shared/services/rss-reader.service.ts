@@ -74,8 +74,6 @@ export class RssReaderService {
           defaultImage,
           description: rss?.channel?.description
         };
-        console.log(rss);
-        console.log(feed);
 
         return feed;
       }),

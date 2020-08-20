@@ -1,14 +1,14 @@
 <ng-container *ngIf="(overview$ | async) as overview">
   <img [src]="overview.thumbnail?.large?.src || overview.thumbnail?.medium?.src || overview.thumbnail?.small.src" [alt]="overview.thumbnail?.small.alt">
+  <nav>
+    <button mat-flat-button (click)="subscribe()" color="primary">Subscribe</button>
+    <button mat-flat-button (click)="viewFeed()" color="primary">View Episodes</button>
+  </nav>
   <div class="details">
     <h1 *ngIf="overview.name">{{overview.name}}</h1>
     <h2 *ngIf="overview.author">{{overview.author}}</h2>
     <ng-container *ngIf="(details$ | async) as details">
       <p *ngIf="details.description" [innerHTML]="details.description"></p>
     </ng-container>
-    <nav>
-      <button mat-flat-button (click)="subscribe()" color="primary">Subscribe</button>
-      <button mat-flat-button (click)="viewFeed()" color="primary">View Episodes</button>
-    </nav>
   </div>
 </ng-container>
