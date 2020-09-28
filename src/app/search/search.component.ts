@@ -55,12 +55,12 @@ export class SearchComponent {
   }
 
   toList(results: IPodcast[] | true, search?: string): IListItem[] | undefined {
-    if(results === true || search === undefined || search.length === 0) return;
+    if(results === true || search === undefined || search.length === 0) { return; }
     return results.map(
       result => ({
         title: result.name,
         image: result.thumbnail ? result.thumbnail.medium : undefined
       })
-    )
+    );
   }
 }
