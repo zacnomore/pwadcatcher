@@ -1,14 +1,10 @@
 <nav>
   <mat-button-toggle (change)="menu.toggle()">Menu</mat-button-toggle>
+  <app-menu class="wide-menu" (navigated)="menu.close()"></app-menu>
 </nav>
 <mat-sidenav-container>
-  <mat-sidenav #menu>
-    <mat-nav-list>
-      <a mat-list-item (click)="menu.close()" [routerLink]="['/']">Podcasts</a>
-      <a mat-list-item (click)="menu.close()" [routerLink]="['/search']" >Search</a>
-      <a mat-list-item (click)="menu.close()" [routerLink]="['/player']" >Player</a>
-      <a mat-list-item (click)="menu.close()" [routerLink]="['/playlist']" >Playlist</a>
-    </mat-nav-list>
+  <mat-sidenav #menu class="narrow-menu">
+    <app-menu (navigated)="menu.close()"></app-menu>
   </mat-sidenav>
 
   <mat-sidenav-content>

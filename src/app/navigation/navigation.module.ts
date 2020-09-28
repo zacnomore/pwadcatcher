@@ -5,10 +5,13 @@ import { RouterModule } from '@angular/router';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatListModule } from '@angular/material/list';
 import { ControlsModule } from '../player/controls/controls.module';
+import { MenuComponent } from './menu/menu.component';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [
-    NavigationComponent
+    NavigationComponent,
+    MenuComponent
   ],
   imports: [
     MatSidenavModule,
@@ -16,6 +19,7 @@ import { ControlsModule } from '../player/controls/controls.module';
     MatListModule,
     RouterModule,
     ControlsModule,
+    MatIconModule
   ],
   exports: [
     NavigationComponent

@@ -1,3 +1,7 @@
+
+$controls-height: 100px;
+$nav-height: 50px;
+
 :host {
   display: flex;
   justify-content: space-between;
@@ -6,6 +10,27 @@
   height: 100%;
 }
 
+nav {
+  display: flex;
+  align-self: stretch;
+  justify-content: center;
+  height: $nav-height;
+  margin: 5px;
+
+  app-menu {
+    width: 600px;
+    display: flex;
+    align-self: center;
+    justify-content: center;
+  }
+}
+
+// ::slotted eventually....
+:host ::ng-deep router-outlet + * {
+  flex: 1;
+  max-height: calc(100vh - #{$nav-height} - #{$controls-height});
+  overflow: auto;
+}
 mat-sidenav-container {
   flex: 1;
   width: 100%;
@@ -17,20 +42,34 @@ mat-sidenav-content {
   flex-direction: column;
 }
 
-$nav-height: 50px;
 nav {
-  height: $nav-height;
-  margin: 5px;
+  justify-content: flex-start;
+
+  app-menu {
+    display: none;
+  }
 }
 
-$controls-height: 100px;
+mat-button-toggle {
+  display: inline-flex;
+}
+
+
+@media (min-width: 600px) {
+  mat-button-toggle {
+    display: none;
+  }
+  
+  nav {
+    justify-content: center;
+
+    app-menu {
+      display: flex;
+    }
+  }
+}
+
+
 app-controls {
   height: $controls-height;
-}
-
-// ::slotted eventually....
-:host ::ng-deep router-outlet + * {
-  flex: 1;
-  max-height: calc(100vh - #{$nav-height} - #{$controls-height});
-  overflow: auto;
 }
