@@ -1,4 +1,4 @@
-import { NowRequest, NowResponse } from '@now/node';
+import { NowRequest, NowResponse } from '@vercel/node';
 import { addCORS } from '../api-utils/cors';
 import { simpleRequest } from '../api-utils/simple';
 

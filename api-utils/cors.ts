@@ -1,4 +1,4 @@
-import { NowRequest, NowResponse } from '@now/node';
+import { NowRequest, NowResponse } from '@vercel/node';
 
 
 export const addCORS = (req: NowRequest, res: NowResponse) => {
