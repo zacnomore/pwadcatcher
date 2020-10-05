@@ -27,7 +27,6 @@ export class SubscriptionsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // This has timing problems, how to get updated subscriptions?
     this.subscriptionService.getSubscriptions().then(
       subs => this.subscriptions = subs
     );

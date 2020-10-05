@@ -10,9 +10,8 @@ export class PersistentStore<V> {
   constructor(private idbKey: string) {
     this.initialized = new Promise((resolve) => { this.markInitialization = resolve; });
     this.configuredStore = new Store(this.idbKey);
-    this.moveStoreToMap(this.configuredStore).then(data => {
+    this.createMapFromStore(this.configuredStore).then(data => {
       this.cache = data;
-      this.markInitialization();
     });
   }
 
@@ -36,19 +35,22 @@ export class PersistentStore<V> {
     return key;
   }
 
-  private async moveStoreToMap(store: Store): Promise<Map<string, V>> {
+  private async createMapFromStore(store: Store): Promise<Map<string, V>> {
     const map = new Map<string, V>();
     try {
       const storeKeys = await keys(store);
-      storeKeys.forEach(key => {
+      storeKeys.forEach((key, i, { length }) => {
         getIDB(key, store).then(value => {
           // TODO: Figure out if we can string together some kind of type checking here
           // tslint:disable-next-line: no-any
           map.set(key.toString(), value as any as V);
+
+          if(i === length - 1) { this.markInitialization(); }
         });
       });
     } catch {
       console.warn('Store does not exist');
+      this.markInitialization();
     }
     return map;
   }
