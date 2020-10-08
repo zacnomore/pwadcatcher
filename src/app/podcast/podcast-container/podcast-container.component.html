@@ -1,4 +1,4 @@
-<app-overview (subscribe)="subscribe($event)" [podcastKey]="podcastKey$ | async"></app-overview>
+<app-overview *ngIf="!(episodeKey$ | async)" (subscribe)="subscribe($event)" [podcastKey]="podcastKey$ | async"></app-overview>
 
 <app-feed (viewEpisode)="selectEpisode($event)" [podcastKey]="podcastKey$ | async"></app-feed>
 

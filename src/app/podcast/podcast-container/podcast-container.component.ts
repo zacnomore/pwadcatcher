@@ -29,7 +29,9 @@ export class PodcastContainerComponent {
     map(params => params.get('episodeId')),
     filter((id): id is string => id !== null)
   );
-  public episodeKey$: Observable<string> = merge(this.selectedEpisode, this.urlParamEpisode);
+  public episodeKey$: Observable<string> = merge(this.selectedEpisode, this.urlParamEpisode).pipe(
+    shareReplay()
+  );
 
   public subscribe(podcastKey: string): void {
     this.subscriptionsService.subscribe(podcastKey);
