@@ -1,0 +1,25 @@
+:host {
+  display: block;
+}
+
+app-overview {
+  margin-top: 50px;
+  height: 60vh;
+}
+
+
+@media(min-width: 1000px) {
+  :host {
+    display: flex;
+  }
+  
+  app-feed {
+    overflow-y: auto;
+  }
+
+  app-overview {
+    height: 70vh;
+    align-self: center;
+    max-width: 40%;
+  }
+}

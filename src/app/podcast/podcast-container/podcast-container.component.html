@@ -1,5 +1,5 @@
-<app-overview [podcastKey]="podcastKey$ | async"></app-overview>
+<app-overview (subscribe)="subscribe($event)" [podcastKey]="podcastKey$ | async"></app-overview>
 
-<app-feed [podcastKey]="podcastKey$ | async"></app-feed>
+<app-feed (viewEpisode)="selectEpisode($event)" [podcastKey]="podcastKey$ | async"></app-feed>
 
-<app-episode [episodeKey]="episodeKey$ | async"></app-episode>
+<app-episode *ngIf="episodeKey$ | async" (playEpisode)="playEpisode($event)" (queEpisode)="queEpisode($event)" [episodeKey]="episodeKey$ | async"></app-episode>

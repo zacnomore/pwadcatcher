@@ -12,8 +12,7 @@ import { PodcastService } from 'src/app/shared/services/podcast.service';
 export class OverviewComponent {
   constructor(private podcastService: PodcastService) {}
 
-  @Output() viewFeed = new EventEmitter<string>();
-  @Output() subscribe = new EventEmitter<string>();
+  @Output() subscribe = new EventEmitter<null>();
 
   private readonly _podcastKey$ = new BehaviorSubject<string>('');
   @Input()
