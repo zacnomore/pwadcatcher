@@ -38,7 +38,9 @@ export class FeedComponent {
       const enhancedEp: IPodcastEpisode = {
         ...ep,
         title: ep.title || `Episode ${index + 1}`,
-        thumbnail: ep.thumbnail || feed.defaultImage
+        // TODO: The episode image url is so expensive! Maybe we can figure something out for a lazy load enhancement?
+        // ep.thumbnail
+        thumbnail: feed.defaultImage
       };
       const item: IFeedItem = {
         title: enhancedEp.title,
