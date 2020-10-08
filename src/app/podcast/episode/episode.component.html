@@ -1,4 +1,4 @@
-<ng-container *ngIf="episode$ | async as ep">
+<ng-container *ngIf="episode$ | async as ep; else loading">
   <img [src]="ep.thumbnail?.large?.src || ep.thumbnail?.medium?.src || ep.thumbnail?.small.src" [alt]="ep.thumbnail?.small.alt">
   <div class="details">
     <div class="controls">
@@ -10,3 +10,8 @@
     <p *ngIf="ep.summary" [innerHTML]="ep.summary"></p>
   </div>
 </ng-container>
+<ng-template #loading>
+  <div class="loading-container">
+    <mat-spinner></mat-spinner>
+  </div>
+</ng-template>
