@@ -5,7 +5,7 @@
     <button cdkDrag mat-list-item *ngFor="let item of list; let i = index;" [class.selected]="item.selected">
       <mat-icon cdkDragHandle class="anchor">drag_handle</mat-icon>
       <img [src]="item.image?.src" />
-      <h3>{{item.title}}</h3>
+      <h3 [innerHTML]="item.title"></h3>
       <button mat-button (click)="onDeleteItem(i)">
         <mat-icon>delete</mat-icon>
       </button>
@@ -14,7 +14,7 @@
   <ng-template #nonEditable>
     <button mat-list-item *ngFor="let item of list; let i = index;" (click)="onClickItem(i)">
       <img [src]="item.image?.src" />
-      <h3>{{item.title}}</h3>
+      <h3 [innerHTML]="item.title"></h3>
     </button>
   </ng-template>
 </mat-action-list>
