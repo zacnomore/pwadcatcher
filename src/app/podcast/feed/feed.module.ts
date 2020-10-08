@@ -12,6 +12,9 @@ import { PodcastListModule } from 'src/app/shared/components/podcast-list/podcas
     CommonModule,
     PodcastListModule,
     MatProgressSpinnerModule
+  ],
+  exports: [
+    FeedComponent
   ]
 })
 export class FeedModule { }

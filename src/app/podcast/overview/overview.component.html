@@ -1,8 +1,8 @@
 <ng-container *ngIf="(overview$ | async) as overview">
   <img [src]="overview.thumbnail?.large?.src || overview.thumbnail?.medium?.src || overview.thumbnail?.small.src" [alt]="overview.thumbnail?.small.alt">
   <nav>
-    <button mat-flat-button (click)="subscribe()" color="primary">Subscribe</button>
-    <button mat-flat-button (click)="viewFeed()" color="primary">View Episodes</button>
+    <button mat-flat-button (click)="subscribe.emit()" color="primary">Subscribe</button>
+    <button mat-flat-button (click)="viewFeed.emit()" color="primary">View Episodes</button>
   </nav>
   <div class="details">
     <h1 *ngIf="overview.name">{{overview.name}}</h1>
