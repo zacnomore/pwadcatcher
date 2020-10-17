@@ -1,0 +1,34 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+app-overview {
+  margin-top: 50px;
+  height: 60vh;
+}
+
+.episode-selected {
+  display: none;
+}
+
+@media(min-width: 1000px) {
+  :host {
+    flex-direction: row;
+  }
+  
+  app-feed {
+    overflow-y: auto;
+  }
+
+  app-overview {
+    height: 70vh;
+    align-self: center;
+    max-width: 40%;
+  }
+
+  .episode-selected {
+    display: block;
+  }
+}

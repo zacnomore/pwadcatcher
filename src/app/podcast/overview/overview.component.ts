@@ -1,10 +1,8 @@
-import { Component } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { map, filter, switchMap, tap, shareReplay } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { filter, switchMap } from 'rxjs/operators';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { IPodcast, IPodcastFeed } from 'src/app/shared/podcast.model';
 import { PodcastService } from 'src/app/shared/services/podcast.service';
-import { SubscriptionsService } from 'src/app/subscriptions/subscriptions.service';
 
 @Component({
   selector: 'app-overview',
@@ -12,37 +10,26 @@ import { SubscriptionsService } from 'src/app/subscriptions/subscriptions.servic
   styleUrls: ['./overview.component.scss']
 })
 export class OverviewComponent {
-  constructor(
-    private activateRoute: ActivatedRoute,
-    private podcastService: PodcastService,
-    private router: Router,
-    private subscriptions: SubscriptionsService
-  ) { }
+  constructor(private podcastService: PodcastService) {}
 
-  private activeId = '';
-  private podcastKey$: Observable<string> = this.activateRoute.paramMap.pipe(
-    map(params => params.get('podId')),
-    filter((id): id is string => id !== null),
-    shareReplay(),
-    tap(id => this.activeId = id)
-  );
+  @Output() subscribe = new EventEmitter<null>();
 
-  public overview$: Observable<IPodcast> = this.podcastKey$.pipe(
+  private readonly _podcastKey$ = new BehaviorSubject<string>('');
+  @Input()
+  get podcastKey(): string | undefined { return this._podcastKey$.value; }
+  set podcastKey(key: string | undefined) {
+    if(key) {
+      this._podcastKey$.next(key);
+    }
+  }
+
+  public overview$: Observable<IPodcast> = this._podcastKey$.pipe(
     switchMap(id => this.podcastService.getPodcast(id)),
     filter((podcast): podcast is IPodcast => podcast !== undefined)
-    );
+  );
 
-    public details$: Observable<IPodcastFeed> = this.podcastKey$.pipe(
-      switchMap(key => this.podcastService.getFeed(key)),
-      filter((podcast): podcast is IPodcastFeed => podcast !== undefined)
-    );
-
-  public viewFeed(): void {
-    this.router.navigate(['podcast', 'feed', this.activeId]);
-  }
-
-  public subscribe(): void {
-    this.subscriptions.subscribe(this.activeId);
-    this.router.navigate(['']);
-  }
+  public details$: Observable<IPodcastFeed> = this._podcastKey$.pipe(
+    switchMap(key => this.podcastService.getFeed(key)),
+    filter((podcast): podcast is IPodcastFeed => podcast !== undefined)
+  );
 }

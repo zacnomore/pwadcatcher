@@ -1,12 +1,17 @@
-<ng-container *ngIf="(episode$ | async) as ep">
+<ng-container *ngIf="episode$ | async as ep; else loading">
   <img [src]="ep.thumbnail?.large?.src || ep.thumbnail?.medium?.src || ep.thumbnail?.small.src" [alt]="ep.thumbnail?.small.alt">
   <div class="details">
     <div class="controls">
-      <button mat-flat-button color="primary" (click)="playEpisode(ep)">Play</button>
-      <button mat-flat-button color="primary" (click)="queEpisode(ep)">Add to Playlist</button>
+      <button mat-flat-button color="primary" (click)="playEpisode.emit(ep)">Play</button>
+      <button mat-flat-button color="primary" (click)="queEpisode.emit(ep)">Add to Playlist</button>
     </div>
     <h1 *ngIf="ep.title">{{ep.title}}</h1>
     <h2 *ngIf="ep.publishDate">{{ep.publishDate}}</h2>
     <p *ngIf="ep.summary" [innerHTML]="ep.summary"></p>
   </div>
 </ng-container>
+<ng-template #loading>
+  <div class="loading-container">
+    <mat-spinner></mat-spinner>
+  </div>
+</ng-template>

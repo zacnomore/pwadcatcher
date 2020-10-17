@@ -1,32 +1,41 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
-import { OverviewComponent } from './overview/overview.component';
-import { FeedComponent } from './feed/feed.component';
-import { EpisodeComponent } from './episode/episode.component';
 import { OverviewModule } from './overview/overview.module';
 import { FeedModule } from './feed/feed.module';
 import { EpisodeModule } from './episode/episode.module';
+import { PodcastContainerComponent } from './podcast-container/podcast-container.component';
 
 
 const routes: Routes = [
   {
     path: 'overview/:podId',
-    component: OverviewComponent
+    component: PodcastContainerComponent,
+    data: {
+      viewLevel: 'overview'
+    }
   },
   {
     path: 'feed/:podId',
-    component: FeedComponent
+    component: PodcastContainerComponent,
+    data: {
+      viewLevel: 'feed'
+    }
   },
   {
     path: 'episode/:episodeId',
-    component: EpisodeComponent
+    component: PodcastContainerComponent,
+    data: {
+      viewLevel: 'episode'
+    }
   }
 ];
 
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    PodcastContainerComponent
+  ],
   imports: [
     CommonModule,
     OverviewModule,

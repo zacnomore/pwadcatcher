@@ -1,6 +1,5 @@
-import { Component } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { map, filter, share, switchMap } from 'rxjs/operators';
 import { PodcastService } from 'src/app/shared/services/podcast.service';
 import { IPodcastFeed, IPodcastEpisode } from 'src/app/shared/podcast.model';
@@ -14,30 +13,34 @@ import { StoreService } from 'src/app/store/store.service';
 })
 export class FeedComponent {
   constructor(
-    private activateRoute: ActivatedRoute,
     private podcastService: PodcastService,
-    private router: Router,
     private store: StoreService
   ) { }
 
-  private podcastKey$: Observable<string> = this.activateRoute.paramMap.pipe(
-    map(params => params.get('podId')),
-    filter((id): id is string => id !== null),
-    share(),
-  );
+  @Output() viewEpisode = new EventEmitter<string>();
 
-  private feed$: Observable<IPodcastFeed> = this.podcastKey$.pipe(
+  private _podcastKey$ = new BehaviorSubject<string>('');
+  @Input()
+  public set podcastKey(value: string) {
+    this._podcastKey$.next(value);
+  }
+
+
+  private feed$: Observable<IPodcastFeed> = this._podcastKey$.pipe(
     switchMap(key => this.podcastService.getFeed(key)),
     filter((feed): feed is IPodcastFeed => feed !== undefined),
     share()
   );
 
+  // TODO: Refactor this side-effect to happen somewhere more efficient
   public listItems$: Observable<IFeedItem[]> = this.feed$.pipe(
     map(feed => feed.episodes.map((ep, index) => {
       const enhancedEp: IPodcastEpisode = {
         ...ep,
         title: ep.title || `Episode ${index + 1}`,
-        thumbnail: ep.thumbnail || feed.defaultImage
+        // TODO: The episode image url is so expensive! Maybe we can figure something out for a lazy load enhancement?
+        // ep.thumbnail
+        thumbnail: feed.defaultImage
       };
       const item: IFeedItem = {
         title: enhancedEp.title,
@@ -48,10 +51,6 @@ export class FeedComponent {
     }))
   );
 
-
-  viewEpisode(feed: IFeedItem[], index: number): void {
-    this.router.navigate(['podcast', 'episode', feed[index].episodeKey]);
-  }
 }
 
 interface IFeedItem extends IListItem {
