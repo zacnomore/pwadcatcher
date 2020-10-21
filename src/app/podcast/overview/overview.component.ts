@@ -12,7 +12,7 @@ import { PodcastService } from 'src/app/shared/services/podcast.service';
 export class OverviewComponent {
   constructor(private podcastService: PodcastService) {}
 
-  @Output() subscribe = new EventEmitter<null>();
+  @Output() subscribe = new EventEmitter<string>();
 
   private readonly _podcastKey$ = new BehaviorSubject<string>('');
   @Input()
@@ -32,4 +32,8 @@ export class OverviewComponent {
     switchMap(key => this.podcastService.getFeed(key)),
     filter((podcast): podcast is IPodcastFeed => podcast !== undefined)
   );
+
+  emitSubscribe(): void {
+    this.subscribe.emit(this.podcastKey);
+  }
 }
