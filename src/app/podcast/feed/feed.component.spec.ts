@@ -3,7 +3,6 @@ import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FeedComponent } from './feed.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 describe('FeedComponent', () => {
   let component: FeedComponent;
@@ -12,8 +11,7 @@ describe('FeedComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ FeedComponent ],
-      imports: [RouterTestingModule, HttpClientTestingModule],
-      schemas: [NO_ERRORS_SCHEMA]
+      imports: [RouterTestingModule, HttpClientTestingModule]
     })
     .compileComponents();
   }));

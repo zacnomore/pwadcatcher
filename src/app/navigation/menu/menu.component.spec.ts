@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { expectToBeDumb } from 'src/test-utils/dumb-component';
 
 import { MenuComponent } from './menu.component';
 
@@ -21,5 +22,9 @@ describe('MenuComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should be a dumb component', () => {
+    expectToBeDumb(component);
   });
 });

@@ -3,7 +3,7 @@ import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NavigationComponent } from './navigation.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { expectToBeDumb } from 'src/test-utils/dumb-component';
 
 describe('NavigationComponent', () => {
   let component: NavigationComponent;
@@ -12,8 +12,7 @@ describe('NavigationComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [NavigationComponent],
-      imports: [RouterTestingModule, NoopAnimationsModule],
-      schemas: [NO_ERRORS_SCHEMA]
+      imports: [RouterTestingModule, NoopAnimationsModule]
     })
     .compileComponents();
   }));
@@ -26,5 +25,9 @@ describe('NavigationComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should be a dumb component', () => {
+    expectToBeDumb(component);
   });
 });

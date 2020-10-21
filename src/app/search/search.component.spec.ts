@@ -5,7 +5,6 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FormBuilder } from '@angular/forms';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 describe('SearchComponent', () => {
   let component: SearchComponent;
@@ -22,8 +21,7 @@ describe('SearchComponent', () => {
       providers: [{
         provide: FormBuilder,
         useClass: class { group = () => ({}); }
-      }],
-      schemas: [NO_ERRORS_SCHEMA]
+      }]
     })
     .compileComponents();
   }));
