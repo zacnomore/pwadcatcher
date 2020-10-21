@@ -2,7 +2,17 @@
   display: block;
 }
 
-mat-nav-list {
+mat-nav-list.mat-list-base {
+  padding-top: 0;
   display: inherit;
 }
 
+.mat-list-option:focus, .mat-nav-list .mat-list-item:focus, .mat-action-list .mat-list-item:focus {
+  &.active {
+    background: rgb(224, 224, 224);
+  }
+}
+
+.active {
+  background: rgb(224, 224, 224);
+}
