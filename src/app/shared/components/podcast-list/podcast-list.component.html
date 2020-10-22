@@ -12,7 +12,8 @@
     </button>
   </ng-container>
   <ng-template #nonEditable>
-    <button mat-list-item *ngFor="let item of list; let i = index;" (click)="onClickItem(i)">
+    <!-- click is not working, not sure why -->
+    <button mat-list-item *ngFor="let item of list; let i = index;" (mousedown)="onClickItem(i)">
       <img [src]="item.image?.src" />
       <h3 [innerHTML]="item.title"></h3>
     </button>
