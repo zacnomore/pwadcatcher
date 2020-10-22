@@ -6,6 +6,7 @@
 
   img {
     max-width: 100%;
+    max-height: 50%;
   }
 }
 
@@ -28,4 +29,13 @@ nav {
   button {
     margin: 10px;
   }
+}
+
+
+@media(min-width: 1000px) {
+  .details {
+    height: 50%;
+    overflow: auto;
+  }
+
 }

@@ -1,7 +1,6 @@
 :host {
   display: flex;
   flex-direction: column;
-  justify-content: center;
 }
 
 app-overview {
@@ -16,16 +15,22 @@ app-overview {
 @media(min-width: 1000px) {
   :host {
     flex-direction: row;
+    justify-content: center;
   }
   
   app-feed {
     overflow-y: auto;
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   app-overview {
     height: 70vh;
     align-self: center;
     max-width: 40%;
+    flex-grow: 1;
   }
 
   .episode-selected {
