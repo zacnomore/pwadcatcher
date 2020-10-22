@@ -1,0 +1,14 @@
+@import '../../shared.scss';
+
+.router-container {
+  display: flex;
+  flex: 1;
+  max-height: calc(100vh - #{$nav-height} - #{$controls-height});
+  overflow: hidden;
+}
+
+:host ::ng-deep router-outlet + * {
+  flex: 1;
+  max-height: calc(100vh - #{$nav-height} - #{$controls-height});
+  overflow: auto;
+}
