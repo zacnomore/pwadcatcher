@@ -13,7 +13,7 @@
   </ng-container>
   <ng-template #list>
     <app-podcast-list
-      [list]="toList(results, terms.value)" 
+      [list]="toList(results, terms.value)"
       (clickItem)="viewPodcast($event, results)">
     </app-podcast-list>
   </ng-template>

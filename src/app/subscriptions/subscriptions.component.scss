@@ -1,5 +1,12 @@
 :host {
-  display: block;
+  display: flex;
+  justify-content: center;
+}
+
+@media(min-width: 1000px) {
+  app-podcast-list {
+    width: 800px;
+  }
 }
 
 .no-subscriptions {
