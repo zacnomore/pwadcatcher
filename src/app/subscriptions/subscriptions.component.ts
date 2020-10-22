@@ -20,6 +20,7 @@ export class SubscriptionsComponent implements OnInit {
     );
   }
   public list: IListItem[] = [];
+  public loaded = false;
 
   constructor(
     private subscriptionService: SubscriptionsService,
@@ -28,7 +29,10 @@ export class SubscriptionsComponent implements OnInit {
 
   ngOnInit(): void {
     this.subscriptionService.getSubscriptions().then(
-      subs => this.subscriptions = subs
+      subs => {
+        this.subscriptions = subs;
+        this.loaded = true;
+      }
     );
   }
 

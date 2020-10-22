@@ -1,8 +1,15 @@
-<app-podcast-list *ngIf="list && list.length; else noSubcriptions" [list]="list" (clickItem)="viewPodcast($event)">
-</app-podcast-list>
-<ng-template #noSubcriptions>
-  <div class="no-subscriptions">
-    <p>You don't have any subscriptions right now. Find your first!</p>
-    <a mat-flat-button color="primary" [routerLink]="'/search'">Search</a>
+<ng-container *ngIf="loaded; else loading">
+  <app-podcast-list *ngIf="list && list.length; else noSubcriptions" [list]="list" (clickItem)="viewPodcast($event)">
+  </app-podcast-list>
+  <ng-template #noSubcriptions>
+    <div class="no-subscriptions">
+      <p>You don't have any subscriptions right now. Find your first!</p>
+      <a mat-flat-button color="primary" [routerLink]="'/search'">Search</a>
+    </div>
+  </ng-template>
+</ng-container>
+<ng-template #loading>
+  <div class="loading-container">
+    <mat-spinner></mat-spinner>
   </div>
 </ng-template>

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { SubscriptionsComponent } from 'src/app/subscriptions/subscriptions.component';
 import { Routes, RouterModule } from '@angular/router';
 import { PodcastListModule } from '../shared/components/podcast-list/podcast-list.module';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 
 const routes: Routes = [
@@ -17,6 +18,7 @@ const routes: Routes = [
   imports: [
     CommonModule,
     PodcastListModule,
+    MatProgressSpinnerModule,
     RouterModule.forChild(routes)
   ]
 })
