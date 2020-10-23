@@ -13,23 +13,23 @@ export class SearchService {
 
   constructor(private http: HttpClient, private env: EnvironmentService) {}
 
-  public appleSearch(term: string): Observable<IPodcast[]> {
+  public appleSearch(term: string): Observable<IPodcast[] | Error> {
     return this.http.get<IAppleSearch>(`${this.env.env.appleSearchUrl}?term=${term}`).pipe(
       map(({ results }) => results.map(resultToPodcast)),
       catchError((e: HttpErrorResponse) => {
         console.error(e.status);
-        return of([]);
+        return of(new Error('Search Failed'));
       })
     );
   }
 
-  public findPodcast(key: string): Observable<IPodcast | undefined> {
+  public findPodcast(key: string): Observable<IPodcast | Error> {
     return this.http.get<IAppleSearch>(`${this.env.env.appleSearchUrl}?term=${key}`).pipe(
       map(({ results }) => results.map(resultToPodcast)),
       map(results => results[0]),
       catchError((e: HttpErrorResponse) => {
         console.error(e.status);
-        return of(undefined);
+        return of(new Error('Podcast Could Not Be Found'));
       })
     );
   }

@@ -16,11 +16,12 @@ import { IPodcast } from '../shared/podcast.model';
 export class SearchComponent {
   private loadingBS = new BehaviorSubject(false);
   public loading$ = this.loadingBS.asObservable();
-  public searchResults$: Observable<IPodcast[] | boolean> = this.route.queryParamMap.pipe(
+  public searchResults$: Observable<IPodcast[] | Error> = this.route.queryParamMap.pipe(
     map(qParamMap => qParamMap.get('terms')),
     filter((terms): terms is string => !!terms),
     tap(term => this.searchForm.controls.terms.setValue(term)),
     distinctUntilChanged(),
+    tap(() => this.loadingBS.next(true)),
     switchMap(searchTerms => this.searchService.appleSearch(searchTerms)),
     tap(() => this.loadingBS.next(false)),
     shareReplay()
@@ -65,7 +66,6 @@ export class SearchComponent {
 
   public search(terms: string): void {
     if (terms) {
-      this.loadingBS.next(true);
       this.router.navigate(['/search'], { queryParams: { terms } });
     }
   }
@@ -75,7 +75,11 @@ export class SearchComponent {
     this.router.navigate(['podcast', 'overview', key]);
   }
 
-  toList(results: IPodcast[] | true, search?: string): IListItem[] | undefined {
+  public isError(results: IPodcast[] | Error): results is Error {
+    return results.constructor === Error;
+  }
+
+  public toList(results: IPodcast[] | true, search?: string): IListItem[] | undefined {
     if(results === true || search === undefined || search.length === 0) { return; }
     return results.map(
       result => ({

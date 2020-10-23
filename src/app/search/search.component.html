@@ -12,10 +12,17 @@
 </ng-container>
 
 <ng-container *ngIf="(searchResults$ | async) as results; else suggestions">
-  <app-podcast-list
-    [list]="toList(results, terms.value)"
-    (clickItem)="viewPodcast($event, results)">
-  </app-podcast-list>
+  <ng-container *ngIf="!isError(results); else error">
+    <app-podcast-list
+      [list]="toList(results, terms.value)"
+      (clickItem)="viewPodcast($event, results)">
+    </app-podcast-list>
+  </ng-container>
+  <ng-template #error>
+    <div class="error">
+      Search Failed
+    </div>
+  </ng-template>
 </ng-container>
 
 <ng-template #suggestions>

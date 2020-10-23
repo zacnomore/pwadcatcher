@@ -18,7 +18,7 @@ export class PodcastService {
     return this.store.getEpisode(key);
   }
 
-  public async getPodcast(key: string): Promise<IPodcast | undefined> {
+  public async getPodcast(key: string): Promise<IPodcast | Error> {
     return from(this.store.getPodcast(key)).pipe(
       switchMap(resultFromStore => {
         if(resultFromStore) {
