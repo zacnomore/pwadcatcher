@@ -11,4 +11,5 @@
   flex: 1;
   max-height: calc(100vh - #{$nav-height} - #{$controls-height});
   overflow: auto;
+  display: flex;
 }
