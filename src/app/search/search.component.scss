@@ -34,3 +34,18 @@ app-podcast-list {
   justify-content: center;
   align-items: center;
 }
+
+.suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  text-align: center;
+
+  p {
+    flex-basis: 100%;
+  }
+
+  button {
+    margin: 10px;
+  }
+}

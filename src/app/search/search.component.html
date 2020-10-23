@@ -1,20 +1,26 @@
-<form [formGroup]="searchForm" (ngSubmit)="search()">
+<form [formGroup]="searchForm" (ngSubmit)="search(terms.value)">
   <mat-form-field>
     <input #terms matInput formControlName="terms" placeholder="Search" />
   </mat-form-field>
-  <button mat-flat-button color="primary">Search</button>
+  <button mat-flat-button type="submit" color="primary">Search</button>
 </form>
 
-<ng-container *ngIf="(searchResults$ | async) as results">
-  <ng-container *ngIf="(loading$ | async); else list">
-    <div class="spinner">
-      <mat-spinner></mat-spinner>
-    </div>
-  </ng-container>
-  <ng-template #list>
-    <app-podcast-list
-      [list]="toList(results, terms.value)"
-      (clickItem)="viewPodcast($event, results)">
-    </app-podcast-list>
-  </ng-template>
+<ng-container *ngIf="(loading$ | async)">
+  <div class="spinner">
+    <mat-spinner></mat-spinner>
+  </div>
 </ng-container>
+
+<ng-container *ngIf="(searchResults$ | async) as results; else suggestions">
+  <app-podcast-list
+    [list]="toList(results, terms.value)"
+    (clickItem)="viewPodcast($event, results)">
+  </app-podcast-list>
+</ng-container>
+
+<ng-template #suggestions>
+  <div class="suggestions" *ngIf="!(loading$ | async)">
+    <p>Not sure what to search? Try one of these:</p>
+    <button mat-flat-button color="secondary" *ngFor="let term of suggestedTerms" (click)="search(term)">{{term}}</button>
+  </div>
+</ng-template>

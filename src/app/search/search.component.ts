@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { SearchService } from './services/search.service';
 import { Observable, BehaviorSubject } from 'rxjs';
-import { switchMap, map, distinctUntilChanged, tap, shareReplay, filter, startWith } from 'rxjs/operators';
+import { switchMap, map, distinctUntilChanged, tap, shareReplay, filter } from 'rxjs/operators';
 import { FormBuilder } from '@angular/forms';
 import { IListItem } from '../shared/components/podcast-list/podcast-list.component';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -22,10 +22,6 @@ export class SearchComponent {
     tap(term => this.searchForm.controls.terms.setValue(term)),
     distinctUntilChanged(),
     switchMap(searchTerms => this.searchService.appleSearch(searchTerms)),
-    // True is a truthy value that clearly shouldn't be evalutated as a list.
-    // We want the nested spinner to be subscribed
-    // Would you rather manage the subscription or have this strangeness?
-    startWith(true),
     tap(() => this.loadingBS.next(false)),
     shareReplay()
   );
@@ -34,6 +30,32 @@ export class SearchComponent {
     terms: ['']
   });
 
+
+  private seed = [
+    'My Brother My Brother and Me',
+    'Wow in the World',
+    'Reply All',
+    'The Constant',
+    'Song Exploder',
+    'Radiolab',
+    'HTTP 203',
+    'Heavyweight',
+    'the memory palace',
+    'Imaginary Advice',
+    'The Adventure Zone',
+    'Anthropocene Reviewed',
+    'Disney For Scores',
+    'Blank Check'
+];
+
+  public suggestedTerms: string[] = (() => {
+    const length = 5;
+    // Grab from a random location and continue to the end
+    const sugs = this.seed.slice(Math.random() * this.seed.length).slice(0, length);
+    // Wraparound and grab from the beginning to get the desired length
+    return sugs.concat(this.seed.slice(0, length - sugs.length));
+  })();
+
   constructor(
     private searchService: SearchService,
     private fb: FormBuilder,
@@ -41,11 +63,10 @@ export class SearchComponent {
     private store: StoreService,
     private route: ActivatedRoute) { }
 
-  public search(): void {
-    const terms = this.searchForm.get('terms');
-    if (terms && terms.value) {
+  public search(terms: string): void {
+    if (terms) {
       this.loadingBS.next(true);
-      this.router.navigate(['/search'], { queryParams: { terms: terms.value } });
+      this.router.navigate(['/search'], { queryParams: { terms } });
     }
   }
 
