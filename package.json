@@ -27,7 +27,7 @@
     "@angular/pwa": "^0.1001.2",
     "@angular/router": "^10.1.2",
     "@angular/service-worker": "^10.1.2",
-    "idb-keyval": "^3.2.0",
+    "idb-keyval": "^5.0.1",
     "overly-simple-xml-parser": "^0.3.3",
     "rxjs": "^6.6.3",
     "zone.js": "^0.10.3"
