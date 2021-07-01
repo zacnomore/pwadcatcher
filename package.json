@@ -24,7 +24,7 @@
     "@angular/material": "^11.2.11",
     "@angular/platform-browser": "^11.2.11",
     "@angular/platform-browser-dynamic": "^11.2.11",
-    "@angular/pwa": "^0.1102.11",
+    "@angular/pwa": "^12.1.0",
     "@angular/router": "^11.2.11",
     "@angular/service-worker": "^11.2.11",
     "idb-keyval": "^3.2.0",
